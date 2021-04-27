@@ -1,0 +1,49 @@
+#basemap {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    right: 240px;
+    bottom: -5px;
+    cursor: pointer;
+    border-radius: 100%;
+    background-image : url('basemap.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}
+
+
+#card-basemap {
+    position: fixed;
+    height: 6%;
+    top: 20%;
+    right: 1%;
+    width: 30%;
+    display: none;
+}
+
+.card-header-vtms {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  /*background-color: rgba(0, 0, 0, 0.03);*/
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  opacity: 0.9;
+  background: linear-gradient(110deg, #fcac4c 30%, #f98626 30%);
+}
+
+.card-header-vtms:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.card-header-vtms + .list-group .list-group-item:first-child {
+  border-top: 0;
+}
+
+.card-body-vtms {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  background-color: #f98626;
+  opacity: 0.9;
+}

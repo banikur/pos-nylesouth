@@ -1,0 +1,14 @@
+#measures {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    right: 40px;
+    top: -10px;
+    cursor: pointer;
+    border-radius: 100%;
+    background-image : url('measurment.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}

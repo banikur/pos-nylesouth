@@ -1,0 +1,194 @@
+
+.modal.fade .modal-layer{
+    position: fixed;
+    z-index: 500;
+    top: 1%;
+    left: 90px;
+    bottom: 20px;
+    margin: 0;
+    max-width: 100%
+  }
+  .modal-backdrop {
+    width: 0%;
+  }
+  
+  .btn-warning {
+    color: #fff
+  }
+  
+  .btn-warning:hover {
+    color: #fff
+  }
+  
+  .modal.fade .modal-right {
+    left: auto !important;
+    transform: translate3d(100%, 0, 0);
+    transition: transform .3s cubic-bezier(.25, .8, .25, 1)
+  }
+  
+  .modal.fade.show .modal-layer {
+    transform: translate3d(0, 0, 0)
+  }
+  
+  .w-xl {
+    width: 320px
+  }
+  
+  .modal-content,
+  .modal-footer,
+  .modal-header {
+    border: none
+  }
+  
+  .h-100 {
+    height: 100% !important
+  }
+  
+  .list-group.no-radius .list-group-item {
+    border-radius: 0 !important
+  }
+  
+  .btn-light {
+    color: #212529;
+    background-color: #f5f5f6;
+    border-color: #f5f5f6
+  }
+  
+  .btn-light:hover {
+    color: #212529;
+    background-color: #e1e1e4;
+    border-color: #dadade
+  }
+  
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid rgba(160, 175, 185, .15);
+    border-bottom-right-radius: .3rem;
+    border-bottom-left-radius: .3rem
+  }
+  
+  section#content {
+    min-height: 400px;
+    padding-top: 40px;
+    text-align: left;
+    background: #f5f5f5
+}
+
+.container-toggle {
+    background: #fff;
+    font-size: 12px;
+}
+
+.container-toggle .panel {
+    margin-bottom: 0;
+    box-shadow: none;
+    -webkit-border-radius: 0 0 0 0;
+    -moz-border-radius: 0 0 0 0;
+    -ms-border-radius: 0 0 0 0;
+    border-radius: 0 0 0 0;
+    border: none;
+    border-bottom: 2px solid #f5f5f5;
+    position: relative
+}
+
+.container-toggle .panel:last-child {
+    border: none
+}
+
+.container-toggle .panel .panel-title {
+    padding: 0;
+    color: #2d3e52;
+    font-size: 1.1667em;
+    position: relative
+}
+
+.container-toggle .panel .panel-title a {
+    white-space: normal;
+    display: block;
+    padding: 5px
+}
+
+.container-toggle .panel h1.panel-title {
+    font-size: 2em
+}
+
+.container-toggle .panel h2.panel-title {
+    font-size: 1.6667em
+}
+
+.container-toggle .panel h3.panel-title {
+    font-size: 1.5em
+}
+
+.container-toggle .panel h4.panel-title {
+    font-size: 1.3333em
+}
+
+.container-toggle .panel h5.panel-title {
+    font-size: 1.1667em
+}
+
+.container-toggle .panel h6.panel-title {
+    font-size: 1em
+}
+
+.container-toggle .panel.style1 .panel-title>a:before {
+    display: block;
+    content: "\f068";
+    font-family: FontAwesome;
+    margin-right: 16px;
+    line-height: 24px;
+    font-size: 10px;
+    float: left;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    color: #9e9e9e;
+    background: #f5f5f5;
+    -webkit-border-radius: 50% 50% 50% 50%;
+    -moz-border-radius: 50% 50% 50% 50%;
+    -ms-border-radius: 50% 50% 50% 50%;
+    border-radius: 50% 50% 50% 50%
+}
+
+.container-toggle .panel.style1 .panel-title>a.collapsed:before {
+    content: "\f067";
+    color: #fff;
+    background: #01b7f2
+}
+
+.container-toggle .panel.style1 .panel-content {
+    padding-left: 12%;
+}
+
+.container-toggle .panel.style1.arrow-right .panel-title {
+    position: relative
+}
+
+.container-toggle .panel.style1.arrow-right .panel-title>a {
+    padding-right: 36px
+}
+
+.container-toggle .panel.style1.arrow-right .panel-title>a:before {
+    float: none;
+    position: absolute;
+    right: 0;
+    height: 16px;
+    line-height: 17px;
+    width: 16px;
+    font-size: 9px;
+    border: none;
+    margin-top: -8px;
+    top: 50%
+}
+
+.container-toggle .panel.style1.arrow-right .panel-content {
+    padding: 10px 15px
+}
+
+a:link {
+    text-decoration: none
+}

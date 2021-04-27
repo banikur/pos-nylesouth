@@ -1,0 +1,44 @@
+#backhome {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    left: 50px;
+    top: 120px;
+    cursor: pointer;
+    border-radius: 100%;
+    background-image : url('home.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}
+
+#zoomin {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    left: 90px;
+    top: 120px;
+    cursor: pointer;
+    border-radius: 100%;
+    background-image : url('zoomin.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}
+
+#zoomout {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    left: 10px;
+    top: 120px;
+    cursor: pointer;
+    border-radius: 100%;
+    background-image : url('zoomout.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}

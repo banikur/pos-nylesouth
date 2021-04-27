@@ -1,0 +1,80 @@
+.row_draw{
+width: 30px;
+height: 30px; 
+background-color: white; 
+border: 1px solid #DDDDDD; padding: 2px;
+}
+.row_point{
+width: 30px;
+height: 30px; 
+background-color: white; 
+/*padding: 2px;*/
+/*border: 1px solid #DDDDDD; */
+}
+.row_draw:hover{
+background-color: #E6E6E6;
+}
+.row_point:hover{
+background-color: #E6E6E6;
+border: 1px solid #3B8FC4;
+}
+.active, .active:hover{
+background-color: #3B8FC4;
+}
+.svg-line{
+  fill: "none"; 
+  fill-opacity : 0; 
+  stroke : rgb(0, 0, 0); 
+  stroke-opacity : 1;
+  stroke-width : 4 ; 
+  stroke-linecap : "butt"; 
+  stroke-linejoin : "miter"; 
+  stroke-miterlimit : "4";
+  stroke-dasharray : "none"; 
+  transform :matrix(1.00000000,0.00000000,0.00000000,1.00000000,95.00000000,10.00000000);
+}
+.svg-polygon{
+  fill: rgb(0, 0, 0);
+  fill-opacity : 0.5019607843137255; 
+  stroke : rgb(0, 0, 0); 
+  stroke-opacity : 1;
+  stroke-width : 4 ; 
+  stroke-linecap : "butt"; 
+  stroke-linejoin : "miter"; 
+  stroke-miterlimit : 4;
+  stroke-dasharray : "none"; 
+  fill-rule : "evenodd";
+  transform :matrix(1.00000000,0.00000000,0.00000000,1.00000000,40.00000000,15.00000000);
+}
+
+.column {
+      float: left;
+      width: 33%;
+      padding: 10px;
+      height: auto; /* Should be removed. Only for demonstration */
+  }
+.column_point{
+  float: left;
+  /*width: 10%;*/
+  /*padding: 10px;*/
+    width: 30px;
+  height: 30px; 
+  /*height: auto;*/ /* Should be removed. Only for demonstration */
+}
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.form-input{
+  padding: 1px;
+}
+
+/* input{
+  height: 30px !important;
+} */
+.menu_draw{
+  display: none;
+}

@@ -1,0 +1,28 @@
+#LeafletAjax {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    right: 320px;
+    top: -40px;
+    cursor: pointer;
+    border-radius: 100%;
+    padding: 6px;
+    padding-top: 9px;
+    padding-left: 4px;
+    font-weight: bolder;
+    /*background-image: url(LeafletAjax.png);*/
+    background-color: #0066ff;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 400;
+}
+#card-LeafletAjax {
+    position: absolute;
+    width: 300px;
+    z-index: 400;
+    display: none;
+    right: 320px;
+    opacity: 0.9;
+    top: 0px;
+}
