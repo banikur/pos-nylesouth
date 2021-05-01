@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
 {
@@ -54,10 +55,93 @@ class MasterController extends Controller
     /*FORM MODAL*/
 
     /*CRUD*/
+    public function post_warna(Request $request)
+    {
+        try {
+            if ($request->id_warna == null) {
+                $validate =  DB::table('master_kode_warna')->where('nama_warna', trim($request->warna))->count();
+                if ($validate > 0) {
+                    return redirect()->back()->with('error', 'Duplikat Data');
+                } else {
+                    DB::table('master_kode_warna')->insert(
+                        [
+                            'nama_warna' => $request->warna,
+                            'created_at' => date('Y-m-d H:i:s'),
+                        ]
+                    );
+                }
+            } else {
+                DB::table('master_kode_warna')->where('kode_warna', $request->id_warna)->update(
+                    [
+                        'nama_warna' => $request->warna,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+            return redirect()->back()->with('message', 'success');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Gagal koneksi ke database');
+        }
+    }
+
     public function post_ukuran(Request $request)
     {
-       dd($request->all());
-       
+        try {
+            if ($request->id_ukuran == null) {
+                $validate =  DB::table('master_ukuran')->where('nama_ukuran', trim($request->ukuran))->count();
+                if ($validate > 0) {
+                    return redirect()->back()->with('error', 'Duplikat Data');
+                } else {
+                    DB::table('master_ukuran')->insert(
+                        [
+                            'nama_ukuran' => $request->ukuran,
+                            'created_at' => date('Y-m-d H:i:s'),
+                        ]
+                    );
+                }
+            } else {
+                DB::table('master_ukuran')->where('kode_ukuran', $request->id_ukuran)->update(
+                    [
+                        'nama_ukuran' => $request->ukuran,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+            return redirect()->back()->with('message', 'success');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Gagal koneksi ke database');
+        }
+    }
+    public function post_kategori(Request $request)
+    {
+        try {
+            if ($request->id_ukuran == null) {
+                $validate =  DB::table('master_kategori')->where('nama_kategori', trim($request->kategori))->count();
+                if ($validate > 0) {
+                    return redirect()->back()->with('error', 'Duplikat Data');
+                } else {
+                    DB::table('master_kategori')->insert(
+                        [
+                            'nama_kategori' => $request->kategori,
+                            'created_at' => date('Y-m-d H:i:s'),
+                        ]
+                    );
+                }
+            } else {
+                DB::table('master_kategori')->where('kode_kategori', $request->id_kategori)->update(
+                    [
+                        'nama_kategori' => $request->kategori,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+            return redirect()->back()->with('message', 'success');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Gagal koneksi ke database');
+        }
     }
     /*CRUD*/
 
@@ -67,7 +151,7 @@ class MasterController extends Controller
         return view('master.modal.form_ukuran');
     }
     /*DATATABLE*/
-    
+
     /*Auto Generate*/
 
     public function generate_warna($rest)
@@ -130,7 +214,7 @@ class MasterController extends Controller
         }
         return $autonya;
     }
-    public function generate_produk($rest,$jenis,$warna)
+    public function generate_produk($rest, $jenis, $warna)
     {
         $tanggalskr = date('Y-m-d H:i:s');
         $code = $jenis;
@@ -164,7 +248,7 @@ class MasterController extends Controller
         $tanggalskr = date('Y-m-d H:i:s');
         $code = 'TRX';
         $no = 0;
-        $rndm= rand(10,1000);
+        $rndm = rand(10, 1000);
         if ($rest == 0) {
             $no = "$tanggalskr/$code-0001-$rndm";
             $autonya = $no;

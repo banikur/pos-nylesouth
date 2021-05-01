@@ -29,4 +29,13 @@ Route::get('/master/ukuran/form', 'MasterController@form_ukuran')->name('modal.m
 Route::get('/master/warna/form', 'MasterController@form_warna')->name('modal.master.warna');
 Route::get('/master/kategori/form', 'MasterController@form_kategori')->name('modal.master.kategori');
 Route::get('/master/produk/form', 'MasterController@form_produk')->name('modal.master.produk');
+
+Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('produk.s_warna');
+Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('produk.u_warna');
+Route::post('/master/produk/s_ukuran', 'MasterController@post_ukuran')->name('produk.s_ukuran');
+Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('produk.u_ukuran');
+Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('produk.s_kategori');
+Route::post('/master/produk/u_kategori', 'MasterController@post_kategori')->name('produk.u_kategori');
+
+
 /*MODAL FORM*/

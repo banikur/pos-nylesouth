@@ -69,7 +69,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addTitleModal">Modal Title</h5>
-                <button type="button" class="close" onclick="reset()" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" onclick="refresh()" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
@@ -104,6 +104,36 @@
 
         });
     });
+    $(function() {
+        @if(session('message'))
+        Swal.fire({
+            text: "{{session()->get('message')}}",
+            icon: "success",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn font-weight-bold btn-light"
+            }
+        });
+        @endif
+        @if(session('error'))
+        Swal.fire({
+            text: "{{session()->get('error')}}",
+            icon: "error",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn font-weight-bold btn-light"
+            }
+        });
+        @endif
+    });
+
+    function refresh() {
+        setTimeout(function() {
+            location.reload()
+        }, 100);
+    }
 
     function add(cmd, obj) {
         var item = $(obj).data('item');
@@ -119,11 +149,11 @@
                     $('#loaders').hide();
                 },
                 success: function(data) {
-                    console.log(data);
+
                     $('#show_form').html(data);
                 },
                 error: function(data) {
-                    console.log(data);
+
                 }
             });
             $('#show_form').show();
@@ -138,11 +168,11 @@
                     $('#loaders').hide();
                 },
                 success: function(data) {
-                    console.log(data);
+
                     $('#show_form').html(data);
                 },
                 error: function(data) {
-                    console.log(data);
+
                 }
             });
             $('#show_form').show();
@@ -157,11 +187,11 @@
                     $('#loaders').hide();
                 },
                 success: function(data) {
-                    console.log(data);
+
                     $('#show_form').html(data);
                 },
                 error: function(data) {
-                    console.log(data);
+
                 }
             });
             $('#show_form').show();
@@ -176,11 +206,11 @@
                     $('#loaders').hide();
                 },
                 success: function(data) {
-                    console.log(data);
+                    //  
                     $('#show_form').html(data);
                 },
                 error: function(data) {
-                    console.log(data);
+                    //  
                 }
             });
             $('#show_form').show();
