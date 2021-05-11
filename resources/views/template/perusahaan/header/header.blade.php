@@ -6,8 +6,8 @@
             <!--begin::Header Logo-->
             <div class="header-logo">
                 <a href="{{url('/')}}">
-                    <img alt="Logo" src="{{url('images/logo-modi2.png')}}" class="logo-default max-h-40px" />
-                    <img alt="Logo" src="{{url('images/logo-modi2.png')}}" class="logo-sticky max-h-40px" />
+                    <img alt="Logo" src="" class="logo-default max-h-40px" />
+                    <img alt="Logo" src="" class="logo-sticky max-h-40px" />
                 </a>
 
             </div>

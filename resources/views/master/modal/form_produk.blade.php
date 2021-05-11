@@ -1,4 +1,4 @@
-<form id="formAdd" method="post" action="" enctype="multipart/form-data" autocomplete="off" role="form">
+<form id="formAdd" method="post" action="{{route('produk.s_produk')}}" enctype="multipart/form-data" autocomplete="off" role="form">
     @csrf
     <div class="modal-body">
         <div class="row">
@@ -36,7 +36,7 @@
                             <?php $data_uk = get_master_ukuran(); ?>
                             @foreach($data_uk as $uk)
                             <label class="checkbox">
-                                <input type="checkbox" name="Checkboxes5" value="{{$uk->nama_ukuran}}" />
+                                <input type="checkbox" name="ukuran[]" value="{{$uk->nama_ukuran}}" />
                                 <span></span>
                                 {{$uk->nama_ukuran}}
                             </label>
@@ -52,7 +52,7 @@
                             <?php $data_war = get_master_warna(); ?>
                             @foreach($data_war as $war)
                             <label class="checkbox">
-                                <input type="checkbox" name="Checkboxes5" value="{{$war->nama_warna}}" />
+                                <input type="checkbox" name="warna[]" value="{{$war->nama_warna}}" />
                                 <span></span>
                                 {{$war->nama_warna}}
                             </label>
@@ -64,9 +64,9 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Deskripsi Produk </label>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label>Deskripsi Produk </label>
                     <textarea type="text" class="form-control form-control-sm" id="deskripsi_produk" name="deskripsi_produk" placeholder=""></textarea>
@@ -85,12 +85,12 @@
                     <div class="col-9 col-form-label">
                         <div class="radio-inline">
                             <label class="radio">
-                                <input type="radio" name="radios5" checked />
+                                <input type="radio" name="radios5[]" checked value="1" />
                                 <span></span>
                                 Tersedia
                             </label>
                             <label class="radio">
-                                <input type="radio" name="radios5" />
+                                <input type="radio" name="radios5[]" value="0" />
                                 <span></span>
                                 Belum Tersedia
                             </label>
@@ -102,7 +102,7 @@
 
         <div class="modal-footer">
             <button type="button" class="btn btn-danger font-weight-bold" onclick="reset()" data-dismiss="modal">Tutup</button>
-            <button type="submit" onclick="confirm()" class="btn btn-primary font-weight-bold">Simpan</button>
+            <button type="button" onclick="confirm()" class="btn btn-primary font-weight-bold">Simpan</button>
         </div>
 </form>
 
@@ -111,4 +111,41 @@
         placeholder: "- Pilih -",
         allowClear: true,
     });
+
+    function confirm() {
+        event.preventDefault(); // prevent form submit
+        var form = event.target.form; // storing the form
+        // alert(existing);
+        Swal.fire({
+            title: 'Apakah Data yang di Masukan Sudah Benar ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5cb85c',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal',
+            allowOutsideClick: false,
+        }).then((result) => {
+            if (result.value) {
+                form.submit();
+            } else {
+                Swal.fire({
+                    title: "Batal Simpan Data",
+                    type: "error",
+                    allowOutsideClick: false,
+                })
+                refresh();
+            }
+        })
+        // if ($('#kategori').val() != null) {
+
+        // } else {
+        //     Swal.fire({
+        //         title: "Text tidak boleh kosong",
+        //         type: "error",
+        //         allowOutsideClick: false,
+        //     })
+        //     $('#kategori').focus();
+        // }
+    }
 </script>

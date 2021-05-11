@@ -50,7 +50,7 @@
                                         <td style="width: 2%;">{{$no++}}</td>
                                         <td>{{$d->nama_ukuran}}</td>
                                         <td>
-                                            <button class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Ubah"><i class="flaticon2-edit text-warning"></i></button>
+                                            <button type="button" onclick="show_form('edit',this)"  data-id="{{$d->kode_ukuran}}" data-text="{{$d->nama_ukuran}}" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Ubah"><i class="flaticon2-edit text-warning"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -84,6 +84,7 @@
             $('#s_form_ukuran').show("slow");
             $('#id_ukuran').val(id);
             $('#ukuran').val(text);
+            console.log(text, id);
             $('form#sform_ukuran').attr('action', "");
             $('form#sform_ukuran').attr('action', "{{ route('produk.u_ukuran') }}");
         } else {

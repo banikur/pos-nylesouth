@@ -32,7 +32,7 @@
 
 
 <!--end::Layout Themes-->
-<link rel="shortcut icon" href="{{ url('images/logo.gif')}}" />
+<!-- <link rel="shortcut icon" href="{{ url('images/logo.gif')}}" /> -->
 
 <!-- FusionChart -->
 <!-- <script type="text/javascript" src="{{url('fusioncharts/js/fusioncharts.js')}}"></script>

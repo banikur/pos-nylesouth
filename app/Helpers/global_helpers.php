@@ -57,7 +57,7 @@ if (!function_exists('get_master_produk')) {
 	function get_master_produk()
 	{
 		return DB::table('master_produk')
-			->LeftJoin('master_produk_detail', 'master_produk_detail.id_produk', 'master_produk.kode_produk')
+			->LeftJoin('master_produk_detail', 'master_produk_detail.initial_produk', 'master_produk.initial_produk')
 			->LeftJoin('master_produk_kode_warna', 'master_produk_kode_warna.id_produk', 'master_produk.kode_produk')
 			->LeftJoin('master_produk_picture', 'master_produk_picture.id_produk', 'master_produk.kode_produk')
 			->LeftJoin('master_kategori', 'master_kategori.kode_kategori', 'master_produk.kode_kategori')
@@ -85,6 +85,14 @@ if (!function_exists('get_master_warna')) {
 	function get_master_warna()
 	{
 		return DB::table('master_kode_warna')
+			->get();
+	}
+}
+
+if (!function_exists('get_master_provinsi')) {
+	function get_master_provinsi()
+	{
+		return DB::table('master_provinsi')
 			->get();
 	}
 }

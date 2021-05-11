@@ -50,7 +50,7 @@
                                         <td style="width: 2%;">{{$no++}}</td>
                                         <td>{{$d->nama_kategori}}</td>
                                         <td>
-                                            <button class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Ubah"><i class="flaticon2-edit text-warning"></i></button>
+                                            <button type="button" onclick="show_form('edit',this)" data-id="{{$d->kode_kategori}}" data-text="{{$d->nama_kategori}}" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Ubah"><i class="flaticon2-edit text-warning"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach

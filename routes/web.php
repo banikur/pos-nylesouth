@@ -37,5 +37,6 @@ Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('pr
 Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('produk.s_kategori');
 Route::post('/master/produk/u_kategori', 'MasterController@post_kategori')->name('produk.u_kategori');
 
+Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('produk.s_produk');
 
 /*MODAL FORM*/

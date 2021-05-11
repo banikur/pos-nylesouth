@@ -84,7 +84,6 @@ class MasterController extends Controller
             return redirect()->back()->with('error', 'Gagal koneksi ke database');
         }
     }
-
     public function post_ukuran(Request $request)
     {
         try {
@@ -142,6 +141,52 @@ class MasterController extends Controller
             //throw $th;
             return redirect()->back()->with('error', 'Gagal koneksi ke database');
         }
+    }
+
+    public function post_produk(Request $request)
+    {
+        // try {
+        $jenis = $request->kategori_produk;
+        $get_last = DB::table('master_produk')->select('initial_produk')->orderBy('created_at', 'DESC')->first();
+        $last = ($get_last) ? (int) substr($get_last->initial_produk, -4, 4) : 0;
+        for ($i = 0; $i < Count($request->warna); $i++) {
+            $initial_produk = generate_produk($last, $jenis, $request->warna[$i]);
+            DB::table('master_produk')->insert(
+                [
+                    'initial_produk' => $initial_produk,
+                    'nama_produk' => $request->nama_produk,
+                    'harga_produk' => $request->nama_produk,
+                    'status_produk' => $request->nama_produk,
+                    'created_by' => 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+            DB::table('master_produk_detail')->insert(
+                [
+                    'initial_produk' => $initial_produk,
+                    'deskripsi_produk' => $request->deskripsi,
+                    'berat_produk' => $request->berat_produk,
+                ]
+            );
+            for ($j = 0; $j < count($request->ukuran); $j++) {
+                DB::table('master_produk_inventori')->insert(
+                    [
+                        'initial_produk' => $initial_produk,
+                        'in' => $request->stok_awal_produk,
+                        'stock' => $request->stok_awal_produk,
+                        'ukuran' => $request->ukuran[$j],
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+        }
+        // dd($request->all());
+
+        return redirect()->back()->with('message', 'success');
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        //     return redirect()->back()->with('error', 'Gagal koneksi ke database');
+        // }
     }
     /*CRUD*/
 

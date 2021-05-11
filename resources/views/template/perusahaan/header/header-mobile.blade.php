@@ -1,7 +1,7 @@
 <div id="kt_header_mobile" class="header-mobile">
     <!--begin::Logo-->
     <a href="index.html">
-        <img alt="Logo" src="{{url('images/logo-modi2.png')}}"
+        <img alt="Logo" src=""
             class="logo-default max-h-30px" />
     </a>
     <!--end::Logo-->
