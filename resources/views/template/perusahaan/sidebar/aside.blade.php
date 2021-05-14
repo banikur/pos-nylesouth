@@ -19,24 +19,71 @@
                 </a>
             </li>
 
-            <li class="menu-item" aria-haspopup="true">
-                <a href="{{ route('master.provinsi') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                    <span class="menu-icon fa fa-home text-primary"></span>
-                    <span class="menu-text">Provinsi & Kabupaten / Kota</span>
+            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="">
+                    <span class="menu-icon fa  text-dark">
+
+                    </span>
+                    <span class="menu-text text-dark">Master</span>
+                    <i class="menu-arrow text-dark"></i>
                 </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow text-dark"></i>
+                    <ul class="menu-subnav">
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.provinsi') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                                <span class="menu-icon fa fa-home text-primary"></span>
+                                <span class="menu-text">Provinsi & Kabupaten / Kota</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.pelanggan') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                                <span class="menu-icon fa fa-home text-primary"></span>
+                                <span class="menu-text">Master Pelanggan </span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.produk') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                                <span class="menu-icon fa fa-home text-primary"></span>
+                                <span class="menu-text">Master Produk</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="">
+                    <span class="menu-icon fa  text-dark">
+
+                    </span>
+                    <span class="menu-text text-dark">TRANSAKSI</span>
+                    <i class="menu-arrow text-dark"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow text-dark"></i>
+                    <ul class="menu-subnav">
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.pemesanan') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="">
+                                <span class="menu-icon fa text-dark"></span>
+                                <span class="menu-text text-dark">Daftar Pesanan</span>
+                            </a>
+                        </li>
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.retur') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="">
+                                <span class="menu-icon fa text-dark"></span>
+                                <span class="menu-text text-dark">Verifikasi Retur barang </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             <li class="menu-item" aria-haspopup="true">
-                <a href="{{ route('master.pelanggan') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                <a href="" class="menu-link" data-toggle="tooltip" data-placement="right" title="Laporan">
                     <span class="menu-icon fa fa-home text-primary"></span>
-                    <span class="menu-text">Master Pelanggan </span>
-                </a>
-            </li>
-
-            <li class="menu-item" aria-haspopup="true">
-                <a href="{{ route('master.produk') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                    <span class="menu-icon fa fa-home text-primary"></span>
-                    <span class="menu-text">Master Produk</span>
+                    <span class="menu-text">Laporan</span>
                 </a>
             </li>
 

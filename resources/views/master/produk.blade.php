@@ -45,11 +45,11 @@
                             <tr style="text-align: center;vertical-align: middle;">
                                 <td>{{$no++}}</td>
                                 <td>{{$d->initial_produk}}</td>
-                                <td>{{$d->nama_kategori}}</td>
+                                <td>{{get_master_kategori_id($d->kode_kategori)}}</td>
                                 <td>{{$d->nama_produk}}</td>
                                 <td>IDR {{number_format($d->harga_produk,2,',','.')}}</td>
                                 <td>
-                                    <button class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Detail"><i class="flaticon2-search text-primary"></i></button>
+                                    <button class="btn btn-light btn-icon btn-circle btn-sm" onclick="show('{{base64_encode($d->initial_produk)}}',this)" data-id="{{$d->initial_produk}}" data-toggle="tooltip" title="Detail"><i class="flaticon2-search text-primary"></i></button>
                                 </td>
 
                             </tr>
@@ -75,6 +75,22 @@
             </div>
             <div id="show_form">
                 <div id="loaders" class="spinner spinner-danger spinner-lg mr-15 mt-8"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-show" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showTitleModal">Modal Title</h5>
+                <button type="button" class="close" onclick="refresh()" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div id="show_div">
+                <div id="loader2" class="spinner spinner-danger spinner-lg mr-15 mt-8"></div>
             </div>
         </div>
     </div>
@@ -133,6 +149,32 @@
         setTimeout(function() {
             location.reload()
         }, 100);
+    }
+
+    function show(item, obj) {
+        console.log(obj);
+        var initial = $(obj).data('id');
+        $('#showTitleModal').text('Detail Produk ' + initial);
+        $.ajax({
+            url: "{{route('modal.detail_produk')}}",
+            data: {
+                id: item,
+                _token: "{{ csrf_token() }}"
+            },
+            beforeSend: function() {
+                $('#loader2').show();
+            },
+            complete: function() {
+                $('#loader2').hide();
+            },
+            success: function(data) {
+                $('#show_div').html(data);
+            },
+            error: function(data) {
+
+            }
+        });
+        $('#modal-show').modal('show');
     }
 
     function add(cmd, obj) {

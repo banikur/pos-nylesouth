@@ -6,8 +6,8 @@
             <h3 class="card-label">Master Provinsi & Kabupaten / Kota</h3>
         </div>
         <div class="card-toolbar">
-            <a onclick="add('add',this)" class="btn btn-sm btn-primary font-weight-bolder"><i class="la la-plus"></i>&nbsp; Provinsi & Kabupaten / Kota</a>
-            &nbsp;&nbsp;&nbsp;
+            <!-- <a onclick="add('add',this)" class="btn btn-sm btn-primary font-weight-bolder"><i class="la la-plus"></i>&nbsp; Provinsi & Kabupaten / Kota</a>
+            &nbsp;&nbsp;&nbsp; -->
             <!-- <a onclick="add('add_existing',this)" class="btn btn-sm btn-success font-weight-bolder"><i class="la la-plus"></i>&nbsp;Buat Pengajuan Perubahan Exisiting</a> -->
         </div>
     </div>

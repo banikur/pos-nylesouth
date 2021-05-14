@@ -52,6 +52,16 @@ class MasterController extends Controller
     {
         return view('master.modal.form_produk');
     }
+
+    public function detail_produk(Request $request)
+    {
+        $initial_code = $request->id;
+        $data['detail'] = DB::table('master_produk_detail')->where('initial_produk', base64_decode($initial_code))->get();
+        $data['invetori'] = DB::table('master_produk_inventori')->where('initial_produk', base64_decode($initial_code))->get();
+        $data['picture'] = DB::table('master_produk_picture')->where('initial_produk', base64_decode($initial_code))->get();
+
+        return view('master.modal.view_produk', $data);
+    }
     /*FORM MODAL*/
 
     /*CRUD*/
@@ -149,38 +159,58 @@ class MasterController extends Controller
         $jenis = $request->kategori_produk;
         $get_last = DB::table('master_produk')->select('initial_produk')->orderBy('created_at', 'DESC')->first();
         $last = ($get_last) ? (int) substr($get_last->initial_produk, -4, 4) : 0;
+        // dd($request->all());
+        $initial_produk = $this->generate_produk($last, $jenis);
+        // dd( );
+        DB::table('master_produk')->insert(
+            [
+                'initial_produk' => $initial_produk,
+                'kode_kategori' => $request->kategori_produk,
+                'nama_produk' => $request->nama_produk,
+                'harga_produk' =>  str_replace(',', '.', str_replace('.', '', $request->harga_produk)),
+                'created_by' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]
+        );
         for ($i = 0; $i < Count($request->warna); $i++) {
-            $initial_produk = generate_produk($last, $jenis, $request->warna[$i]);
-            DB::table('master_produk')->insert(
-                [
-                    'initial_produk' => $initial_produk,
-                    'nama_produk' => $request->nama_produk,
-                    'harga_produk' => $request->nama_produk,
-                    'status_produk' => $request->nama_produk,
-                    'created_by' => 1,
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]
-            );
-            DB::table('master_produk_detail')->insert(
-                [
-                    'initial_produk' => $initial_produk,
-                    'deskripsi_produk' => $request->deskripsi,
-                    'berat_produk' => $request->berat_produk,
-                ]
-            );
             for ($j = 0; $j < count($request->ukuran); $j++) {
+                $id_detail = $this->generate_detail($initial_produk);
+                DB::table('master_produk_detail')->insert(
+                    [
+                        'id_detail_produk' => $id_detail,
+                        'initial_produk' => $initial_produk,
+                        'deskripsi_produk' => $request->deskripsi_produk,
+                        'berat_produk' => str_replace(',', '.', $request->berat_produk),
+                        'ukuran' => $request->ukuran[$j],
+                        'warna' => $request->warna[$i],
+                    ]
+                );
                 DB::table('master_produk_inventori')->insert(
                     [
-                        'initial_produk' => $initial_produk,
+                        'initial_produk' => $id_detail,
                         'in' => $request->stok_awal_produk,
                         'stock' => $request->stok_awal_produk,
-                        'ukuran' => $request->ukuran[$j],
                         'created_at' => date('Y-m-d H:i:s'),
                     ]
                 );
             }
         }
-        // dd($request->all());
+        if (!empty($request->image)) {
+            $images = count($request->image);
+        } else {
+            $images = 0;
+        }
+        $url = '/uploads/temp/';
+        for ($sk = 0; $sk < $images; $sk++) {
+            DB::table('master_produk_picture')->insert(
+                [
+                    'initial_produk' => $initial_produk,
+                    'path_file' => $url,
+                    'nama_file' => $request->image[$sk],
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+        }
 
         return redirect()->back()->with('message', 'success');
         // } catch (\Throwable $th) {
@@ -259,63 +289,42 @@ class MasterController extends Controller
         }
         return $autonya;
     }
-    public function generate_produk($rest, $jenis, $warna)
+    public function generate_produk($rest)
     {
         $tanggalskr = date('Y-m-d H:i:s');
-        $code = $jenis;
+        $code = "NS";
         $no = 0;
         if ($rest == 0) {
-            $no = "$code/$warna-0001";
+            $no = "$code-0001";
             $autonya = $no;
         } else if ($rest < 9) {
             $no = $rest + 1;
 
-            $autonya = "$code/$warna-000$no";
+            $autonya = "$code-000$no";
         } else if ($rest < 99) {
             $no = $rest + 1;
 
-            $autonya = "$code/$warna-00$no";
+            $autonya = "$code-00$no";
         } else if ($rest < 999) {
             $no = $rest + 1;
 
-            $autonya = "$code/$warna-0$no";
+            $autonya = "$code-0$no";
         } else if ($rest < 9999) {
             $no = $rest + 1;
 
-            $autonya = "$code/$warna-$no";
+            $autonya = "$code-$no";
         } else {
-            $autonya = "$code/$warna-0001";
+            $autonya = "$code-0001";
         }
         return $autonya;
     }
-    public function generate_pemesananan($rest)
+    public function generate_detail($initial_code)
     {
-        $tanggalskr = date('Y-m-d H:i:s');
-        $code = 'TRX';
+        $code = 'BN-' . $initial_code;
         $no = 0;
         $rndm = rand(10, 1000);
-        if ($rest == 0) {
-            $no = "$tanggalskr/$code-0001-$rndm";
-            $autonya = $no;
-        } else if ($rest < 9) {
-            $no = $rest + 1;
-
-            $autonya = "$tanggalskr/$code-000$no-$rndm";
-        } else if ($rest < 99) {
-            $no = $rest + 1;
-
-            $autonya = "$tanggalskr/$code-00$no-$rndm";
-        } else if ($rest < 999) {
-            $no = $rest + 1;
-
-            $autonya = "$tanggalskr/$code-0$no-$rndm";
-        } else if ($rest < 9999) {
-            $no = $rest + 1;
-
-            $autonya = "$tanggalskr/$code-$no-$rndm";
-        } else {
-            $autonya = "$tanggalskr/$code-0001-$rndm";
-        }
+        $no = "$code-$rndm";
+        $autonya = $no;
         return $autonya;
     }
 }

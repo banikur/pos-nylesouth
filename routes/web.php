@@ -14,6 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/storeMedia', 'VerifiedController@storeMedia')->name('projects.storeMedia');
+Route::post('/dropzoneRemove', 'VerifiedController@dropzoneRemove')->name('projects.dropzoneRemove');
 
 Auth::routes();
 
@@ -22,6 +24,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/master/provinsi', 'MasterController@provinsi_index')->name('master.provinsi');
 Route::get('/master/pelanggan', 'MasterController@pelanggan_index')->name('master.pelanggan');
 Route::get('/master/produk', 'MasterController@produk_index')->name('master.produk');
+
+/*TRANSAKSI*/
+Route::get('/master/daftar-pesanan', 'TransaksiController@pemesanan_index')->name('master.pemesanan');
+Route::get('/master/retur-barang', 'TransaksiController@retur_index')->name('master.retur');
+
+/*TRANSAKSI*/
+
 /*PAGE INIT*/
 
 /*MODAL FORM*/
@@ -29,6 +38,8 @@ Route::get('/master/ukuran/form', 'MasterController@form_ukuran')->name('modal.m
 Route::get('/master/warna/form', 'MasterController@form_warna')->name('modal.master.warna');
 Route::get('/master/kategori/form', 'MasterController@form_kategori')->name('modal.master.kategori');
 Route::get('/master/produk/form', 'MasterController@form_produk')->name('modal.master.produk');
+
+Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('modal.detail_produk');
 
 Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('produk.s_warna');
 Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('produk.u_warna');

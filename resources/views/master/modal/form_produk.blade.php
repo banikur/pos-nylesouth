@@ -20,14 +20,17 @@
                 </div>
                 <div class="form-group">
                     <label>Harga Produk </label>
-                    <input type="text" class="form-control form-control-sm" id="harga_produk" name="harga_produk" placeholder="Harga Produk" value="" />
+                    <input type="text" class="form-control form-control-sm dec" id="harga_produk" name="harga_produk" placeholder="Harga Produk" value="" />
                 </div>
-
+                <div class="form-group">
+                    <label>Stok Awal Produk </label>
+                    <input type="text" class="form-control form-control-sm bul" id="stok_awal_produk" name="stok_awal_produk" placeholder="Stok Awal Produk" value="" />
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Berat Produk </label>
-                    <input type="text" class="form-control form-control-sm" id="berat_produk" name="berat_produk" placeholder="Berat Produk" value="" />
+                    <input type="text" class="form-control form-control-sm dec" id="berat_produk" name="berat_produk" placeholder="Berat Produk" value="" />
                 </div>
                 <div class="form-group">
                     <label class="col-3 ">Ukuran Produk</label>
@@ -63,7 +66,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <!-- <div class="form-group">
                     <label>Deskripsi Produk </label>
                 </div> -->
@@ -72,44 +75,67 @@
                     <textarea type="text" class="form-control form-control-sm" id="deskripsi_produk" name="deskripsi_produk" placeholder=""></textarea>
                 </div>
             </div>
-            <div class="separator separator-dashed my-5"></div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label>Stok Awal Produk </label>
-                    <input type="text" class="form-control form-control-sm" id="stok_awal_produk" name="stok_awal_produk" placeholder="Stok Awal Produk" value="" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="col-3">Status</label>
-                    <div class="col-9 col-form-label">
-                        <div class="radio-inline">
-                            <label class="radio">
-                                <input type="radio" name="radios5[]" checked value="1" />
-                                <span></span>
-                                Tersedia
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="radios5[]" value="0" />
-                                <span></span>
-                                Belum Tersedia
-                            </label>
-                        </div>
+            <label>Gambar Produk </label>
+                <div class="dropzone dropzone-default dropzone-primary dz-clickable" id="kt_dropzone_test_user">
+                    <div class="dropzone-msg dz-message needsclick">
+                        <h3 class="dropzone-msg-title">Letakkan file di sini atau klik untuk mengupload.</h3>
+                        <span class="dropzone-msg-desc">Pastikan file yang anda upload .jpeg / .png, Max 2 MB</span>
                     </div>
                 </div>
             </div>
+            <div id="cumulate_sk_iup_user"></div>
         </div>
+    </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger font-weight-bold" onclick="reset()" data-dismiss="modal">Tutup</button>
-            <button type="button" onclick="confirm()" class="btn btn-primary font-weight-bold">Simpan</button>
-        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger font-weight-bold" onclick="reset()" data-dismiss="modal">Tutup</button>
+        <button type="button" onclick="confirm()" class="btn btn-primary font-weight-bold">Simpan</button>
+    </div>
 </form>
+<script src="{{url('demo2/src/js/pages/crud/file-upload/dropzonejs.js?v=7.0.6')}}"></script>
 
 <script>
     $('.select2').select2({
         placeholder: "- Pilih -",
         allowClear: true,
+    });
+    $('.dec').inputmask({
+        alias: "decimal",
+        digits: 2,
+        repeat: 24,
+        digitsOptional: false,
+        decimalProtect: true,
+        groupSeparator: ".",
+        placeholder: '0',
+        rightAlign: false,
+        radixPoint: ",",
+        radixFocus: true,
+        autoGroup: true,
+        autoUnmask: false,
+        onBeforeMask: function(value, opts) {
+            return value;
+        },
+        removeMaskOnSubmit: true
+    });
+
+    $('.bul').inputmask({
+        alias: "decimal",
+        digits: 0,
+        repeat: 24,
+        digitsOptional: false,
+        decimalProtect: true,
+        groupSeparator: ".",
+        placeholder: '0',
+        rightAlign: false,
+        radixPoint: ",",
+        radixFocus: true,
+        autoGroup: true,
+        autoUnmask: false,
+        onBeforeMask: function(value, opts) {
+            return value;
+        },
+        removeMaskOnSubmit: true
     });
 
     function confirm() {
@@ -137,15 +163,57 @@
                 refresh();
             }
         })
-        // if ($('#kategori').val() != null) {
-
-        // } else {
-        //     Swal.fire({
-        //         title: "Text tidak boleh kosong",
-        //         type: "error",
-        //         allowOutsideClick: false,
-        //     })
-        //     $('#kategori').focus();
-        // }
     }
+</script>
+<script>
+    Dropzone.autoDiscover = false;
+    // multiple file upload
+    var uploadedDocumentMap = {};
+    $('#kt_dropzone_test_user').dropzone({
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        data: {
+            id_users: "{{Auth::user()->id}}",
+        },
+        url: "{{route('projects.storeMedia')}}", // Set the url for your upload script location
+        paramName: "file", // The name that will be used to transfer the file
+        maxFiles: 10,
+        acceptedFiles: "image/*",
+        maxFilesize: 2, // MB
+        addRemoveLinks: true,
+        params: {
+            'id_users': '{{Auth::user()->id}}',
+            'id_perusahaan': '{{Auth::user()->id_perusahaan}}',
+            'jenis_dokumen': '1',
+        },
+        success: function(file, response) {
+            $('#cumulate_sk_iup_user').append('<input type="hidden" name="image[]" value="' + response.name + '">')
+            uploadedDocumentMap[file.name] = response.name
+        },
+        removedfile: function(file) {
+            file.previewElement.remove();
+
+            var name = '';
+            if (typeof file.file_name !== 'undefined') {
+                name = file.file_name
+            } else {
+                name = uploadedDocumentMap[file.name]
+            }
+            $('#cumulate_sk_iup_user').find('input[name="sk_iup[]"][value="' + name + '"]').remove()
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                type: 'post',
+                data: {
+                    id_users: "{{Auth::user()->id}}",
+                    nama_dokumen: name,
+                    jenis_dokumen: "1",
+                },
+                url: "{{route('projects.dropzoneRemove')}}",
+            });
+        },
+
+    });
 </script>

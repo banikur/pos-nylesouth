@@ -3,11 +3,11 @@
 <div class="card card-custom min-h-lg-800px">
     <div class="card-header">
         <div class="card-title">
-            <h3 class="card-label">Master Pelanggan</h3>
+            <h3 class="card-label"></h3>
         </div>
         <div class="card-toolbar">
-            <!-- <a onclick="add('add',this)" class="btn btn-sm btn-primary font-weight-bolder"><i class="la la-plus"></i>&nbsp; Pelanggan</a>
-            &nbsp;&nbsp;&nbsp; -->
+            <!-- <a onclick="add('add',this)" class="btn btn-sm btn-primary font-weight-bolder"><i class="la la-plus"></i>&nbsp; Pelanggan</a> -->
+            &nbsp;&nbsp;&nbsp;
             <!-- <a onclick="add('add_existing',this)" class="btn btn-sm btn-success font-weight-bolder"><i class="la la-plus"></i>&nbsp;Buat Pengajuan Perubahan Exisiting</a> -->
         </div>
     </div>
@@ -24,30 +24,24 @@
                     <table class="table table-bordered table-hover table-checkable" id="tb_basic">
                         <thead>
                             <tr>
-                                <th scope="col">No.</th>
-                                <!-- <th scope="col">Kode Pelanggan</th> -->
+                                <th scope="col">Nomor Pesanan</th>
                                 <th scope="col">Nama Pelanggan</th>
-                                <th scope="col">Jenis Kelamin</th>
-                                <!-- <th scope="col">Tempat Tanggal Lahir</th> -->
+                                <th scope="col">Jumlah Pesanan</th>
                                 <th scope="col">Alamat</th>
-                                <th scope="col">No Telp.</th>
-                                <th scope="col">E-Mail</th>
+                                <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <?php $data = get_master_pelanggan();
+                            <?php $data = get_master_pesanan();
                             $no = 1; ?>
                             @foreach($data as $d)
                             <tr>
-                                <td>{{$no++}}</td>
-                                <!-- <td>{{$d->kode_pelanggan}}</td> -->
+                                <td>{{$d->kode_trx_pemesanan}}</td>
                                 <td>{{$d->nama_lengkap_pelanggan}}</td>
-                                <td>{{($d->jenis_kelamin == 1) ? 'Laki-Laki': 'Perempuan'}}</td>
-                                <!-- <td>{{$d->tempat_lahir}}, {{$d->tanggal_lahir}}</td> -->
+                                <td>{{$d->jumlah}}</td>
                                 <td>{{$d->alamat}}</td>
-                                <td>{{$d->no_hp}}</td>
-                                <td><a href="mailto:{{$d->email}}">{{$d->email}}</a></td>
+                                <td></td>
                             </tr>
                             @endforeach
 
