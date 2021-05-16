@@ -13,7 +13,7 @@
     <!--[if lte IE 8]>
 	    <link rel="stylesheet" href="css/leaflet.ie.css" />
 	<![endif]-->
-    <link rel="stylesheet" href="{{url('landing_page/css/main-orange.css')}}">
+    <link rel="stylesheet" href="{{url('landing_page/css/main.css')}}">
 
     <script src="{{url('landing_page/js/modernizr-2.6.2-respond-1.1.0.min.js')}}"></script>
 </head>

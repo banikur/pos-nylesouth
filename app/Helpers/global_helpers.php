@@ -57,8 +57,6 @@ if (!function_exists('get_master_produk')) {
 	function get_master_produk()
 	{
 		return DB::table('master_produk')
-			// ->LeftJoin('master_produk_detail', 'master_produk_detail.initial_produk', 'master_produk.initial_produk')
-			// ->LeftJoin('master_produk_picture', 'master_produk_picture.initial_produk', 'master_produk.initial_produk')
 			->Join('master_kategori', 'master_kategori.kode_kategori', 'master_produk.kode_kategori')
 			->get();
 	}
@@ -128,6 +126,24 @@ if (!function_exists('get_stok')) {
 	{
 		$data = DB::table('master_produk_inventori')->where('initial_produk', $id)->first();
 		$retVal = (!empty($data)) ? $data->stock : 'Tidak Ditemukan';
+		return $retVal;
+	}
+}
+
+if (!function_exists('get_picture_id')) {
+	function get_picture_id($id)
+	{
+		$data = DB::table('master_produk_picture')->where('initial_produk', $id)->first();
+		$retVal = (!empty($data)) ? $data : 'Tidak Ditemukan';
+		return $retVal;
+	}
+}
+
+if (!function_exists('get_desc_id')) {
+	function get_desc_id($id)
+	{
+		$data = DB::table('master_produk_detail')->where('initial_produk', $id)->first();
+		$retVal = (!empty($data)) ? $data->deskripsi_produk : 'Tidak Ditemukan';
 		return $retVal;
 	}
 }

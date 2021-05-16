@@ -24,7 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $retVal = (Auth::user()->tipe_user == 1) ? 'home' : 'welcome';
         return view($retVal);
     }

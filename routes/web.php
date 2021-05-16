@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'VerifiedController@index')->name('/');
+
+Route::get('logout', [
+    'as' => 'account-sign-out',
+    'uses' => 'Auth\LoginController@logout'
+]);
+
 Route::post('/storeMedia', 'VerifiedController@storeMedia')->name('projects.storeMedia');
 Route::post('/dropzoneRemove', 'VerifiedController@dropzoneRemove')->name('projects.dropzoneRemove');
 

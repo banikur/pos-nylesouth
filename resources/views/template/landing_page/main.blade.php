@@ -30,10 +30,11 @@
             </div>
             <nav id="mainmenu" class="mainmenu">
                 <ul>
-                    <li class="logo-wrapper"><a href="index.html"><img src="img/mPurpose-logo.png" alt="Multipurpose Twitter Bootstrap Template"></a></li>
+                    <li class="logo-wrapper"><a href="index.html"><img src="img/mPurpose-logo.png" alt="Logo"></a></li>
                     <li class="active">
-                        <a href="index.html">Home</a>
+                        <a href="{{route('/')}}">Home</a>
                     </li>
+
                     <!-- <li>
                         <a href="features.html">Features</a>
                     </li> -->
@@ -109,6 +110,27 @@
                     <!-- <li>
                         <a href="credits.html">Credits</a>
                     </li> -->
+                    @if (Route::has('login'))
+                    <li class="pull-right">
+                        <a href="{{route('home')}}">Cart</a>
+                    </li>
+                    <li class="pull-right">
+                        @auth
+                        <a href="{{ route('logout') }}"  class="menu-link" data-toggle="tooltip" data-placement="right" title="Logout">
+                            <span class="menu-icon fa fa-logout text-primary"></span>
+                            <span class="menu-text">{{ __('Logout') }}</span>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                            </form>
+                        </a>
+                        @else
+                        <a href="{{ route('login') }}">Login</a>
+                        @if (Route::has('register'))
+                        <a href="{{ route('register') }}">Register</a>
+                        @endif
+                        @endauth
+                    </li>
+                    @endif
                 </ul>
             </nav>
         </div>
@@ -168,6 +190,9 @@
 
 </body>
 @yield('javascripts')
+<script>
+
+</script>
 @include('template.landing_page.foot.footer')
 @include('template.landing_page.foot.footer_script')
 

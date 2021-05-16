@@ -21,6 +21,11 @@ class VerifiedController extends Controller
     {
         //$this->middleware('auth');
     }
+
+    public function index()
+    {
+      return view('welcome');
+    }
     
     public function storeMedia(Request $request)
     {
