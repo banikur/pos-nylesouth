@@ -9,6 +9,7 @@ use DB;
 use Datatables;
 
 use App\User;
+use Illuminate\Foundation\Console\Presets\React;
 
 class VerifiedController extends Controller
 {
@@ -24,9 +25,20 @@ class VerifiedController extends Controller
 
     public function index()
     {
-      return view('welcome');
+        return view('welcome');
     }
-    
+
+    public function cart_index()
+    {
+        return view('user.cart');
+    }
+    public function detail_index(Request $request)
+    {
+        $initial_code = $request->id_produk;
+        $data['initial_product'] = $initial_code;
+        return view('user.detail_produk', $data);
+    }
+
     public function storeMedia(Request $request)
     {
         $file = $request->file('file');
@@ -78,5 +90,10 @@ class VerifiedController extends Controller
         }
 
         echo json_encode($file_list);
+    }
+
+    public function post_keranjang(Request $request)
+    {
+        dd($request);
     }
 }

@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'VerifiedController@index')->name('/');
+Route::get('/cart', 'VerifiedController@cart_index')->name('cart');
+Route::get('/detail-produk', 'VerifiedController@detail_index')->name('detail');
 
 Route::get('logout', [
     'as' => 'account-sign-out',
@@ -20,6 +22,9 @@ Route::get('logout', [
 
 Route::post('/storeMedia', 'VerifiedController@storeMedia')->name('projects.storeMedia');
 Route::post('/dropzoneRemove', 'VerifiedController@dropzoneRemove')->name('projects.dropzoneRemove');
+
+Route::post('/add-to-chart', 'VerifiedController@post_keranjang')->name('user.add_keranjang');
+
 
 Auth::routes();
 
@@ -55,3 +60,5 @@ Route::post('/master/produk/u_kategori', 'MasterController@post_kategori')->name
 Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('produk.s_produk');
 
 /*MODAL FORM*/
+
+

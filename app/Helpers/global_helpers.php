@@ -139,12 +139,52 @@ if (!function_exists('get_picture_id')) {
 	}
 }
 
+if (!function_exists('get_picture_array')) {
+	function get_picture_array($id)
+	{
+		$data = DB::table('master_produk_picture')->where('initial_produk', base64_decode($id))->get();
+		$retVal = (!empty($data)) ? $data : 'Tidak Ditemukan';
+		return $retVal;
+	}
+}
+
 if (!function_exists('get_desc_id')) {
 	function get_desc_id($id)
 	{
 		$data = DB::table('master_produk_detail')->where('initial_produk', $id)->first();
 		$retVal = (!empty($data)) ? $data->deskripsi_produk : 'Tidak Ditemukan';
 		return $retVal;
+	}
+}
+
+if (!function_exists('get_detail_warna_id')) {
+	function get_detail_warna_id($id)
+	{
+		return DB::table('master_produk_detail')
+			->select('warna')
+			->where('initial_produk', base64_decode($id))
+			->groupBy('warna')
+			->get();
+	}
+}
+
+if (!function_exists('get_detail_ukuran_id')) {
+	function get_detail_ukuran_id($id)
+	{
+		return DB::table('master_produk_detail')
+			->select('ukuran')
+			->where('initial_produk', base64_decode($id))
+			->groupBy('ukuran')
+			->get();
+	}
+}
+
+if (!function_exists('get_master_produk_id')) {
+	function get_master_produk_id($id)
+	{
+		return DB::table('master_produk')
+			->where('initial_produk', base64_decode($id))
+			->first();
 	}
 }
 

@@ -1,0 +1,81 @@
+.product-details {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.product-details-slider {
+    /*right:5px;*/
+    margin-bottom: 0px;
+    /* max-width: 350px;
+    max-height: 260px; */
+}
+
+.product-details-thumb {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.product-details-thumb .thumb {
+    margin-right: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.product-details-thumb .thumb::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgb(0, 0, 0);
+    opacity: 0;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.product-details-thumb .thumb.active::after {
+    opacity: 0.33;
+}
+
+
+/*.product-details-thumb .item img {
+	height: 116px
+	
+}*/
+
+.owl-nav button {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    outline: none;
+    height: 100px;
+    /*background-color: rgba(103, 103, 103, 0.7);*/
+}
+
+.owl-nav .owl-prev.disabled,
+.owl-nav .owl-next.disabled {
+    opacity: 0.33;
+    cursor: default;
+    /*display: none;*/
+}
+
+.owl-nav button svg {
+    width: 33px;
+    height: 33px;
+}
+
+.owl-nav button.owl-prev {
+    /*button "<" position*/
+    left: -33px;
+}
+
+.owl-nav button.owl-next {
+    /*button ">" position, relative position is:(position of button "<")-20*/
+    right: -12px;
+}
+
+.owl-nav button span {
+    font-size: 33px;
+}

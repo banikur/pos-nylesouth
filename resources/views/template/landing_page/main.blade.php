@@ -35,9 +35,6 @@
                         <a href="{{route('/')}}">Home</a>
                     </li>
 
-                    <!-- <li>
-                        <a href="features.html">Features</a>
-                    </li> -->
                     <li class="has-submenu">
                         <a href="#">Pages +</a>
                         <div class="mainmenu-submenu">
@@ -107,28 +104,31 @@
                             </div><!-- /mainmenu-submenu-inner -->
                         </div><!-- /mainmenu-submenu -->
                     </li>
-                    <!-- <li>
-                        <a href="credits.html">Credits</a>
-                    </li> -->
                     @if (Route::has('login'))
+
+                    @auth
                     <li class="pull-right">
                         <a href="{{route('home')}}">Cart</a>
                     </li>
                     <li class="pull-right">
-                        @auth
-                        <a href="{{ route('logout') }}"  class="menu-link" data-toggle="tooltip" data-placement="right" title="Logout">
+                        <a href="{{ route('logout') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Logout">
                             <span class="menu-icon fa fa-logout text-primary"></span>
                             <span class="menu-text">{{ __('Logout') }}</span>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 @csrf
                             </form>
                         </a>
-                        @else
+                    </li>
+                    @else
+                    <li class="pull-right">
                         <a href="{{ route('login') }}">Login</a>
-                        @if (Route::has('register'))
+                    </li>
+                    @if (Route::has('register'))
+                    <li class="pull-right">
                         <a href="{{ route('register') }}">Register</a>
-                        @endif
-                        @endauth
+                    </li>
+                    @endif
+                    @endauth
                     </li>
                     @endif
                 </ul>
