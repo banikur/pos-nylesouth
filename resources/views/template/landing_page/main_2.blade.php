@@ -2,6 +2,12 @@
 <html class="no-js">
 @include('template.landing_page.head.header')
 @yield('css')
+<script src="{{url('js/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+<script src="{{url('js/sweetalert2/dist/sweetalert2.min.js')}}"></script>
+<link rel="stylesheet" href="{{url('js/sweetalert2/dist/sweetalert2.min.css')}}">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
+<link rel="stylesheet" href="{{url('plugin/owl_carousel/style.css')}}">
+<link href="{{url('select2/css/select2.css')}}" rel="stylesheet" />
 
 <body>
     <!--[if lt IE 7]>
@@ -11,26 +17,11 @@
     <div class="mainmenu-wrapper">
         <div class="container">
             <div class="menuextras">
-                <!-- <div class="extras">
-                    <ul>
-                        <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="page-shopping-cart.html"><b>3 items</b></a></li>
-                        <li>
-                            <div class="dropdown choose-country">
-                                <a class="#" data-toggle="dropdown" href="#"><img src="img/flags/gb.png" alt="Great Britain"> UK</a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li role="menuitem"><a href="#"><img src="img/flags/us.png" alt="United States"> US</a></li>
-                                    <li role="menuitem"><a href="#"><img src="img/flags/de.png" alt="Germany"> DE</a></li>
-                                    <li role="menuitem"><a href="#"><img src="img/flags/es.png" alt="Spain"> ES</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a href="page-login.html">Login</a></li>
-                    </ul>
-                </div> -->
+                
             </div>
             <nav id="mainmenu" class="mainmenu">
                 <ul>
-                    <li class="logo-wrapper"><a href="{{route('/')}}"><img src="landing_page/img/mPurpose-logo.png" alt="Logo"></a></li>
+                    <li class="logo-wrapper"><a href="index.html"><img src="landing_page/img/mPurpose-logo.png" alt="Logo"></a></li>
                     <li class="active">
                         <a href="{{route('/')}}">Home</a>
                     </li>
@@ -136,7 +127,7 @@
         </div>
     </div>
 
-    @include('template.landing_page.slide_show')
+
     <div class="section">
         <div class="container">
             @yield('content')

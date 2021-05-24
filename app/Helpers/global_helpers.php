@@ -43,6 +43,25 @@ if (!function_exists('get_master_kabkota_prov')) {
 	}
 }
 
+if (!function_exists('get_master_prov')) {
+	function get_master_prov()
+	{
+		return DB::table('master_provinsi')
+			->whereNotNull('id_api')
+			->get();
+	}
+}
+
+if (!function_exists('get_master_kab_kota')) {
+	function get_master_kab_kota($id)
+	{
+		return DB::table('master_kab_kota')
+			->where('id_provinsi', $id)
+			->whereNotNull('id_api')
+			->get();
+	}
+}
+
 if (!function_exists('get_master_pelanggan')) {
 	function get_master_pelanggan()
 	{
@@ -115,8 +134,8 @@ if (!function_exists('get_master_kategori_id')) {
 if (!function_exists('master_kode_warna_id')) {
 	function master_kode_warna_id($id)
 	{
-		$data = DB::table('master_kode_warna')->where('nama_warna', $id)->first();
-		$retVal = (!empty($data)) ? $data->nama_kategori : 'Tidak Ditemukan';
+		$data = DB::table('master_kode_warna')->where('kode_warna', $id)->first();
+		$retVal = (!empty($data)) ? $data->nama_warna : 'Tidak Ditemukan';
 		return $retVal;
 	}
 }
@@ -184,6 +203,15 @@ if (!function_exists('get_master_produk_id')) {
 	{
 		return DB::table('master_produk')
 			->where('initial_produk', base64_decode($id))
+			->first();
+	}
+}
+
+if (!function_exists('get_warna_id')) {
+	function get_warna_id($id)
+	{
+		return DB::table('master_kode_warna')
+			->where('kode_warna', $id)
 			->first();
 	}
 }

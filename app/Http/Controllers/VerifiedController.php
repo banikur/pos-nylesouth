@@ -6,6 +6,7 @@ use App\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Datatables;
 
 use App\User;
@@ -25,12 +26,12 @@ class VerifiedController extends Controller
 
     public function index()
     {
-        return view('welcome');
-    }
-
-    public function cart_index()
-    {
-        return view('user.cart');
+        $data['data'] =  DB::table('master_produk')
+            ->Join('master_kategori', 'master_kategori.kode_kategori', 'master_produk.kode_kategori')
+            ->orderby('master_produk.created_at', 'DESC')
+            ->limit(3)
+            ->get();
+        return view('welcome', $data);
     }
     public function detail_index(Request $request)
     {
@@ -94,6 +95,133 @@ class VerifiedController extends Controller
 
     public function post_keranjang(Request $request)
     {
-        dd($request);
+        try {
+
+            $insert = DB::table('keranjang_belanja')->insert(
+                [
+                    'kode_produk' => base64_decode($request->id),
+                    'kode_ukuran' => $request->kode_ukuran,
+                    'kode_pelanggan' => Auth::user()->id,
+                    'kode_warna' => $request->kode_warna,
+                    'jumlah' => $request->jumlah,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+            if ($insert) {
+                $success['response'] = '200';
+                $success['text'] = 'Success';
+                $success["message"] = "Berhasil";
+            } else {
+                $success['response'] = '500';
+                $success['text'] = 'Error';
+                $success["message"] = "Terjadi Masalah";
+            }
+            return response()->json($success);
+        } catch (QueryException $e) {
+            $success['response'] = '500';
+            $success['text'] = 'Error Query Database';
+            $success["message"] = $e->getMessage();
+            return response()->json($success);
+        }
+    }
+
+    public function testapi(Request $request)
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/province",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+
+            $res = json_decode($response, true);
+            // dd($res['rajaongkir']['results']);
+            $collection = $res['rajaongkir']['results'];
+            foreach ($collection as $key) {
+                $search = DB::table('master_provinsi')->where('nama_prov', $key['province'])->get();
+                if ($search) {
+                    DB::table('master_provinsi')->where('nama_prov', $key['province'])->update(
+                        [
+                            'id_api' => $key['province_id']
+                        ]
+                    );
+                }
+            }
+            echo $response;
+        }
+    }
+
+    public function testapi2()
+    {
+        for ($i = 0; $i < 35; $i++) {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=" . $i,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            $res = json_decode($response, true);
+            $collection = $res['rajaongkir']['results'];
+
+            foreach ($collection as $key) {
+                $type = ($key['type'] == 'Kabupaten') ? 'KAB.' : (($key['type'] == 'Kota') ? 'KOTA' : $key['type']);
+
+                $search = DB::table('master_kab_kota')->where('kab_kota', $type . ' ' . strtoupper($key['city_name']))->get();
+
+                if ($search) {
+                    DB::table('master_kab_kota')->where('kab_kota', $type . ' ' . strtoupper($key['city_name']))->update(
+                        [
+                            'id_api' => $key['city_id'],
+                            'kode_pos' => $key['postal_code'],
+                            'id_provinsi_api' => $key['province_id']
+                        ]
+                    );
+                }
+            }
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                echo $response;
+            }
+        }
+    }
+
+    public function master_kab_kota($id)
+    {
+        $getdata = get_master_kab_kota($id);
+        echo $getdata;
     }
 }

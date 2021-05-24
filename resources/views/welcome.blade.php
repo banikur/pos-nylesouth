@@ -6,9 +6,7 @@
 @endsection
 @section('content')
 
-<?php
-$data = get_master_produk();
-?>
+<h2 style="border-bottom: 2px solid #53555c;">Produk Terbaru</h2>
 @foreach($data as $d)
 <div class="col-sm-4">
     <div class="shop-item">
@@ -23,17 +21,17 @@ $data = get_master_produk();
         <div class="title">
             <h3><a href="#">{{$d->nama_produk}}</a></h3>
         </div>
-        <div class="price">
+        <!-- <div class="price">
             <span class="price-was">{{number_format($disc,2,',','.')}}</span>
-        </div>
+        </div> -->
         <div class="price">
             Now Only {{number_format($d->harga_produk,2,',','.')}}
         </div>
         <div class="description">
-            <p>{{get_desc_id($d->initial_produk)}}</p>
+            <p>{{ substr(strip_tags($d->deskripsi_produk), 0, 100) }}{{ strlen(strip_tags($d->deskripsi_produk)) > 10 ? '...' : "" }}</p>
         </div>
         <div class="actions">
-            <a onclick="post_keranjang(this)" data-item="{{$d->initial_produk}}" class="btn"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+            <a href="{{route('detail',['id_produk'=>base64_encode($d->initial_produk)])}}" class="btn"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
             <span>or <a href="{{route('detail',['id_produk'=>base64_encode($d->initial_produk)])}}">Read more</a></span>
         </div>
     </div>

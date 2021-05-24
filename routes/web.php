@@ -12,8 +12,11 @@
 */
 
 Route::get('/', 'VerifiedController@index')->name('/');
-Route::get('/cart', 'VerifiedController@cart_index')->name('cart');
 Route::get('/detail-produk', 'VerifiedController@detail_index')->name('detail');
+Route::get('/testapi', 'VerifiedController@testapi')->name('testapi');
+Route::get('/testapi2', 'VerifiedController@testapi2')->name('testapi2');
+Route::get('/master_kab_kota/{kode}', 'VerifiedController@master_kab_kota');
+
 
 Route::get('logout', [
     'as' => 'account-sign-out',
@@ -58,7 +61,10 @@ Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name
 Route::post('/master/produk/u_kategori', 'MasterController@post_kategori')->name('produk.u_kategori');
 
 Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('produk.s_produk');
-
 /*MODAL FORM*/
+
+/*USER*/
+Route::get('/cart', 'TransaksiController@cart_index')->name('cart');
+
 
 

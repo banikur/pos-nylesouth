@@ -170,6 +170,8 @@ class MasterController extends Controller
                 'harga_produk' =>  str_replace(',', '.', str_replace('.', '', $request->harga_produk)),
                 'created_by' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
+                'deskripsi_produk' => $request->deskripsi_produk,
+                'berat_produk' => str_replace(',', '.', $request->berat_produk),
             ]
         );
         for ($i = 0; $i < Count($request->warna); $i++) {
@@ -179,8 +181,6 @@ class MasterController extends Controller
                     [
                         'id_detail_produk' => $id_detail,
                         'initial_produk' => $initial_produk,
-                        'deskripsi_produk' => $request->deskripsi_produk,
-                        'berat_produk' => str_replace(',', '.', $request->berat_produk),
                         'ukuran' => $request->ukuran[$j],
                         'warna' => $request->warna[$i],
                     ]

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
@@ -37,7 +38,17 @@ class TransaksiController extends Controller
     {
         return view('transaksi.verifikasi_retur');
     }
-    
+
+    public function cart_index()
+    {
+        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) total'), 'kode_ukuran', 'kode_warna')
+            ->where('kode_pelanggan', Auth::user()->id)
+            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna')
+            ->get();
+        // dd($data);
+        return view('user.cart', $data);
+    }
+
     public function generate_pemesananan($rest)
     {
         $tanggalskr = date('Y-m-d H:i:s');
