@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\File;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Datatables;
+use App\Constants\ErrorCode as EC;
+use App\Constants\ErrorMessage as EM;
 
 use App\User;
 use Illuminate\Foundation\Console\Presets\React;
@@ -24,6 +26,25 @@ class VerifiedController extends Controller
         //$this->middleware('auth');
     }
 
+    static function responseData($data = false, $paginate = null)
+    {
+        if ($paginate == null) {
+            $response = [
+                "meta" => ['error' => EC::NOTHING, 'message' => EM::NONE],
+                "data" => $data
+            ];
+
+            if ($data === false) unset($response['data']);
+        } else {
+            $response = [
+                "meta" => ['error' => EC::NOTHING, 'message' => EM::NONE, 'page' => $paginate],
+                "data" => $data
+            ];
+        }
+
+        return response()->json($response, 200);
+    }
+
     public function index()
     {
         $data['data'] =  DB::table('master_produk')
@@ -33,6 +54,7 @@ class VerifiedController extends Controller
             ->get();
         return view('welcome', $data);
     }
+
     public function detail_index(Request $request)
     {
         $initial_code = $request->id_produk;
@@ -165,7 +187,7 @@ class VerifiedController extends Controller
                     );
                 }
             }
-            echo $response;
+            return $this->responseData($response);
         }
     }
 
@@ -214,7 +236,7 @@ class VerifiedController extends Controller
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
-                echo $response;
+                return $this->responseData($response);
             }
         }
     }
@@ -223,5 +245,107 @@ class VerifiedController extends Controller
     {
         $getdata = get_master_kab_kota($id);
         echo $getdata;
+    }
+
+    public function get_disc($id)
+    {
+        $getdata = get_disc_id(base64_decode($id));
+        echo $getdata;
+    }
+
+    public function get_service_shipping(Request $request)
+    {
+        $destination = $request->destination;
+        $weight = $request->weight;
+        $courier = ['tiki', 'pos', 'jne'];
+        $service = [];
+        $data = [];
+        $curl = curl_init();
+        foreach ($courier as $key => $value) {
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => "origin=115&destination=" . $destination . "&weight=" . $weight . "&courier=" . $value . "",
+                CURLOPT_HTTPHEADER => array(
+                    "content-type: application/x-www-form-urlencoded",
+                    "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
+                ),
+            ));
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                #code...
+            } else {
+                $res = json_decode($response, true);
+                $collection = $res['rajaongkir']['results'];
+                foreach ($collection as $keys) {
+                    array_push($service, $keys['costs']);
+                }
+            }
+        }
+        $temporary = [];
+
+        for ($t = 0; $t < count($service[0]); $t++) {
+            array_push($temporary, [
+                'jenis_pelayanan' => $service[0][$t]['description'] . ' - ' .  '(TIKI)',
+                'estimasi' => $service[0][$t]['cost'][0]['etd'],
+                'biaya' => $service[0][$t]['cost'][0]['value']
+            ]);
+        }
+        for ($p = 0; $p < count($service[1]); $p++) {
+            array_push($temporary, [
+                'jenis_pelayanan' => $service[0][$p]['description'] . ' - ' . '(POS INDONESIA)',
+                'estimasi' => $service[0][$p]['cost'][0]['etd'],
+                'biaya' => $service[0][$p]['cost'][0]['value']
+            ]);
+        }
+        for ($j = 0; $j < count($service[2]); $j++) {
+            array_push($temporary, [
+                'jenis_pelayanan' =>  $service[0][$j]['description'] . ' - ' . '(JNE)',
+                'estimasi' => $service[0][$j]['cost'][0]['etd'],
+                'biaya' => $service[0][$j]['cost'][0]['value']
+            ]);
+        }
+        if (empty($temporary)) {
+            echo "cURL Error #:" . $err;
+        } else {
+            return $this->responseData($temporary);
+        }
+        // dd($temporary);
+    }
+
+    public function pecah1($service)
+    {
+        $totalservice = 0;
+        for ($i = 0; $i < count($service); $i++) {
+            if ($i == 0) {
+                $data[$i]['nama'] = 'tiki';
+                $data[$i]['total_service'] = count($service[$i]);
+                $data[$i]['service'] = $service[$i];
+                for ($j = 0; $j < count($service[$i]); $j++) {
+                    foreach ($service[$i] as $key => $value) {
+                        $data[$i]['nama_layanan'] = $value['service'];
+                    }
+                }
+            } elseif ($i == 1) {
+                $data[$i]['nama'] = 'pos';
+                $data[$i]['total_service'] = count($service[$i]);
+                $data[$i]['service'] = $service[$i];
+            } else {
+                $data[$i]['nama'] = 'jne';
+                $data[$i]['total_service'] = count($service[$i]);
+                $data[$i]['service'] = $service[$i];
+            }
+
+            $totalservice += count($service[$i]);
+        }
+        return $data;
     }
 }

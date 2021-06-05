@@ -26,10 +26,12 @@ class MasterController extends Controller
     {
         return view('master.provinsi');
     }
+
     public function pelanggan_index()
     {
         return view('master.pelanggan');
     }
+    
     public function produk_index()
     {
         return view('master.produk');

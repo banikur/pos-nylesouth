@@ -56,7 +56,7 @@ if (!function_exists('get_master_kab_kota')) {
 	function get_master_kab_kota($id)
 	{
 		return DB::table('master_kab_kota')
-			->where('id_provinsi', $id)
+			->where('id_provinsi_api', $id)
 			->whereNotNull('id_api')
 			->get();
 	}
@@ -213,6 +213,24 @@ if (!function_exists('get_warna_id')) {
 		return DB::table('master_kode_warna')
 			->where('kode_warna', $id)
 			->first();
+	}
+}
+
+if (!function_exists('get_disc_id')) {
+	function get_disc_id($id)
+	{
+		$datenow = date('Y-m-d');
+		$data = DB::table('master_promo')
+			->where('kode_promo', $id)
+			->where('tgl_mulai', '<', $datenow)
+			->where('tgl_berakhir', '>', $datenow)
+			->get();
+		// dd($data);
+		if (count($data) > 0) {
+			return $data[0]->potongan_harga;
+		} else {
+			return 0;
+		}
 	}
 }
 

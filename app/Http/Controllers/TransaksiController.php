@@ -41,7 +41,7 @@ class TransaksiController extends Controller
 
     public function cart_index()
     {
-        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) total'), 'kode_ukuran', 'kode_warna')
+        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'))
             ->where('kode_pelanggan', Auth::user()->id)
             ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna')
             ->get();
