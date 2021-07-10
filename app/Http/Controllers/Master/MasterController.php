@@ -62,6 +62,7 @@ class MasterController extends Controller
     public function detail_produk(Request $request)
     {
         $initial_code = $request->id;
+        $data['produk'] = get_master_produk_id($initial_code);
         $data['detail'] = DB::table('master_produk_detail')->where('initial_produk', base64_decode($initial_code))->get();
         $data['invetori'] = DB::table('master_produk_inventori')->where('initial_produk', base64_decode($initial_code))->get();
         $data['picture'] = DB::table('master_produk_picture')->where('initial_produk', base64_decode($initial_code))->get();

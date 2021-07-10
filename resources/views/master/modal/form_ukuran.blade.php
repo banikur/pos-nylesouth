@@ -77,7 +77,7 @@
             $('#id_ukuran').val('');
             $('#ukuran').val('');
             $('form#sform_ukuran').attr('action', "");
-            $('form#sform_ukuran').attr('action', "{{ route('produk.s_ukuran') }}");
+            $('form#sform_ukuran').attr('action', "{{ route('master.form.modal.action.s_ukuran') }}");
         } else if (params == 'edit') {
             var id = $(obj).data('id');
             var text = $(obj).data('text');
@@ -86,7 +86,7 @@
             $('#ukuran').val(text);
             console.log(text, id);
             $('form#sform_ukuran').attr('action', "");
-            $('form#sform_ukuran').attr('action', "{{ route('produk.u_ukuran') }}");
+            $('form#sform_ukuran').attr('action', "{{ route('master.form.modal.action.u_ukuran') }}");
         } else {
             $('#s_form_ukuran').hide("slow");
             $('#id_ukuran').val('');

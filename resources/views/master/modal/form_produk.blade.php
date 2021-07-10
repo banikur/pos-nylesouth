@@ -1,4 +1,4 @@
-<form id="formAdd" method="post" action="{{route('produk.s_produk')}}" enctype="multipart/form-data" autocomplete="off" role="form">
+<form id="formAdd" method="post" action="{{route('master.form.modal.action.s_produk')}}" enctype="multipart/form-data" autocomplete="off" role="form">
     @csrf
     <div class="modal-body">
         <div class="row">

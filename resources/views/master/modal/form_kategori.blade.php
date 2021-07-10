@@ -76,7 +76,7 @@
             $('#id_kategori').val('');
             $('#kategori').val('');
             $('form#sform_kategori').attr('action', "");
-            $('form#sform_kategori').attr('action', "{{ route('produk.u_kategori') }}");
+            $('form#sform_kategori').attr('action', "{{ route('master.form.modal.action.u_kategori') }}");
         } else if (params == 'edit') {
             var id = $(obj).data('id');
             var text = $(obj).data('text');
@@ -84,7 +84,7 @@
             $('#id_kategori').val(id);
             $('#kategori').val(text);
             $('form#sform_kategori').attr('action', "");
-            $('form#sform_kategori').attr('action', "{{ route('produk.u_kategori') }}");
+            $('form#sform_kategori').attr('action', "{{ route('master.form.modal.action.u_kategori') }}");
         } else {
             $('#s_form_kategori').hide("slow");
             $('#id_kategori').val('');

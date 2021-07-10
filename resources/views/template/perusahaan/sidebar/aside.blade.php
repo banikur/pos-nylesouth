@@ -4,7 +4,7 @@
         <!--begin::Menu Nav-->
         <ul class="menu-nav">
             <li class="menu-item menu-item-submenu">
-                <a id="menu-toggles" onclick="hideSidebar()" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="Menu">
+                <a id="menu-toggle" onclick="hideSidebar()" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="Menu">
 
                     <span class="menu-icon fas fa-align-justify">
 
@@ -102,14 +102,14 @@
 <script>
     function hideSidebar() {
         $('.aside').css('width', '60px');
-        $('#menu-toggles').attr('onClick', 'showSidebar()');
+        $('#menu-toggle').attr('onClick', 'showSidebar()');
         $('.menu-nav .menu-text').css('display', 'none');
         $('.menu-nav .menu-arrow').css('display', 'none');
     }
     function showSidebar() {
         $('.aside').css('width', '260px');
-        $('#menu-toggles').attr('onClick', 'hideSidebar()');
-        $('.menu-nav .menu-text').css('display', 'block');
-        $('.menu-nav .menu-arrow').css('display', 'block');
+        $('#menu-toggle').attr('onClick', 'hideSidebar()');
+        $('.menu-nav .menu-text').removeAttr('style', 'display');
+        $('.menu-nav .menu-arrow').removeAttr('style', 'display');
     }
 </script>

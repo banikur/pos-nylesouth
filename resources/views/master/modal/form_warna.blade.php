@@ -74,7 +74,7 @@
             $('#id_warna').val('');
             $('#warna').val('');
             $('form#sform_warna').attr('action', "");
-            $('form#sform_warna').attr('action', "{{ route('produk.s_warna') }}");
+            $('form#sform_warna').attr('action', "{{ route('master.form.modal.action.s_warna') }}");
         } else if (params == 'edit') {
             var id = $(obj).data('id');
             var text = $(obj).data('text');
@@ -82,7 +82,7 @@
             $('#id_warna').val(id);
             $('#warna').val(text);
             $('form#sform_warna').attr('action', "");
-            $('form#sform_warna').attr('action', "{{ route('produk.u_warna') }}");
+            $('form#sform_warna').attr('action', "{{ route('master.form.modal.action.u_warna') }}");
         } else {
             $('#s_form_warna').hide("slow");
             $('#id_warna').val('');

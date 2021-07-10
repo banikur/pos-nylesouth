@@ -51,7 +51,7 @@ Route::namespace('Master')->group(function () {
 
         Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('detail_produk');
     });
-    Route::prefix('master')->name('master.form.modal.action')->group(function () {
+    Route::prefix('master')->name('master.form.modal.action.')->group(function () {
         Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('s_warna');
         Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('u_warna');
         Route::post('/master/produk/s_ukuran', 'MasterController@post_ukuran')->name('s_ukuran');

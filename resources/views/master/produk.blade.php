@@ -185,7 +185,7 @@
         var initial = $(obj).data('id');
         $('#showTitleModal').text('Detail Produk ' + initial);
         $.ajax({
-            url: "{{route('modal.detail_produk')}}",
+            url: "{{route('master.form.modal.detail_produk')}}",
             data: {
                 id: item,
                 _token: "{{ csrf_token() }}"
@@ -212,7 +212,7 @@
         if (cmd == 'add') {
             $('#addTitleModal').text('Tambah Produk');
             $.ajax({
-                url: "{{route('modal.master.produk')}}",
+                url: "{{route('master.form.modal.produk')}}",
                 beforeSend: function() {
                     $('#loaders').show();
                 },
@@ -231,7 +231,7 @@
         } else if (cmd == 'ukuran') {
             $('#addTitleModal').text('Tambah Master Ukuran Produk');
             $.ajax({
-                url: "{{route('modal.master.ukuran')}}",
+                url: "{{route('master.form.modal.ukuran')}}",
                 beforeSend: function() {
                     $('#loaders').show();
                 },
@@ -250,7 +250,7 @@
         } else if (cmd == 'warna') {
             $('#addTitleModal').text('Tambah Master Warna Produk');
             $.ajax({
-                url: "{{route('modal.master.warna')}}",
+                url: "{{route('master.form.modal.warna')}}",
                 beforeSend: function() {
                     $('#loaders').show();
                 },
@@ -269,7 +269,7 @@
         } else if (cmd == 'kategori') {
             $('#addTitleModal').text('Tambah Master Kategori Produk');
             $.ajax({
-                url: "{{route('modal.master.kategori')}}",
+                url: "{{route('master.form.modal.kategori')}}",
                 beforeSend: function() {
                     $('#loaders').show();
                 },

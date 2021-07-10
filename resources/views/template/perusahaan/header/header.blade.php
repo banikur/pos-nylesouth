@@ -14,6 +14,104 @@
             <!--end::Header Logo-->
         </div>
         <!--end::Left-->
+        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <!--begin::Header Menu-->
+            <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
+                <!--begin::Header Nav-->
+                <ul class="menu-nav">
+                    <li class="menu-item menu-item-submenu">
+                        <a id="menu-toggles" onclick="hideSidebar()" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="Menu">
+                            <span class="menu-icon fas fa-align-justify">
+                            </span>
+                            <span class="menu-text">Menu</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ url('/home') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                            <span class="menu-icon fa fa-home text-primary"></span>
+                            <span class="menu-text">Beranda</span>
+                        </a>
+                    </li>
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="">
+                            <span class="menu-icon fas fa-archive text-primary">
+
+                            </span>
+                            <span class="menu-text text-dark">Master</span>
+                            <i class="menu-arrow text-dark"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow text-dark"></i>
+                            <ul class="menu-subnav">
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a href="{{ route('master.provinsi') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Master Provinsi">
+                                        <span class="menu-icon fas fa-map-marker-alt text-primary"></span>
+                                        <span class="menu-text">Provinsi & Kabupaten / Kota</span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a href="{{ route('master.pelanggan') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Master Pelanggan">
+                                        <span class="menu-icon fas fa-users-cog text-primary"></span>
+                                        <span class="menu-text">Master Pelanggan </span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a href="{{ route('master.produk') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Master Produk">
+                                        <span class="menu-icon fas fa-tags text-primary"></span>
+                                        <span class="menu-text">Master Produk</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="">
+                            <span class="menu-icon fas fa-tasks text-primary">
+                            </span>
+                            <span class="menu-text text-dark">Verifikasi Penjualan</span>
+                            <i class="menu-arrow text-dark"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow text-dark"></i>
+                            <ul class="menu-subnav">
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a href="{{ route('init.pemesanan') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Verifikasi Penjualan">
+                                        <span class="menu-icon fas fa-cart-plus text-primary"></span>
+                                        <span class="menu-text text-dark">Daftar Pesanan</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item" aria-haspopup="true">
+                                    <a href="{{ route('init.retur') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Verifikasi Retur Barang">
+                                        <span class="menu-icon fas fa-cart-arrow-down text-primary"></span>
+                                        <span class="menu-text text-dark">Verifikasi Retur barang </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link" data-toggle="tooltip" data-placement="right" title="Laporan">
+                            <span class="menu-icon far fa-file-alt text-primary"></span>
+                            <span class="menu-text">Laporan</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="menu-link" data-toggle="tooltip" data-placement="right" title="Logout">
+                            <span class="menu-icon fas fa-power-off text-primary"></span>
+                            <span class="menu-text">{{ __('Logout') }}</span>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </a>
+                    </li>
+                </ul>
+                <!--end::Header Nav-->
+            </div>
+            <!--end::Header Menu-->
+        </div>
         <!--begin::Topbar-->
         <div class="topbar">
             <!--begin::Quick panel-->
@@ -44,7 +142,7 @@
                             </g>
                         </svg>
                     </span>
-                   
+
                     <span class="badge badge-danger badge-pill badge-sm font-weight-bold">0</span>
                 </div>
             </div>
