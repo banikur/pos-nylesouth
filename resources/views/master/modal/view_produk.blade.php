@@ -54,8 +54,14 @@
         </div>
         <div class="row">
             @foreach($picture as $p)
-            {{$p->path_file . $p->nama_file}}
-            <br />
+            <div class="col-md-3">
+                <div class="shop-item">
+                    <!-- Product Image -->
+                    <div class="image">
+                        <img src=" {{asset($p->path_file . $p->nama_file)}}" alt="{{$p->nama_file}}">
+                    </div>
+                </div>
+            </div>
             @endforeach
         </div>
     </div>

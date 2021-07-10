@@ -41,9 +41,9 @@ class TransaksiController extends Controller
 
     public function cart_index()
     {
-        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'))
+        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'), 'kode_keranjang')
             ->where('kode_pelanggan', Auth::user()->id)
-            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna')
+            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna', 'kode_keranjang')
             ->get();
         // dd($data);
         return view('user.cart', $data);
@@ -78,5 +78,32 @@ class TransaksiController extends Controller
             $autonya = "$tanggalskr/$code-0001-$rndm";
         }
         return $autonya;
+    }
+
+    public function modal_edit_cart(Request $request)
+    {
+        $data['initial_product'] = base64_encode(get_initial_cart($request->id_cart));
+        $data['id_cart'] = $request->id_cart;
+        // dd($data);
+        return view('user.modal_ubah', $data);
+    }
+
+    public function update_modal_cart(Request $request)
+    {
+        try {
+            DB::table('keranjang_belanja')
+                ->where('kode_keranjang', $request->id_cart)
+                ->where('kode_pelanggan', Auth::user()->id)
+                ->update([
+                    'kode_ukuran' => $request->kode_ukuran,
+                    'kode_pelanggan' => Auth::user()->id,
+                    'kode_warna' => $request->kode_warna,
+                    'jumlah' => $request->jumlah,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            return redirect()->back()->with('message', 'success');
+        } catch (MySQLException  $ms) {
+            return redirect()->back()->with('message', 'error ' . $ms);
+        }
     }
 }

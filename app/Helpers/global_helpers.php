@@ -234,4 +234,13 @@ if (!function_exists('get_disc_id')) {
 	}
 }
 
+if (!function_exists('get_initial_cart')) {
+	function get_initial_cart($id)
+	{
+		$data = DB::table('keranjang_belanja')->where('kode_keranjang', $id)->first();
+		$retVal = (!empty($data)) ? $data->kode_produk : '-';
+		return $retVal;
+	}
+}
+
 /*END BANI*/

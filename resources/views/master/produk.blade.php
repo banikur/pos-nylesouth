@@ -1,4 +1,33 @@
 @extends('template.perusahaan.main')
+@section('css')
+<style>
+    .shop-item {
+        position: relative;
+        background: #FFF;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 8px solid #FFF;
+        -webkit-border-radius: 5px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 5px;
+        -moz-background-clip: padding;
+        border-radius: 5px;
+        background-clip: padding-box;
+        -webkit-box-shadow: inset 0 1px #fff, 0 0 8px #c8cfe6;
+        -moz-box-shadow: inset 0 1px #fff, 0 0 8px #c8cfe6;
+        box-shadow: inset 0 1px #fff, 0 0 8px #c8cfe6;
+        color: inset 0 1px #fff, 0 0 8px #c8cfe6;
+    }
+
+    .shop-item .image {
+        text-align: center;
+    }
+
+    .shop-item img {
+        max-width: 100%;
+    }
+</style>
+@endsection
 @section('content')
 <div class="card card-custom min-h-lg-800px">
     <div class="card-header">
@@ -51,7 +80,6 @@
                                 <td>
                                     <button class="btn btn-light btn-icon btn-circle btn-sm" onclick="show('{{base64_encode($d->initial_produk)}}',this)" data-id="{{$d->initial_produk}}" data-toggle="tooltip" title="Detail"><i class="flaticon2-search text-primary"></i></button>
                                 </td>
-
                             </tr>
                             @endforeach
 

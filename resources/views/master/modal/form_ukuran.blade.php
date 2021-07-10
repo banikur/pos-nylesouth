@@ -17,7 +17,7 @@
                             <label class="col-2 col-form-label">Jenis ukuran</label>
                             <div class="col-8">
                                 <input class="form-control" type="hidden" id="id_ukuran" name="id_ukuran" />
-                                <input class="form-control" type="text" value="" id="ukuran" name="ukuran" placeholder="Ukuran" maxlength="2" />
+                                <input class="form-control" type="text" value="" id="ukuran" name="ukuran" placeholder="Ukuran" maxlength="5" />
                             </div>
                             <div class="col-2">
                                 <button type="button" onclick="show_form('close',this)" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Tutup"><i class="flaticon2-edit text-warning"></i></button>

@@ -42,8 +42,8 @@
                         <td class="price">{{number_format($data_produk->harga_produk,2,',','.')}}</td>
                         <td class="actions">
                             @if(empty($d->status))
-                            <a class="btn btn-xs btn-orange" data-qty="{{$d->cart}}" data-id="{{$d->kode_produk}}" onclick="show('edit',this)"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a class="btn btn-xs btn-red" data-qty="{{$d->cart}}" data-id="{{$d->kode_produk}}" onclick="show('hapus',this)"><i class="glyphicon glyphicon-trash"></i></a>
+                            <a class="btn btn-xs btn-orange" data-qty="{{$d->cart}}" data-item="{{$d->kode_keranjang}}" data-id="{{$d->kode_produk}}" onclick="show('edit',this)"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <a class="btn btn-xs btn-red" data-qty="{{$d->cart}}" data-item="{{$d->kode_keranjang}}" data-id="{{$d->kode_produk}}" onclick="show('hapus',this)"><i class="glyphicon glyphicon-trash"></i></a>
                             @endif
                         </td>
                     </tr>
@@ -126,14 +126,15 @@
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <a onclick="refresh()" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
+                    <a onclick="confirm()" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
 <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addTitleModal">Modal Title</h5>
@@ -141,27 +142,11 @@
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form id="formAdd" method="post" action="">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-
-                        </div>
-                        <div class="col-md-6">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger font-weight-bold" onclick="refresh()" data-dismiss="modal">Batal</button>
-                    <button type="submit" onclick="confirm()" class="btn btn-primary font-weight-bold">Simpan</button>
-                </div>
-            </form>
+            <div class="modal-body" id="muncul">
+            </div>
         </div>
     </div>
 </div>
-@endsection
 @section('javascripts')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
 <script src="{{url('select2/js/select2.min.js')}}"></script>
@@ -236,12 +221,26 @@
     });
 
     function show(cmd, obj) {
-        var item = $(obj).data('item');
-
+        var id_cart = $(obj).data('item');
         if (cmd == 'edit') {
             $('#addTitleModal').text('Ubah jumlah barang');
-            $('form#formAdd').attr('action', "");
-            $('#modal-tambah').modal('show');
+            $.ajax({
+                url: "{{route('transaksi.modal_edit_cart')}}",
+                data: {
+                    id_cart: id_cart,
+                },
+                beforeSend: function() {
+                    $('#loader').css('display', 'block');
+                },
+                success: function(data) {
+                    $('#loader').css('display', 'none');
+                    $('#muncul').html(data);
+                    $('#modal-tambah').modal('show');
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
         } else {
 
         }

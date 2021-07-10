@@ -66,6 +66,11 @@ Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('pr
 
 /*USER*/
 Route::get('/cart', 'TransaksiController@cart_index')->name('cart');
+Route::name('transaksi.')->group(function () {
+    Route::get('modal_cart', 'TransaksiController@modal_edit_cart')->name('modal_edit_cart');
+    Route::post('update_modal_cart', 'TransaksiController@update_modal_cart')->name('update_modal_cart');
+
+});
 
 
 

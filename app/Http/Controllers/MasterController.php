@@ -31,7 +31,7 @@ class MasterController extends Controller
     {
         return view('master.pelanggan');
     }
-    
+
     public function produk_index()
     {
         return view('master.produk');
@@ -42,14 +42,17 @@ class MasterController extends Controller
     {
         return view('master.modal.form_ukuran');
     }
+
     public function form_warna()
     {
         return view('master.modal.form_warna');
     }
+
     public function form_kategori()
     {
         return view('master.modal.form_kategori');
     }
+
     public function form_produk()
     {
         return view('master.modal.form_produk');
@@ -96,6 +99,7 @@ class MasterController extends Controller
             return redirect()->back()->with('error', 'Gagal koneksi ke database');
         }
     }
+
     public function post_ukuran(Request $request)
     {
         try {
@@ -125,6 +129,7 @@ class MasterController extends Controller
             return redirect()->back()->with('error', 'Gagal koneksi ke database');
         }
     }
+
     public function post_kategori(Request $request)
     {
         try {

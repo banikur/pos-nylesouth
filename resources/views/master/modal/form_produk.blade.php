@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label class="col-3 ">Ukuran Produk</label>
                     <div class="col-9 col-form-label">
-                        <div class="checkbox-inline">
+                        <div class="checkbox-inline row">
                             <?php $data_uk = get_master_ukuran(); ?>
                             @foreach($data_uk as $uk)
                             <label class="checkbox">
@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <label class="col-3">Warna Produk</label>
                     <div class="col-9 col-form-label">
-                        <div class="checkbox-inline">
+                        <div class="checkbox-inline row">
                             <?php $data_war = get_master_warna(); ?>
                             @foreach($data_war as $war)
                             <label class="checkbox">
