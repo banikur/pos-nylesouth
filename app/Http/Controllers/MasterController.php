@@ -133,7 +133,7 @@ class MasterController extends Controller
     public function post_kategori(Request $request)
     {
         try {
-            if ($request->id_ukuran == null) {
+            if ($request->id_kategori == null) {
                 $validate =  DB::table('master_kategori')->where('nama_kategori', trim($request->kategori))->count();
                 if ($validate > 0) {
                     return redirect()->back()->with('error', 'Duplikat Data');

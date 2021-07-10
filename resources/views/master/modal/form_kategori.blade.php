@@ -20,7 +20,7 @@
                                 <input class="form-control" type="text" value="" id="kategori" name="kategori" placeholder="kategori" />
                             </div>
                             <div class="col-2">
-                                <button type="button" onclick="show_form('close',this)" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Tutup"><i class="flaticon2-edit text-warning"></i></button>
+                                <button type="button" onclick="show_form('close',this)" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Tutup"><i class="far fa-window-close text-danger"></i></button>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -76,7 +76,7 @@
             $('#id_kategori').val('');
             $('#kategori').val('');
             $('form#sform_kategori').attr('action', "");
-            $('form#sform_kategori').attr('action', "{{ route('produk.s_kategori') }}");
+            $('form#sform_kategori').attr('action', "{{ route('produk.u_kategori') }}");
         } else if (params == 'edit') {
             var id = $(obj).data('id');
             var text = $(obj).data('text');

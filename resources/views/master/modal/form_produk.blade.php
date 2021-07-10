@@ -33,12 +33,12 @@
                     <input type="text" class="form-control form-control-sm dec" id="berat_produk" name="berat_produk" placeholder="Berat Produk" value="" />
                 </div>
                 <div class="form-group">
-                    <label class="col-3 ">Ukuran Produk</label>
-                    <div class="col-9 col-form-label">
+                    <label>Ukuran Produk</label>
+                    <div class="col-form-label">
                         <div class="checkbox-inline row">
                             <?php $data_uk = get_master_ukuran(); ?>
                             @foreach($data_uk as $uk)
-                            <label class="checkbox">
+                            <label class="checkbox col-md-3">
                                 <input type="checkbox" name="ukuran[]" value="{{$uk->nama_ukuran}}" />
                                 <span></span>
                                 {{$uk->nama_ukuran}}
@@ -47,14 +47,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <label class="col-3">Warna Produk</label>
-                    <div class="col-9 col-form-label">
+                    <label>Warna Produk</label>
+                    <div class="col-form-label">
                         <div class="checkbox-inline row">
                             <?php $data_war = get_master_warna(); ?>
                             @foreach($data_war as $war)
-                            <label class="checkbox">
+                            <label class="checkbox col-md-3">
                                 <input type="checkbox" name="warna[]" value="{{$war->nama_warna}}" />
                                 <span></span>
                                 {{$war->nama_warna}}

@@ -20,7 +20,7 @@
                                 <input class="form-control" type="text" value="" id="ukuran" name="ukuran" placeholder="Ukuran" maxlength="5" />
                             </div>
                             <div class="col-2">
-                                <button type="button" onclick="show_form('close',this)" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Tutup"><i class="flaticon2-edit text-warning"></i></button>
+                                <button type="button" onclick="show_form('close',this)" class="btn btn-light btn-icon btn-circle btn-sm" data-toggle="tooltip" title="Tutup"><i class="far fa-window-close text-danger"></i></button>
                             </div>
                         </div>
                         <div class="form-group row">
