@@ -99,6 +99,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
+        var table2 = $('#tb_basic').DataTable();
         $('#tb_basic').DataTable();
         $('#tb_basic thead tr').clone(true).appendTo('#tb_basic thead');
         $('#tb_basic thead tr:eq(1) th').each(function(i) {

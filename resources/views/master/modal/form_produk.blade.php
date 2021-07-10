@@ -5,7 +5,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Nama Produk </label>
-                    <input type="text" class="form-control form-control-sm" id="nama_produk" name="nama_produk" placeholder="Nama Produk" value="" />
+                    <input type="text" class="form-control form-control-sm" id="nama_produk" name="nama_produk" placeholder="Nama Produk" value=""/>
                     <!-- <span class="form-text text-muted">Masukan Nama Produk</span> -->
                 </div>
                 <div class="form-group">
@@ -153,17 +153,50 @@
             allowOutsideClick: false,
         }).then((result) => {
             if (result.value) {
-                form.submit();
+                if(validate() == true){
+                    form.submit();
+                }
             } else {
                 Swal.fire({
                     title: "Batal Simpan Data",
                     type: "error",
                     allowOutsideClick: false,
                 })
-                refresh();
+                // refresh();
             }
         })
     }
+
+    function validate(){
+        if($('#nama_produk').val()==''){
+            Swal.fire({icon: 'error',title: 'Nama Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('#kategori_produk').val()==null){
+            Swal.fire({icon: 'error',title: 'Kategori Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('#harga_produk').val()==''){
+            Swal.fire({icon: 'error',title: 'Harga Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('#stok_awal_produk').val()==0){
+            Swal.fire({icon: 'error',title: 'Stok Awal Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('#berat_produk').val()==''){
+            Swal.fire({icon: 'error',title: 'Berat Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('input[name="ukuran[]"]').is(':checked') == false){
+            Swal.fire({icon: 'error',title: 'Ukuran Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('input[name="warna[]"]').is(':checked') == false){
+            Swal.fire({icon: 'error',title: 'Warna Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else if($('#deskripsi_produk').val() == ""){
+            Swal.fire({icon: 'error',title: 'Deskripsi Produk Kosong',showConfirmButton: false,timer: 1500})
+            return false
+        }else{
+            return true;
+        }
+    }
+
 </script>
 <script>
     Dropzone.autoDiscover = false;
