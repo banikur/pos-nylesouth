@@ -71,6 +71,8 @@ class RegisterController extends Controller
             'tipe_user' => null,
             'active' => 1,
             'password' => Hash::make($data['password']),
+            'no_hp' => $data['no_telp'],
+            'alamat' => $data['alamat'],
         ]);
     }
 }

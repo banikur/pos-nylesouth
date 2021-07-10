@@ -12,7 +12,7 @@
     <div class="shop-item">
         <?php
         $pict = get_picture_id($d->initial_produk);
-        $images = $pict->path_file . $pict->nama_file;
+        $images = ($pict!="Tidak Ditemukan") ? $pict->path_file . $pict->nama_file : '';
         $disc = ((10 * $d->harga_produk) / 100) + $d->harga_produk;
         ?>
         <div class="image">

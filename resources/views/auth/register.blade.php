@@ -40,12 +40,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('No Telp') }}</label>
+                            <label for="no_telp" class="col-md-4 col-form-label text-md-right">{{ __('No Telp') }}</label>
 
                             <div class="col-md-6">
                                 <input id="no_telp" type="text" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="name" autofocus>
 
-                                @error('name')
+                                @error('no_telp')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -58,8 +58,8 @@
 
                             <div class="col-md-6">
                                 <!-- <input id="no_telp" type="text" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="name" autofocus> -->
-                                <textarea class="form-control @error('no_telp') is-invalid @enderror" id="alamat" name="alamat" placeholder="" value="{{ old('alamat') }}"></textarea>
-                                @error('name')
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" placeholder="" value="{{ old('alamat') }}"></textarea>
+                                @error('alamat')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
