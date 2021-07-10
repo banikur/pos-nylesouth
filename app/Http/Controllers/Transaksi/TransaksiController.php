@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Transaksi;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class TransaksiController extends Controller
 {
@@ -36,7 +37,7 @@ class TransaksiController extends Controller
 
     public function retur_index()
     {
-        return view('transaksi.verifikasi_retur');
+        return view('master.transaksi.verifikasi-retur');
     }
 
     public function cart_index()

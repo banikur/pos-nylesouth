@@ -66,7 +66,7 @@ if (!function_exists('get_master_pelanggan')) {
 	function get_master_pelanggan()
 	{
 		return DB::table('users')
-			->LeftJoin('users_pelanggan_detail', 'users_pelanggan_detail.kode_pelanggan', 'users.id')
+			->Join('users_pelanggan_detail', 'users_pelanggan_detail.kode_pelanggan', 'users.id')
 			->whereNull('users.tipe_user')
 			->get();
 	}

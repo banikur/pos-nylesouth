@@ -34,42 +34,46 @@ Auth::routes();
 
 /*PAGE INIT*/
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/master/provinsi', 'MasterController@provinsi_index')->name('master.provinsi');
-Route::get('/master/pelanggan', 'MasterController@pelanggan_index')->name('master.pelanggan');
-Route::get('/master/produk', 'MasterController@produk_index')->name('master.produk');
 
 /*TRANSAKSI*/
-Route::get('/master/daftar-pesanan', 'TransaksiController@pemesanan_index')->name('master.pemesanan');
-Route::get('/master/retur-barang', 'TransaksiController@retur_index')->name('master.retur');
+Route::namespace('Master')->group(function () {
+    Route::prefix('master')->name('master.')->group(function () {
+        Route::get('/provinsi', 'MasterController@provinsi_index')->name('provinsi');
+        Route::get('/pelanggan', 'MasterController@pelanggan_index')->name('pelanggan');
+        Route::get('/produk', 'MasterController@produk_index')->name('produk');
+    });
+    /*START MODAL FORM*/
+    Route::prefix('master')->name('master.form.modal.')->group(function () {
+        Route::get('/master/ukuran/form', 'MasterController@form_ukuran')->name('ukuran');
+        Route::get('/master/warna/form', 'MasterController@form_warna')->name('warna');
+        Route::get('/master/kategori/form', 'MasterController@form_kategori')->name('kategori');
+        Route::get('/master/produk/form', 'MasterController@form_produk')->name('produk');
 
+        Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('detail_produk');
+    });
+    Route::prefix('master')->name('master.form.modal.action')->group(function () {
+        Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('s_warna');
+        Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('u_warna');
+        Route::post('/master/produk/s_ukuran', 'MasterController@post_ukuran')->name('s_ukuran');
+        Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('u_ukuran');
+        Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('u_kategori');
+        Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('s_produk');
+    });
+    /*END MODAL FORM*/
+});
+Route::namespace('Transaksi')->group(function () {
+    Route::prefix('verifikasi')->name('init.')->group(function () {
+        Route::get('/daftar-pesanan', 'TransaksiController@pemesanan_index')->name('pemesanan');
+        Route::get('/retur-barang', 'TransaksiController@retur_index')->name('retur');
+    });
+});
 /*TRANSAKSI*/
 
 /*PAGE INIT*/
-
-/*MODAL FORM*/
-Route::get('/master/ukuran/form', 'MasterController@form_ukuran')->name('modal.master.ukuran');
-Route::get('/master/warna/form', 'MasterController@form_warna')->name('modal.master.warna');
-Route::get('/master/kategori/form', 'MasterController@form_kategori')->name('modal.master.kategori');
-Route::get('/master/produk/form', 'MasterController@form_produk')->name('modal.master.produk');
-
-Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('modal.detail_produk');
-
-Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('produk.s_warna');
-Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('produk.u_warna');
-Route::post('/master/produk/s_ukuran', 'MasterController@post_ukuran')->name('produk.s_ukuran');
-Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('produk.u_ukuran');
-Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('produk.u_kategori');
-
-Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('produk.s_produk');
-/*MODAL FORM*/
 
 /*USER*/
 Route::get('/cart', 'TransaksiController@cart_index')->name('cart');
 Route::name('transaksi.')->group(function () {
     Route::get('modal_cart', 'TransaksiController@modal_edit_cart')->name('modal_edit_cart');
     Route::post('update_modal_cart', 'TransaksiController@update_modal_cart')->name('update_modal_cart');
-
 });
-
-
-
