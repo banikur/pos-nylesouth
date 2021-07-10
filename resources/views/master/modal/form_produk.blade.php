@@ -84,7 +84,9 @@
                     </div>
                 </div>
             </div>
-            <div id="cumulate_sk_iup_user"></div>
+            <div id="cumulate_sk_iup_user">
+                <input type="hidden" name="image[]" value="">
+            </div>
         </div>
     </div>
 
@@ -171,6 +173,9 @@
         if($('#nama_produk').val()==''){
             Swal.fire({icon: 'error',title: 'Nama Produk Kosong',showConfirmButton: false,timer: 1500})
             return false
+        }else if($('input[name="image[]"]').val() == ''){
+            Swal.fire({icon: 'error',title: 'Belum Upload Gambar',showConfirmButton: false,timer: 1500})
+            return false
         }else if($('#kategori_produk').val()==null){
             Swal.fire({icon: 'error',title: 'Kategori Produk Kosong',showConfirmButton: false,timer: 1500})
             return false
@@ -221,7 +226,7 @@
             'jenis_dokumen': '1',
         },
         success: function(file, response) {
-            $('#cumulate_sk_iup_user').append('<input type="hidden" name="image[]" value="' + response.name + '">')
+            $('#cumulate_sk_iup_user').html('<input type="hidden" name="image[]" value="' + response.name + '">')
             uploadedDocumentMap[file.name] = response.name
         },
         removedfile: function(file) {
@@ -233,6 +238,7 @@
             } else {
                 name = uploadedDocumentMap[file.name]
             }
+            $('#cumulate_sk_iup_user').html('<input type="hidden" name="image[]" value="">');
             $('#cumulate_sk_iup_user').find('input[name="sk_iup[]"][value="' + name + '"]').remove()
             $.ajax({
                 headers: {
