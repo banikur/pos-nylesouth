@@ -42,7 +42,7 @@
                                 <?php $get_detail_warna_id = get_detail_warna_id($initial_product); ?>
                                 <select class="form-control select2" name="kode_warna" id="kode_warna">
                                     @foreach($get_detail_warna_id as $wrn)
-                                    <option value="{{$wrn->warna}}"> {{master_kode_warna_id($wrn->warna)}}</option>
+                                    <option value="{{$wrn->warna}}" @if($wrn->warna == $warna) selected @endif> {{master_kode_warna_id($wrn->warna)}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -55,7 +55,7 @@
                                 <?php $get_detail_ukuran_id = get_detail_ukuran_id($initial_product); ?>
                                 <select class="form-control select2" name="kode_ukuran" id="kode_ukuran">
                                     @foreach($get_detail_ukuran_id as $ukrn)
-                                    <option value="{{$ukrn->ukuran}}"> {{$ukrn->ukuran}}</option>
+                                    <option value="{{$ukrn->ukuran}}" @if($ukrn->ukuran == $ukuran) selected @endif> {{$ukrn->ukuran}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -64,14 +64,14 @@
                     <tr>
                         <td><b>Jumlah:</b></td>
                         <td>
-                            <input type="number" class="form-control input-sm input-micro" name="jumlah" id="jumlah">
+                            <input type="number" class="form-control input-sm input-micro" name="jumlah" id="jumlah" value="{{$jumlah}}">
                             <input type="hidden" class="form-control input-sm input-micro" value="{{$id_cart}}" name="id_cart" id="id_cart">
                         </td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <a onclick="update_modal()" class="btn btn"><i class="icon-shopping-cart icon-white"></i> Ubah Pesanan</a>
+                            {{-- <a onclick="update_modal()" class="btn btn"><i class="icon-shopping-cart icon-white"></i> Ubah Pesanan</a> --}}
                         </td>
                     </tr>
                 </table>
@@ -80,7 +80,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger font-weight-bold" onclick="refresh()" data-dismiss="modal">Batal</button>
-        <button type="button" onclick="update_modal()" class="btn btn-primary font-weight-bold">Simpan</button>
+        <button type="button" onclick="update_modal()" class="btn btn-primary font-weight-bold">Ubah Pesanan</button>
     </div>
 </form>
 
@@ -90,7 +90,7 @@
         event.preventDefault(); // prevent form submit
         var form = event.target.form; // storing the form
         Swal.fire({
-            title: 'Hapus produk ini ?',
+            title: 'Ingin Mengubah Pesanan?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#5cb85c',
@@ -107,7 +107,7 @@
                     type: "error",
                     allowOutsideClick: false,
                 })
-                refresh();
+                // refresh();
             }
         })
 

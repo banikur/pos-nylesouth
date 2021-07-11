@@ -17,6 +17,7 @@
             <div class="col-md-12">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
+                    <?php $total=0; ?>
                     @if(!empty($data))
                     @foreach($data as $d)
                     <tr>
@@ -29,20 +30,23 @@
                         <td>
                             <?php
                             $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
+                            $total_harga = $d->cart * $data_produk->harga_produk;
+                            $total += $total_harga;
                             ?>
                             <div class="cart-item-title"><a href="page-product-details.html">{{$data_produk->nama_produk}}</a></div>
                             <div class="feature color">
                                 Warna: {{get_warna_id($d->kode_warna)->nama_warna}}
                             </div>
                             <div class="feature">Ukuran: <b>{{$d->kode_ukuran}}</b></div>
+                            <div class="feature color">Jumlah: <b>{{$d->cart}}</b></div>
                         </td>
-                        <td class="quantity">
+                        {{-- <td class="quantity">
                             <input class="form-control input-sm input-micro quantity" value="{{$d->cart}}">
-                        </td>
-                        <td class="price">{{number_format($data_produk->harga_produk,2,',','.')}}</td>
+                        </td> --}}
+                        <td class="price">{{number_format($total_harga,2,',','.')}}</td>
                         <td class="actions">
                             @if(empty($d->status))
-                            <a class="btn btn-xs btn-orange" data-qty="{{$d->cart}}" data-item="{{$d->kode_keranjang}}" data-id="{{$d->kode_produk}}" onclick="show('edit',this)"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <a class="btn btn-xs btn-orange"data-ukuran="{{$d->kode_ukuran}}" data-warna="{{$d->kode_warna}}" data-qty="{{$d->cart}}" data-item="{{$d->kode_keranjang}}" data-id="{{$d->kode_produk}}" onclick="show('edit',this)"><i class="glyphicon glyphicon-pencil"></i></a>
                             <a class="btn btn-xs btn-red" data-qty="{{$d->cart}}" data-item="{{$d->kode_keranjang}}" data-id="{{$d->kode_produk}}" onclick="show('hapus',this)"><i class="glyphicon glyphicon-trash"></i></a>
                             @endif
                         </td>
@@ -147,6 +151,55 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-checkout" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTitleModal">View Checkout</h5>
+                <button type="button" class="close" onclick="reset()" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form id="formCheckout" method="post" action="{{route('transaksi.modal_checkout_cart')}}" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                @if(!empty($data))
+                    @foreach($data as $d)
+                        <?php
+                            $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
+                            $total_harga = $d->cart * $data_produk->harga_produk;
+                        ?>
+                        <input type="hidden" name="id_keranjang[]" value="{{$d->kode_keranjang}}">
+                        <input type="hidden" name="kode_produk[]" value="{{$d->kode_produk}}">
+                        <input type="hidden" name="jumlah[]" value="{{$d->cart}}">
+                        <input type="hidden" name="total_harga[]" value="{{$total_harga}}">
+                    @endforeach
+                @endif
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="catatan">Tambah Catatan</label>
+                            <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                          </div>
+                        <div class="form-group">
+                            <label for="tf_an">Transfer Atas Nama</label>
+                            <input type="text" class="form-control" id="tf_an" name="tf_an">
+                        </div>
+                        <div class="form-group">
+                            <label for="bukti_tf">Bukti Transfer</label>
+                            <input type="file" class="form-control" id="bukti_tf" name="bukti_tf">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary font-weight-bold">PESAN</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 @section('javascripts')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
 <script src="{{url('select2/js/select2.min.js')}}"></script>
@@ -204,16 +257,34 @@
     $('#kurir').on('change', function() {
         var estimasi = $('#kurir').find(':selected').data('estimasi');
         var biaya = $('#kurir').find(':selected').data('biaya');
+        var total = '{{$total}}';
         var text = 'Rp. ' + number_format(biaya, 2, '.', ',') + ' - ' + estimasi + ' Hari';
+        var rumus_total = parseInt(total) + biaya;
         $('#ongkir').html(text);
+        $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
     });
 
     $('#dic_btn').on('click', function() {
         var json = null;
+        var biaya = $('#kurir').find(':selected').data('biaya');
+        var total = '{{$total}}';
         var id = $('#appendedInputButton').val();
         $.get('{{URL::to("get_disc")}}/' + btoa(id), function(data) {
             json = JSON.parse(data);
-            $('#disc_text').html('Rp. ' + number_format(json, 2, ',', '.'));
+            var rumus_total = parseInt(total) + biaya - data;
+            if(json!=0){
+                $('#disc_text').html('Rp. ' + number_format(json, 2, ',', '.'));
+                $('#disc_text').attr('style','')
+                $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
+            }else{ 
+                Swal.fire({
+                    icon: 'info',
+                    title: 'PROMO SUDAH TIDAK BERLAKU',
+                    showConfirmButton: true,
+                })
+                $('#disc_text').html('Rp. ' + number_format(0, 2, ',', '.'));
+                $('#disc_text').attr('style','color:red;')
+            }
         });
 
 
@@ -222,12 +293,18 @@
 
     function show(cmd, obj) {
         var id_cart = $(obj).data('item');
+        var jumlah = $(obj).data('qty');
+        var ukuran = $(obj).data('ukuran');
+        var warna = $(obj).data('warna');
         if (cmd == 'edit') {
             $('#addTitleModal').text('Ubah jumlah barang');
             $.ajax({
                 url: "{{route('transaksi.modal_edit_cart')}}",
                 data: {
                     id_cart: id_cart,
+                    jumlah: jumlah,
+                    ukuran: ukuran,
+                    warna: warna,
                 },
                 beforeSend: function() {
                     $('#loader').css('display', 'block');
@@ -241,37 +318,75 @@
                     console.log(data);
                 }
             });
-        } else {
-
+        } else if(cmd == 'hapus') {
+            Swal.fire({
+                title: 'Hapus produk ini ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#5cb85c',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = "{{ URL::to('modal_cart/hapus')}}"+'/'+id_cart;
+                } else {
+                    Swal.fire({
+                        title: "Batal Hapus Data",
+                        type: "error",
+                        allowOutsideClick: false,
+                    })
+                }
+            })
         }
     }
 
     function confirm() {
-        event.preventDefault(); // prevent form submit
-        var form = event.target.form; // storing the form
-        var existing = $('#existing_dirkom').val();
+        // var cart = '{{$data}}';
+        // if(cart.length > 0){
+        //     Swal.fire({
+        //         icon: 'info',
+        //         title: 'Cart Belum Ada',
+        //         showConfirmButton: true,
+        //     })
+        // }
+        if($('#kurir').val() == null){
+            Swal.fire({
+                icon: 'info',
+                title: 'Silahkan Pilih Jasa Pengiriman',
+                showConfirmButton: true,
+            })
+        }else{
+            $('#modal-checkout').modal('show');
+        }
+        
+        
+        // event.preventDefault(); // prevent form submit
+        // var form = event.target.form; // storing the form
+        // var existing = $('#existing_dirkom').val();
 
-        Swal.fire({
-            title: 'Hapus produk ini ?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#5cb85c',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Batal',
-            allowOutsideClick: false,
-        }).then((result) => {
-            if (result.value) {
-                form.submit();
-            } else {
-                Swal.fire({
-                    title: "Batal Ubah Data",
-                    type: "error",
-                    allowOutsideClick: false,
-                })
-                refresh();
-            }
-        })
+        // Swal.fire({
+        //     title: 'Hapus produk ini ?',
+        //     type: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#5cb85c',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Ya',
+        //     cancelButtonText: 'Batal',
+        //     allowOutsideClick: false,
+        // }).then((result) => {
+        //     if (result.value) {
+        //         form.submit();
+        //     } else {
+        //         Swal.fire({
+        //             title: "Batal Ubah Data",
+        //             type: "error",
+        //             allowOutsideClick: false,
+        //         })
+        //         // refresh();
+        //     }
+        // })
 
     }
 

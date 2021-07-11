@@ -52,7 +52,7 @@ Route::namespace('Master')->group(function () {
         Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('detail_produk');
     });
     Route::prefix('master')->name('master.form.modal.action.')->group(function () {
-        Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('s_warna');
+    Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('s_warna');
         Route::post('/master/produk/u_warna', 'MasterController@post_warna')->name('u_warna');
         Route::post('/master/produk/s_ukuran', 'MasterController@post_ukuran')->name('s_ukuran');
         Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('u_ukuran');
@@ -72,8 +72,10 @@ Route::namespace('Transaksi')->group(function () {
 /*PAGE INIT*/
 
 /*USER*/
-Route::get('/cart', 'TransaksiController@cart_index')->name('cart');
+Route::get('/cart', 'Transaksi\TransaksiController@cart_index')->name('cart');
 Route::name('transaksi.')->group(function () {
-    Route::get('modal_cart', 'TransaksiController@modal_edit_cart')->name('modal_edit_cart');
-    Route::post('update_modal_cart', 'TransaksiController@update_modal_cart')->name('update_modal_cart');
+    Route::get('modal_cart', 'Transaksi\TransaksiController@modal_edit_cart')->name('modal_edit_cart');
+    Route::post('update_modal_cart', 'Transaksi\TransaksiController@update_modal_cart')->name('update_modal_cart');
+    Route::get('modal_cart/hapus/{id_cart}', 'Transaksi\TransaksiController@modal_hapus_cart')->name('modal_hapus_cart');
+    Route::post('modal_cart/checkout', 'Transaksi\TransaksiController@modal_checkout_cart')->name('modal_checkout_cart');
 });
