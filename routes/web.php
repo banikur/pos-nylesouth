@@ -41,6 +41,8 @@ Route::namespace('Master')->group(function () {
         Route::get('/provinsi', 'MasterController@provinsi_index')->name('provinsi');
         Route::get('/pelanggan', 'MasterController@pelanggan_index')->name('pelanggan');
         Route::get('/produk', 'MasterController@produk_index')->name('produk');
+        Route::get('/promo', 'MasterController@promo_index')->name('promo');
+        Route::get('/promo/hapus/{id}', 'MasterController@promo_hapus')->name('promo_hapus');
     });
     /*START MODAL FORM*/
     Route::prefix('master')->name('master.form.modal.')->group(function () {
@@ -58,6 +60,8 @@ Route::namespace('Master')->group(function () {
         Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('u_ukuran');
         Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('u_kategori');
         Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('s_produk');
+        Route::post('/master/promo/s_promo', 'MasterController@post_promo')->name('s_promo');
+        Route::post('/master/promo/e_promo', 'MasterController@edit_promo')->name('e_promo');
     });
     /*END MODAL FORM*/
 });
