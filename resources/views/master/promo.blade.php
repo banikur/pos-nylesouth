@@ -76,21 +76,21 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Kode Promo</label>
-                                <input type="text" class="form-control" id="kode_promo" name="kode_promo" placeholder="Kode Promo">
+                                <input type="text" class="form-control" id="kode_promo" name="kode_promo" placeholder="Kode Promo" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Mulai</label>
-                                <input type="text" class="form-control" id="tgl_mulai" name="tgl_mulai" placeholder="Tanggal Mulai">
+                                <input type="text" class="form-control" id="tgl_mulai" name="tgl_mulai" placeholder="Tanggal Mulai" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Potongan Harga</label>
-                                <input type="text" class="form-control rupiah" id="potongan_harga" name="potongan_harga" placeholder="Potongan Harga">
+                                <input type="text" class="form-control rupiah" id="potongan_harga" name="potongan_harga" placeholder="Potongan Harga" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Berakhir</label>
-                                <input type="text" class="form-control" id="tgl_berakhir" name="tgl_berakhir" placeholder="Tanggal Berakhir" readonly="true">
+                                <input type="text" class="form-control" id="tgl_berakhir" name="tgl_berakhir" placeholder="Tanggal Berakhir" readonly="true" required>
                             </div>
                         </div>
                     </div>
@@ -120,11 +120,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Mulai</label>
-                                <input type="text" class="form-control" id="tgl_mulai_e" name="tgl_mulai" placeholder="Tanggal Mulai">
+                                <input type="text" class="form-control" id="tgl_mulai_e" name="tgl_mulai" placeholder="Tanggal Mulai" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Berakhir</label>
-                                <input type="text" class="form-control" id="tgl_berakhir_e" name="tgl_berakhir" placeholder="Tanggal Berakhir" readonly="true">
+                                <input type="text" class="form-control" id="tgl_berakhir_e" name="tgl_berakhir" placeholder="Tanggal Berakhir" required>
                             </div>
                         </div>
                     </div>
