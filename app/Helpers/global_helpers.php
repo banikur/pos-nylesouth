@@ -34,6 +34,37 @@ if (!function_exists('bulan_indo')) {
 	}
 }
 
+if(!function_exists('tgl_indo')){
+	function tgl_indo($tanggal)
+	{
+		$bulan = array(
+			1 =>   'Januari',
+			'Februari',
+			'Maret',
+			'April',
+			'Mei',
+			'Juni',
+			'Juli',
+			'Agustus',
+			'September',
+			'Oktober',
+			'November',
+			'Desember'
+		);
+		$pecahkan = explode('-', $tanggal);
+
+		return $pecahkan[2] . ' ' . $bulan[(int) $pecahkan[1]] . ' ' . $pecahkan[0];
+	}
+}
+
+if (!function_exists('get_master_promo')) {
+	function get_master_promo()
+	{
+		return DB::table('master_promo')
+			->get();
+	}
+}
+
 if (!function_exists('get_master_kabkota_prov')) {
 	function get_master_kabkota_prov()
 	{

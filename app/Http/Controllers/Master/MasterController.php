@@ -38,6 +38,11 @@ class MasterController extends Controller
         return view('master.produk');
     }
 
+    public function promo_index()
+    {
+        return view('master.promo');
+    }
+
     /*FORM MODAL*/
     public function form_ukuran()
     {
@@ -227,6 +232,38 @@ class MasterController extends Controller
         //     return redirect()->back()->with('error', 'Gagal koneksi ke database');
         // }
     }
+
+    public function post_promo(Request $request)
+    {
+        $data = [
+            'kode_promo'        => $request->kode_promo,
+            'potongan_harga'    => $request->potongan_harga,
+            'tgl_mulai'         => $request->tgl_mulai,
+            'tgl_berakhir'      => $request->tgl_berakhir,
+            'created_at'        => date('Y-m-d H:i:s'),
+        ];
+        DB::table('master_promo')->insert($data);
+
+        return redirect()->back()->with('message', 'success');
+    }
+
+    public function edit_promo(Request $request)
+    {
+        $data = [
+            'tgl_mulai'         => $request->tgl_mulai,
+            'tgl_berakhir'      => $request->tgl_berakhir,
+            'updated_at'        => date('Y-m-d H:i:s'),
+        ];
+        DB::table('master_promo')->where('id_promo',$request->id_promo)->update($data);
+
+        return redirect()->back()->with('message', 'success');
+    }
+
+    public function promo_hapus($id){
+        DB::table('master_promo')->where('id_promo', $id)->delete();
+
+        return redirect()->back()->with('message', 'success');
+    }
     /*CRUD*/
 
     /*DATATABLE*/
@@ -336,4 +373,5 @@ class MasterController extends Controller
         $autonya = $no;
         return $autonya;
     }
+
 }

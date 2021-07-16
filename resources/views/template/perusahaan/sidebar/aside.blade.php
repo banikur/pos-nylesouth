@@ -49,6 +49,13 @@
                                 <span class="menu-text">Master Produk</span>
                             </a>
                         </li>
+
+                        <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('master.promo') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Master Promo">
+                                <span class="menu-icon fa fa-percent text-primary"></span>
+                                <span class="menu-text">Master Promo</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
