@@ -72,8 +72,8 @@ Route::namespace('Transaksi')->group(function () {
 /*PAGE INIT*/
 
 /*USER*/
-Route::get('/cart', 'TransaksiController@cart_index')->name('cart');
+Route::get('/cart', 'Transaksi\TransaksiController@cart_index')->name('cart');
 Route::name('transaksi.')->group(function () {
-    Route::get('modal_cart', 'TransaksiController@modal_edit_cart')->name('modal_edit_cart');
-    Route::post('update_modal_cart', 'TransaksiController@update_modal_cart')->name('update_modal_cart');
+    Route::get('modal_cart', 'Transaksi\TransaksiController@modal_edit_cart')->name('modal_edit_cart');
+    Route::post('update_modal_cart', 'Transaksi\TransaksiTransaksiController@update_modal_cart')->name('update_modal_cart');
 });
