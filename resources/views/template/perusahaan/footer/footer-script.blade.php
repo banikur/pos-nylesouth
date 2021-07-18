@@ -86,8 +86,8 @@
 <!-- <script src="{{asset('plugin/draw/CustomDraw.js')}}"></script> -->
 
 {{-- Date Picker --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="{{url('flatpickr/flatpickr.min.css')}}">
+<script src="{{url('flatpickr/flatpickr.js')}}"></script>
 
 
 <!-- Online Script -->
