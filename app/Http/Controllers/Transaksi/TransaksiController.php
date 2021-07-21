@@ -137,7 +137,9 @@ class TransaksiController extends Controller
                 'kode_produk'    => $request->kode_produk[$i],
                 'tanggal_pesan'  => $datenow,
                 'jumlah'         => $request->jumlah[$i],
-                'total_harga'    => $request->total_harga[$i],
+                'kurir'          => $request->jasa_kurir,
+                'sub_total'      => $request->sub_total[$i],
+                'total_harga'    => $request->total_harga,
                 'status_pemesanan' => 0,
                 'created_at'     => $datenow
             ]);

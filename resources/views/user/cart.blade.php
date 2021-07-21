@@ -167,15 +167,17 @@
                     @foreach($data as $d)
                         <?php
                             $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
-                            $total_harga = $d->cart * $data_produk->harga_produk;
+                            $sub_total = $d->cart * $data_produk->harga_produk
                         ?>
                         <input type="hidden" name="id_keranjang[]" value="{{$d->kode_keranjang}}">
                         <input type="hidden" name="kode_produk[]" value="{{$d->kode_produk}}">
                         <input type="hidden" name="jumlah[]" value="{{$d->cart}}">
-                        <input type="hidden" name="total_harga[]" value="{{$total_harga}}">
+                        <input type="hidden" name="sub_total[]" value="{{$sub_total}}">
                     @endforeach
                 @endif
                 <div class="row">
+                    <input type="hidden" name="total_harga" id="total_harga">
+                    <input type="hidden" name="jasa_kurir" id="jasa_kurir">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="catatan">Tambah Catatan</label>
@@ -257,9 +259,13 @@
     $('#kurir').on('change', function() {
         var estimasi = $('#kurir').find(':selected').data('estimasi');
         var biaya = $('#kurir').find(':selected').data('biaya');
+        var kurir = $('#kurir').find(':selected').text();
         var total = '{{$total}}';
         var text = 'Rp. ' + number_format(biaya, 2, '.', ',') + ' - ' + estimasi + ' Hari';
         var rumus_total = parseInt(total) + biaya;
+
+        $('#jasa_kurir').val(kurir);
+        $('#total_harga').val(rumus_total);
         $('#ongkir').html(text);
         $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
     });

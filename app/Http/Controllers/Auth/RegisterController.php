@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Mail\RegisterMail;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -65,6 +67,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $event = new \stdClass();
+        $datenow = date('Y-m-d');
+
+        $event->senderEmail = $data['email'];
+        $event->email = $data['email']; 
+        $event->senderName = 'no-reply';
+        $event->subject = 'REGISTRASI APLIKASI POS-NYLESOUTH';
+        $event->message = '';  
+        $event->name = $data['name'];
+        $event->password = $data['password'];
+        $event->tanggal = $datenow;       
+        Mail::send((new RegisterMail($event))->delay(30));
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -75,4 +90,5 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
         ]);
     }
+
 }
