@@ -11,7 +11,7 @@
  Target Server Version : 100137
  File Encoding         : 65001
 
- Date: 18/07/2021 23:39:21
+ Date: 24/07/2021 17:03:21
 */
 
 SET NAMES utf8mb4;
@@ -65,7 +65,7 @@ CREATE TABLE `data_pembayaran`  (
 -- ----------------------------
 -- Records of data_pembayaran
 -- ----------------------------
-INSERT INTO `data_pembayaran` VALUES (1, '2021-07-18 15:37:12/TRX-0001-756', 8, 'Brayen', 'semoga cepet sampe', '0', '/uploads/bukti_transfer/cute-bunny-rabbit-girl-with-balloon-flower_20718-186.jpg', '2021-07-18 15:37:12', '2021-07-18 22:37:12');
+INSERT INTO `data_pembayaran` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', 8, 'Brayen', 'semoga cepet sampe', '0', '/uploads/bukti_transfer/cute-bunny-rabbit-girl-with-balloon-flower_20718-186.jpg', '2021-07-24 09:11:05', '2021-07-24 16:11:05');
 
 -- ----------------------------
 -- Table structure for data_pemesanan
@@ -83,35 +83,41 @@ CREATE TABLE `data_pemesanan`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `kurir` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `sub_total` double NULL DEFAULT NULL
+  `sub_total` double NULL DEFAULT NULL,
+  `biaya_kirim` double NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_pemesanan
 -- ----------------------------
-INSERT INTO `data_pemesanan` VALUES ('2021-07-18 15:37:12/TRX-0001-756', 8, 'NS-0003', '2021-07-18 15:37:12', 2, 872000, '0', NULL, '2021-07-18 15:37:12', '2021-07-18 22:37:12', 'Economy Service - (TIKI)', 624000);
-INSERT INTO `data_pemesanan` VALUES ('2021-07-18 15:37:12/TRX-0001-756', 8, 'NS-0004', '2021-07-18 15:37:12', 2, 872000, '0', NULL, '2021-07-18 15:37:12', '2021-07-18 22:37:12', 'Economy Service - (TIKI)', 240000);
+INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0003', '2021-07-24 09:11:05', 2, 872000, '4', NULL, '2021-07-24 16:59:00', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 624000, 8000);
+INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0004', '2021-07-24 09:11:05', 2, 872000, '4', NULL, '2021-07-24 16:59:00', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 240000, 8000);
 
 -- ----------------------------
 -- Table structure for data_pengiriman
 -- ----------------------------
 DROP TABLE IF EXISTS `data_pengiriman`;
 CREATE TABLE `data_pengiriman`  (
-  `kode_pengiriman` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kode_trx_pemesanan` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kode_provinsi` int(11) NOT NULL,
-  `kode_ekspedisi` int(11) NOT NULL,
+  `kode_pengiriman` bigint(30) NOT NULL AUTO_INCREMENT,
+  `kode_trx_pemesanan` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `kode_provinsi` int(11) NULL DEFAULT NULL,
+  `kurir` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `nomor_resi` char(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `nama_penerima` char(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `no_hp_penerima` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `alamat_kirim` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `no_hp_penerima` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `alamat_kirim` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   `biaya_kirim` double NOT NULL,
-  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`kode_pengiriman`) USING BTREE,
   INDEX `kode_trx_pemesanan`(`kode_trx_pemesanan`) USING BTREE,
-  INDEX `kode_ekspedisi`(`kode_ekspedisi`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  INDEX `kode_ekspedisi`(`kurir`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_pengiriman
+-- ----------------------------
+INSERT INTO `data_pengiriman` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', NULL, 'Economy Service - (TIKI)', 'jd29838872', '8', NULL, NULL, 8000, '2021-07-24 16:32:56', '2021-07-24 16:32:56');
 
 -- ----------------------------
 -- Table structure for data_retur
@@ -1025,7 +1031,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'bani', 'admin@gmail.com', NULL, '$2y$10$Zxj13XyvCiaRpd5qqNxode3AOAGJIBlh0Yp1wKmjRbBz3f.no1g5u', NULL, '2021-03-13 06:30:01', '2021-03-13 06:30:01', 1, 1, NULL, NULL);
 INSERT INTO `users` VALUES (2, 'user', 'user@gmail.com', NULL, '$2y$10$Zxj13XyvCiaRpd5qqNxode3AOAGJIBlh0Yp1wKmjRbBz3f.no1g5u', NULL, '2021-03-13 06:30:45', '2021-03-13 06:30:45', NULL, 1, NULL, NULL);
-INSERT INTO `users` VALUES (18, 'Brayen Prayoga', 'brayenprayoga41@gmail.com', NULL, '$2y$10$VZoOkXVUR68A4f11l0EzuupKYVYFn1N584lBLFFtaPtcSgXXMn2U.', NULL, '2021-07-18 16:38:08', '2021-07-18 16:38:08', NULL, NULL, 'Centex', '56789765');
+INSERT INTO `users` VALUES (8, 'Brayen Prayoga', 'brayen@gmail.com', NULL, '$2y$10$VZoOkXVUR68A4f11l0EzuupKYVYFn1N584lBLFFtaPtcSgXXMn2U.', NULL, '2021-07-18 16:38:08', '2021-07-18 16:38:08', NULL, NULL, 'Centex', '56789765');
 
 -- ----------------------------
 -- Table structure for users_pelanggan_detail

@@ -40,6 +40,46 @@ class TransaksiController extends Controller
         return view('master.transaksi.verifikasi-retur');
     }
 
+    function get_pembayaran(){
+        $kode_trx_pemesanan = $_GET['kode_trx_pemesanan'];
+        $kode_pelanggan = $_GET['kode_pelanggan'];
+        $data['pembayaran'] = DB::table('data_pembayaran')
+                    ->where('kode_trx_pemesanan', $kode_trx_pemesanan)
+                    ->where('kode_pelanggan', $kode_pelanggan)
+                    ->get();
+
+        $data['pengiriman'] = DB::table('data_pembayaran')
+                            ->join('data_pengiriman','data_pengiriman.kode_trx_pemesanan','data_pembayaran.kode_trx_pemesanan')
+                            ->where('data_pengiriman.kode_trx_pemesanan',$kode_trx_pemesanan)
+                            ->where('data_pembayaran.kode_pelanggan',$kode_pelanggan)->get();
+                            
+        $data['nama'] = DB::table('users')->where('id', $kode_pelanggan)->get();
+
+        return $data;
+    }
+
+    function verifikasi_pemesanan(Request $request){
+
+        $verifikasiPemesanan = DB::table('data_pemesanan')
+                            ->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)
+                            ->where('kode_pelanggan', $request->kode_pelanggan)
+                            ->update(['status_pemesanan'=>$request->status]);
+
+        if($request->status == 3){        
+            $data = [
+                'kode_trx_pemesanan'    => $request->kode_trx_pemesanan,
+                'kurir'                 => $request->kurir,
+                'nomor_resi'            => $request->no_resi,
+                'nama_penerima'         => $request->kode_pelanggan,
+                'biaya_kirim'           => $request->biaya_kirim,
+            ];
+            $insert_pengiriman = DB::table('data_pengiriman')->insert($data);
+        }
+
+
+        return redirect()->back()->with(['success'=>'Data Update']);
+    }
+
     public function cart_index()
     {
         $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'), 'kode_keranjang')
@@ -139,6 +179,7 @@ class TransaksiController extends Controller
                 'jumlah'         => $request->jumlah[$i],
                 'kurir'          => $request->jasa_kurir,
                 'sub_total'      => $request->sub_total[$i],
+                'biaya_kirim'      => $request->biaya_kirim,
                 'total_harga'    => $request->total_harga,
                 'status_pemesanan' => 0,
                 'created_at'     => $datenow

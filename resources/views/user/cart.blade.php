@@ -178,6 +178,7 @@
                 <div class="row">
                     <input type="hidden" name="total_harga" id="total_harga">
                     <input type="hidden" name="jasa_kurir" id="jasa_kurir">
+                    <input type="hidden" name="biaya_kirim" id="biaya_kirim">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="catatan">Tambah Catatan</label>
@@ -265,6 +266,7 @@
         var rumus_total = parseInt(total) + biaya;
 
         $('#jasa_kurir').val(kurir);
+        $('#biaya_kirim').val(biaya);
         $('#total_harga').val(rumus_total);
         $('#ongkir').html(text);
         $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
