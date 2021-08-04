@@ -40,6 +40,11 @@ class TransaksiController extends Controller
         return view('master.transaksi.verifikasi-retur');
     }
 
+    public function pengiriman_index()
+    {
+        return view('master.transaksi.index_pengiriman');
+    }
+
     function get_pembayaran(){
         $kode_trx_pemesanan = $_GET['kode_trx_pemesanan'];
         $kode_pelanggan = $_GET['kode_pelanggan'];
@@ -65,17 +70,35 @@ class TransaksiController extends Controller
                             ->where('kode_pelanggan', $request->kode_pelanggan)
                             ->update(['status_pemesanan'=>$request->status]);
 
-        if($request->status == 3){        
+        if($request->status == 3 || $request->status == 4){        
             $data = [
                 'kode_trx_pemesanan'    => $request->kode_trx_pemesanan,
                 'kurir'                 => $request->kurir,
                 'nomor_resi'            => $request->no_resi,
-                'nama_penerima'         => $request->kode_pelanggan,
                 'biaya_kirim'           => $request->biaya_kirim,
+                'nama_penerima'         => $request->nama_penerima,
+                'no_hp_penerima'        => $request->no_penerima,
+                'alamat_kirim'          => $request->alamat_penerima,
+                'status_pengiriman'     => ($request->status == 3) ? 0 : 1,
             ];
-            $insert_pengiriman = DB::table('data_pengiriman')->insert($data);
+            $pengiriman = DB::table('data_pengiriman')->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)->get();
+            $count_pengiriman = !empty($pengiriman) ? count($pengiriman) : 0;
+            if($count_pengiriman > 0){
+                DB::table('data_pengiriman')->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)->update($data);
+            }else{
+                DB::table('data_pengiriman')->insert($data);
+            }
         }
 
+
+        return redirect()->back()->with(['success'=>'Data Update']);
+    }
+
+    public function verifikasi_pengiriman(Request $request)
+    {
+        $update = DB::table('data_pengiriman')
+                ->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)
+                ->update(['status_pengiriman' => $request->status]);
 
         return redirect()->back()->with(['success'=>'Data Update']);
     }

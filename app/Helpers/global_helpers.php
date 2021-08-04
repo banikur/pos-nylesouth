@@ -147,9 +147,9 @@ if (!function_exists('get_master_provinsi')) {
 if (!function_exists('get_master_pesanan')) {
 	function get_master_pesanan()
 	{
-		return DB::table('data_pemesanan')->select('kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
+		return DB::table('data_pemesanan')->select('users.alamat','users.no_hp','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
 		->join('users','users.id','data_pemesanan.kode_pelanggan')
-		->groupBy('kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
+		->groupBy('users.alamat','users.no_hp','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
 		->get();
 	}
 }
@@ -161,6 +161,13 @@ if (!function_exists('get_master_pesanan_detail')) {
 		->where('kode_trx_pemesanan', $kode_trx_pemesanan)
 		->where('kode_pelanggan', $kode_pelanggan)
 		->get();
+	}
+}
+
+if (!function_exists('get_master_pengiriman')) {
+	function get_master_pengiriman()
+	{
+		return DB::table('data_pengiriman')->get();
 	}
 }
 

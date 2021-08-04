@@ -76,6 +76,12 @@
                             </a>
                         </li>
                         <li class="menu-item" aria-haspopup="true">
+                            <a href="{{ route('init.pengiriman') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Verifikasi Pengiriman">
+                                <span class="menu-icon fas fa-cart-plus text-primary"></span>
+                                <span class="menu-text text-dark">Daftar Pengiriman</span>
+                            </a>
+                        </li>
+                        <li class="menu-item" aria-haspopup="true">
                             <a href="{{ route('init.retur') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Verifikasi Retur Barang">
                                 <span class="menu-icon fas fa-cart-arrow-down text-primary"></span>
                                 <span class="menu-text text-dark">Verifikasi Retur barang </span>

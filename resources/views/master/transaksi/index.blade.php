@@ -47,7 +47,7 @@
                                     @endforeach
                                 </td>
                                 <td>Rp {{number_format($d->total_harga,2,',','.')}}</td>
-                                <td></td>
+                                <td>{{ $d->alamat }}</td>
                                 <td>
                                     @if($d->status_pemesanan == 0) {{-- Pesanan Baru --}}
                                         <span class="badge badge-warning">Verifikasi</span>
@@ -105,6 +105,18 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <label class="col-3 col-form-label">No.Handphone</label>
+                                            <div class="col-8">
+                                                <label id="telp" class="col-form-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-3 col-form-label">Alamat</label>
+                                            <div class="col-8">
+                                                <label id="alamat" class="col-form-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <label class="col-3 col-form-label">Transfer Atas Nama</label>
                                             <div class="col-8">
                                                 <label id="tf_an" class="col-form-label"></label>
@@ -120,6 +132,24 @@
                                             <label class="col-3 col-form-label">Bukti Pembayaran</label>
                                             <div class="col-8">
                                                 <a href="" target="_blank" id="bukti" class="btn btn-sm btn-dark">Lihat</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">Nama Penerima</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" id="nama_penerima" name="nama_penerima" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">No.Handphone Penerima</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" id="no_penerima" name="no_penerima" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-3 col-form-label">Alamat Penerima</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" id="alamat_penerima" name="alamat_penerima" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -198,6 +228,8 @@
             $('#btnSimpan').hide();
         }
 
+        $('#telp').text(item.no_hp);
+        $('#alamat').text(item.alamat);
         $('#kode_trx_pemesanan').val(item.kode_trx_pemesanan);
         $('#kode_pelanggan').val(item.kode_pelanggan);
         $('#kurir').val(item.kurir);

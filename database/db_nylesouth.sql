@@ -11,7 +11,7 @@
  Target Server Version : 100137
  File Encoding         : 65001
 
- Date: 24/07/2021 17:03:21
+ Date: 04/08/2021 10:01:31
 */
 
 SET NAMES utf8mb4;
@@ -90,8 +90,8 @@ CREATE TABLE `data_pemesanan`  (
 -- ----------------------------
 -- Records of data_pemesanan
 -- ----------------------------
-INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0003', '2021-07-24 09:11:05', 2, 872000, '4', NULL, '2021-07-24 16:59:00', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 624000, 8000);
-INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0004', '2021-07-24 09:11:05', 2, 872000, '4', NULL, '2021-07-24 16:59:00', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 240000, 8000);
+INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0003', '2021-07-24 09:11:05', 2, 872000, '3', NULL, '2021-08-04 09:36:29', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 624000, 8000);
+INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0004', '2021-07-24 09:11:05', 2, 872000, '3', NULL, '2021-08-04 09:36:29', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 240000, 8000);
 
 -- ----------------------------
 -- Table structure for data_pengiriman
@@ -109,6 +109,7 @@ CREATE TABLE `data_pengiriman`  (
   `biaya_kirim` double NOT NULL,
   `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `status_pengiriman` smallint(6) NULL DEFAULT NULL,
   PRIMARY KEY (`kode_pengiriman`) USING BTREE,
   INDEX `kode_trx_pemesanan`(`kode_trx_pemesanan`) USING BTREE,
   INDEX `kode_ekspedisi`(`kurir`) USING BTREE
@@ -117,7 +118,7 @@ CREATE TABLE `data_pengiriman`  (
 -- ----------------------------
 -- Records of data_pengiriman
 -- ----------------------------
-INSERT INTO `data_pengiriman` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', NULL, 'Economy Service - (TIKI)', 'jd29838872', '8', NULL, NULL, 8000, '2021-07-24 16:32:56', '2021-07-24 16:32:56');
+INSERT INTO `data_pengiriman` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', NULL, 'Economy Service - (TIKI)', 'jd29838872', 'Bani', '08964567', 'Jalan Akses Ui', 8000, '2021-07-24 16:32:56', '2021-07-24 16:32:56', 1);
 
 -- ----------------------------
 -- Table structure for data_retur
@@ -1024,7 +1025,7 @@ CREATE TABLE `users`  (
   `no_hp` varchar(13) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `users_email_unique`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of users

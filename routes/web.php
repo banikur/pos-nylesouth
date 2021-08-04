@@ -71,6 +71,9 @@ Route::namespace('Transaksi')->group(function () {
         Route::get('/daftar-pesanan/get-pembayaran', 'TransaksiController@get_pembayaran')->name('get_pembayaran');
         Route::post('/daftar-pesanan/verifikasi', 'TransaksiController@verifikasi_pemesanan')->name('verifikasi_pemesanan');
         Route::get('/retur-barang', 'TransaksiController@retur_index')->name('retur');
+        
+        Route::get('/daftar-pengiriman', 'TransaksiController@pengiriman_index')->name('pengiriman');
+        Route::post('/daftar-pengiriman/verifikasi', 'TransaksiController@verifikasi_pengiriman')->name('verifikasi_pengiriman');
     });
 });
 /*TRANSAKSI*/
