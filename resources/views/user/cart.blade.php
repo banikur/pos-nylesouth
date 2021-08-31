@@ -9,7 +9,7 @@
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <a onclick="refresh()" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
-                    <!-- <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a> -->
+                    <a onclick="returnBarang()" class="btn"><i class="glyphicon glyphicon-glyphicon-refresh"></i> RETURN</a>
                 </div>
             </div>
         </div>
@@ -166,13 +166,15 @@
                 @if(!empty($data))
                     @foreach($data as $d)
                         <?php
+                            $id_detail_product = get_master_detail_produk_id($d->kode_produk,$d->kode_ukuran,$d->kode_warna);
                             $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
-                            $sub_total = $d->cart * $data_produk->harga_produk
+                            $sub_total = $d->cart * $data_produk->harga_produk;
                         ?>
                         <input type="hidden" name="id_keranjang[]" value="{{$d->kode_keranjang}}">
                         <input type="hidden" name="kode_produk[]" value="{{$d->kode_produk}}">
                         <input type="hidden" name="jumlah[]" value="{{$d->cart}}">
                         <input type="hidden" name="sub_total[]" value="{{$sub_total}}">
+                        <input type="hidden" name="id_detail_product[]" value="{{$id_detail_product}}">
                     @endforeach
                 @endif
                 <div class="row">
@@ -200,6 +202,20 @@
                 <button type="submit" class="btn btn-primary font-weight-bold">PESAN</button>
             </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-return" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTitleModalReturn">Modal Title</h5>
+                <button type="button" class="close" onclick="reset()" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="munculReturn">
+            </div>
         </div>
     </div>
 </div>
@@ -396,6 +412,28 @@
         //     }
         // })
 
+    }
+
+    function returnBarang(){
+        var kode_pelanggan = '{{Auth::user()->id}}';
+        $('#addTitleModalReturn').text('Return Barang');
+        $.ajax({
+            url: "{{route('transaksi.modal_return_cart')}}",
+            data: {
+                kode_pelanggan: kode_pelanggan,
+            },
+            beforeSend: function() {
+                $('#loader').css('display', 'block');
+            },
+            success: function(data) {
+                $('#loader').css('display', 'none');
+                $('#munculReturn').html(data);
+                $('#modal-return').modal('show');
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
     }
 
     function refresh() {

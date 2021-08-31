@@ -11,7 +11,7 @@
  Target Server Version : 100137
  File Encoding         : 65001
 
- Date: 04/08/2021 10:01:31
+ Date: 30/08/2021 23:06:34
 */
 
 SET NAMES utf8mb4;
@@ -60,12 +60,13 @@ CREATE TABLE `data_pembayaran`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`kode_pembayaran`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_pembayaran
 -- ----------------------------
-INSERT INTO `data_pembayaran` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', 8, 'Brayen', 'semoga cepet sampe', '0', '/uploads/bukti_transfer/cute-bunny-rabbit-girl-with-balloon-flower_20718-186.jpg', '2021-07-24 09:11:05', '2021-07-24 16:11:05');
+INSERT INTO `data_pembayaran` VALUES (1, '2021-08-11 08:23:59/TRX-0001-933', 8, 'Brian', 'semoga', '0', '/uploads/bukti_transfer/login.PNG', '2021-08-11 08:23:59', '2021-08-11 15:23:59');
+INSERT INTO `data_pembayaran` VALUES (2, '2021-08-28 08:16:56/TRX-0002-83', 8, 'AAA', 'AAAA', '0', '/uploads/bukti_transfer/Feed 3.png', '2021-08-28 08:16:56', '2021-08-28 15:16:56');
 
 -- ----------------------------
 -- Table structure for data_pemesanan
@@ -84,14 +85,17 @@ CREATE TABLE `data_pemesanan`  (
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `kurir` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `sub_total` double NULL DEFAULT NULL,
-  `biaya_kirim` double NULL DEFAULT NULL
+  `biaya_kirim` double NULL DEFAULT NULL,
+  `id_detail_produk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `deleted_at` timestamp(0) NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_pemesanan
 -- ----------------------------
-INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0003', '2021-07-24 09:11:05', 2, 872000, '3', NULL, '2021-08-04 09:36:29', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 624000, 8000);
-INSERT INTO `data_pemesanan` VALUES ('2021-07-24 09:11:05/TRX-0001-687', 8, 'NS-0004', '2021-07-24 09:11:05', 2, 872000, '3', NULL, '2021-08-04 09:36:29', '2021-07-24 16:11:05', 'Economy Service - (TIKI)', 240000, 8000);
+INSERT INTO `data_pemesanan` VALUES ('2021-08-11 08:23:59/TRX-0001-933', 8, 'NS-0003', '2021-08-11 08:23:59', 2, 872000, '4', NULL, '2021-08-28 18:31:23', '2021-08-11 15:23:59', 'Economy Service - (TIKI)', 624000, 8000, 'BN-NS-0003-705', '2021-08-28 11:31:23');
+INSERT INTO `data_pemesanan` VALUES ('2021-08-11 08:23:59/TRX-0001-933', 8, 'NS-0004', '2021-08-11 08:23:59', 2, 872000, '4', NULL, '2021-08-11 15:56:14', '2021-08-11 15:23:59', 'Economy Service - (TIKI)', 240000, 8000, 'BN-NS-0004-563', NULL);
+INSERT INTO `data_pemesanan` VALUES ('2021-08-28 08:16:56/TRX-0002-83', 8, 'NS-0003', '2021-08-28 08:16:56', 1, 320000, '4', NULL, '2021-08-28 15:19:19', '2021-08-28 15:16:56', 'Economy Service - (TIKI)', 312000, 8000, 'BN-NS-0003-666', NULL);
 
 -- ----------------------------
 -- Table structure for data_pengiriman
@@ -118,7 +122,7 @@ CREATE TABLE `data_pengiriman`  (
 -- ----------------------------
 -- Records of data_pengiriman
 -- ----------------------------
-INSERT INTO `data_pengiriman` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', NULL, 'Economy Service - (TIKI)', 'jd29838872', 'Bani', '08964567', 'Jalan Akses Ui', 8000, '2021-07-24 16:32:56', '2021-07-24 16:32:56', 1);
+INSERT INTO `data_pengiriman` VALUES (1, '2021-08-11 08:23:59/TRX-0001-933', NULL, 'Economy Service - (TIKI)', 'J8456JDA45678', 'Brayen Prayoga', '56789765', 'Centex', 8000, '2021-08-11 15:48:42', '2021-08-11 15:48:42', 1);
 
 -- ----------------------------
 -- Table structure for data_retur
@@ -126,17 +130,26 @@ INSERT INTO `data_pengiriman` VALUES (1, '2021-07-24 09:11:05/TRX-0001-687', NUL
 DROP TABLE IF EXISTS `data_retur`;
 CREATE TABLE `data_retur`  (
   `kode_retur` int(11) NOT NULL AUTO_INCREMENT,
-  `kode_trx_pemesanan` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `kode_trx_pemesanan` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `kode_pelanggan` int(11) NOT NULL,
   `alasan_retur` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status_retur` char(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `retur_foto_folder_path` int(11) NOT NULL,
-  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `retur_foto_folder_path` int(11) NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `kode_produk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `kode_warna` int(11) NULL DEFAULT NULL,
+  `kode_ukuran` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `jumlah` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`kode_retur`) USING BTREE,
   INDEX `kode_trx_pemesanan`(`kode_trx_pemesanan`) USING BTREE,
   INDEX `kode_pelanggan`(`kode_pelanggan`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_retur
+-- ----------------------------
+INSERT INTO `data_retur` VALUES (2, NULL, 8, 'kekecilan', '1', NULL, '2021-08-28 18:31:23', '2021-08-28 18:31:23', 'NS-0003', 1, 'M', 2);
 
 -- ----------------------------
 -- Table structure for keranjang_belanja
@@ -153,19 +166,21 @@ CREATE TABLE `keranjang_belanja`  (
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `berat_barang` decimal(11, 2) NULL DEFAULT NULL,
   `status` int(1) NULL DEFAULT NULL,
+  `deleted_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`kode_keranjang`) USING BTREE,
   INDEX `kode_produk`(`kode_produk`(191)) USING BTREE,
   INDEX `kode_pelanggan`(`kode_pelanggan`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of keranjang_belanja
 -- ----------------------------
-INSERT INTO `keranjang_belanja` VALUES (1, 'NS-0004', 'L', 2, 1, 3, '2021-05-23 14:50:45', NULL, 0.37, NULL);
-INSERT INTO `keranjang_belanja` VALUES (2, 'NS-0004', 'M', 2, 3, 3, '2021-05-23 14:51:36', NULL, 0.40, NULL);
-INSERT INTO `keranjang_belanja` VALUES (3, 'NS-0004', 'L', 5, 1, 1, '2021-07-10 07:29:42', '2021-07-10 14:29:42', NULL, NULL);
-INSERT INTO `keranjang_belanja` VALUES (4, 'NS-0003', 'M', 8, 1, 2, '2021-07-11 08:27:00', '2021-07-10 17:51:27', NULL, 1);
-INSERT INTO `keranjang_belanja` VALUES (5, 'NS-0004', 'M', 8, 3, 2, '2021-07-11 08:47:38', '2021-07-10 17:51:27', NULL, 1);
+INSERT INTO `keranjang_belanja` VALUES (1, 'NS-0004', 'L', 2, 1, 3, '2021-05-23 14:50:45', NULL, 0.37, NULL, NULL);
+INSERT INTO `keranjang_belanja` VALUES (2, 'NS-0004', 'M', 2, 3, 3, '2021-05-23 14:51:36', NULL, 0.40, NULL, NULL);
+INSERT INTO `keranjang_belanja` VALUES (3, 'NS-0004', 'L', 5, 1, 1, '2021-07-10 07:29:42', '2021-07-10 14:29:42', NULL, NULL, NULL);
+INSERT INTO `keranjang_belanja` VALUES (4, 'NS-0003', 'M', 8, 1, 2, '2021-07-11 08:27:00', '2021-07-10 17:51:27', NULL, 1, '2021-08-28 11:31:23');
+INSERT INTO `keranjang_belanja` VALUES (5, 'NS-0004', 'M', 8, 3, 2, '2021-07-11 08:47:38', '2021-07-10 17:51:27', NULL, 1, NULL);
+INSERT INTO `keranjang_belanja` VALUES (6, 'NS-0003', 'L', 8, 1, 1, '2021-08-28 08:15:45', '2021-08-28 15:15:45', NULL, 1, NULL);
 
 -- ----------------------------
 -- Table structure for master_kab_kota
@@ -835,9 +850,9 @@ INSERT INTO `master_produk_inventori` VALUES (10, 'BN-NS-0002-358', 100, NULL, 1
 INSERT INTO `master_produk_inventori` VALUES (11, 'BN-NS-0002-851', 100, NULL, 100, '2021-05-22 14:52:28.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (12, 'BN-NS-0002-640', 100, NULL, 100, '2021-05-22 14:52:28.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (13, 'BN-NS-0003-19', 100, NULL, 100, '2021-05-22 14:53:07.000000', NULL, NULL);
-INSERT INTO `master_produk_inventori` VALUES (14, 'BN-NS-0003-705', 100, NULL, 100, '2021-05-22 14:53:07.000000', NULL, NULL);
+INSERT INTO `master_produk_inventori` VALUES (14, 'BN-NS-0003-705', 100, 0, 100, '2021-05-22 14:53:07.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (15, 'BN-NS-0003-666', 100, NULL, 100, '2021-05-22 14:53:07.000000', NULL, NULL);
-INSERT INTO `master_produk_inventori` VALUES (16, 'BN-NS-0004-563', 100, NULL, 100, '2021-05-22 14:53:36.000000', NULL, NULL);
+INSERT INTO `master_produk_inventori` VALUES (16, 'BN-NS-0004-563', 100, 2, 100, '2021-05-22 14:53:36.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (17, 'BN-NS-0004-356', 100, NULL, 100, '2021-05-22 14:53:36.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (18, 'BN-NS-0004-58', 100, NULL, 100, '2021-05-22 14:53:36.000000', NULL, NULL);
 INSERT INTO `master_produk_inventori` VALUES (19, 'BN-NS-0004-808', 100, NULL, 100, '2021-05-22 14:53:36.000000', NULL, NULL);

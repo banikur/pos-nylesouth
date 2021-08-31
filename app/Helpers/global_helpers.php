@@ -144,12 +144,11 @@ if (!function_exists('get_master_provinsi')) {
 	}
 }
 
-if (!function_exists('get_master_pesanan')) {
-	function get_master_pesanan()
+if (!function_exists('get_data_return')) {
+	function get_data_return()
 	{
-		return DB::table('data_pemesanan')->select('users.alamat','users.no_hp','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
-		->join('users','users.id','data_pemesanan.kode_pelanggan')
-		->groupBy('users.alamat','users.no_hp','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
+		return DB::table('data_retur')
+		->join('users','users.id','data_retur.kode_pelanggan')	
 		->get();
 	}
 }
@@ -244,6 +243,19 @@ if (!function_exists('get_detail_ukuran_id')) {
 			->where('initial_produk', base64_decode($id))
 			->groupBy('ukuran')
 			->get();
+	}
+}
+
+if (!function_exists('get_master_detail_produk_id')) {
+	function get_master_detail_produk_id($kode_produk, $kode_ukuran, $kode_warna)
+	{
+		$detail_produk = DB::table('master_produk_detail')
+			->where('initial_produk', $kode_produk)
+			->where('ukuran', $kode_ukuran)
+			->where('warna', $kode_warna)
+			->first();
+
+		return !empty($detail_produk) ? $detail_produk->id_detail_produk : '';
 	}
 }
 

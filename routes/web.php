@@ -71,6 +71,7 @@ Route::namespace('Transaksi')->group(function () {
         Route::get('/daftar-pesanan/get-pembayaran', 'TransaksiController@get_pembayaran')->name('get_pembayaran');
         Route::post('/daftar-pesanan/verifikasi', 'TransaksiController@verifikasi_pemesanan')->name('verifikasi_pemesanan');
         Route::get('/retur-barang', 'TransaksiController@retur_index')->name('retur');
+        Route::post('/retur-barang/verifikasi', 'TransaksiController@verifikasi_return')->name('verifikasi_return');
         
         Route::get('/daftar-pengiriman', 'TransaksiController@pengiriman_index')->name('pengiriman');
         Route::post('/daftar-pengiriman/verifikasi', 'TransaksiController@verifikasi_pengiriman')->name('verifikasi_pengiriman');
@@ -87,4 +88,8 @@ Route::name('transaksi.')->group(function () {
     Route::post('update_modal_cart', 'Transaksi\TransaksiController@update_modal_cart')->name('update_modal_cart');
     Route::get('modal_cart/hapus/{id_cart}', 'Transaksi\TransaksiController@modal_hapus_cart')->name('modal_hapus_cart');
     Route::post('modal_cart/checkout', 'Transaksi\TransaksiController@modal_checkout_cart')->name('modal_checkout_cart');
+    Route::get('modal_cart/return', 'Transaksi\TransaksiController@modal_return_cart')->name('modal_return_cart');
+    Route::get('modal_cart/return/get-produk', 'Transaksi\TransaksiController@get_produk_in_keranjang')->name('get_produk_in_keranjang');
+    Route::get('modal_cart/return/get-produk-jumlah', 'Transaksi\TransaksiController@get_produk_jumlah_in_keranjang')->name('get_produk_jumlah_in_keranjang');
+    Route::post('update_modal_return', 'Transaksi\TransaksiController@update_modal_return')->name('update_modal_return');
 });

@@ -65,12 +65,14 @@ class TransaksiController extends Controller
 
     function verifikasi_pemesanan(Request $request){
 
+        // update status data_pemesanan
         $verifikasiPemesanan = DB::table('data_pemesanan')
                             ->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)
                             ->where('kode_pelanggan', $request->kode_pelanggan)
                             ->update(['status_pemesanan'=>$request->status]);
 
-        if($request->status == 3 || $request->status == 4){        
+        if($request->status == 3 || $request->status == 4){   
+            //Insert ke data_pengiriman     
             $data = [
                 'kode_trx_pemesanan'    => $request->kode_trx_pemesanan,
                 'kurir'                 => $request->kurir,
@@ -88,8 +90,26 @@ class TransaksiController extends Controller
             }else{
                 DB::table('data_pengiriman')->insert($data);
             }
-        }
 
+        }
+        
+        // update stock out di master_produk_inventori
+        if($request->status == 4){
+            $countJumlah = count($request->jumlah);
+            for($i = 0; $i<$countJumlah;$i++)
+            {
+                $stock_out = DB::table('master_produk_inventori')->where('initial_produk', $request->id_detail_produk[$i])->first();
+
+                if(!empty($stock_out)){
+                    $tambah_out = (int)$request->jumlah[$i] + $stock_out->out;
+                }else{
+                    $tambah_out = (int)$request->jumlah[$i];
+                }
+                
+                $update = DB::table('master_produk_inventori')->where('initial_produk', $request->id_detail_produk[$i])
+                ->update(['out'=>$tambah_out]);
+            }
+        }
 
         return redirect()->back()->with(['success'=>'Data Update']);
     }
@@ -205,6 +225,7 @@ class TransaksiController extends Controller
                 'biaya_kirim'      => $request->biaya_kirim,
                 'total_harga'    => $request->total_harga,
                 'status_pemesanan' => 0,
+                'id_detail_produk' => $request->id_detail_product[$i],
                 'created_at'     => $datenow
             ]);
             DB::table('keranjang_belanja')->where('kode_keranjang', $request->id_keranjang[$i])->update(['status'=>1]);
@@ -228,5 +249,106 @@ class TransaksiController extends Controller
         DB::table('data_pembayaran')->insert($pembayanan);
 
         return redirect()->back()->with(['success'=>'Data Simpan']);
+    }
+
+    public function modal_return_cart(Request $request){
+        $data['kode_pelanggan'] = $request->kode_pelanggan;
+        $data['pemesanan'] = DB::table('data_pemesanan')->select('kode_produk')
+                        ->where('kode_pelanggan', $data['kode_pelanggan'])
+                        ->where('status_pemesanan', 4)
+                        ->groupBy('kode_produk')
+                        ->whereNull('deleted_at')
+                        ->get();
+
+        return view('user.modal_return', $data);
+    }
+
+    public function get_produk_in_keranjang(Request $request){
+        $data['kode_pelanggan'] = $request->kode_pelanggan;
+        $data['kode_produk'] = $request->kode_produk;
+
+        $data['initial_product'] = base64_encode($data['kode_produk']);
+
+        $data['keranjang'] = DB::table('keranjang_belanja')
+                    ->where('kode_pelanggan', $data['kode_pelanggan'])
+                    ->where('kode_produk', $data['kode_produk'])
+                    ->where('status', 1)
+                    ->whereNull('deleted_at')
+                    ->get();
+        
+        return view('user.modal_return_view', $data);
+    }
+
+    public function get_produk_jumlah_in_keranjang(Request $request){
+        $kode_pelanggan = $request->kode_pelanggan;
+        $kode_produk = $request->kode_produk;
+        $kode_warna = $request->kode_warna;
+        $kode_ukuran = $request->kode_ukuran;
+
+        $keranjang = DB::table('keranjang_belanja')
+                    ->where('kode_pelanggan', $kode_pelanggan)
+                    ->where('kode_produk', $kode_produk)
+                    ->where('kode_warna', $kode_warna)
+                    ->where('kode_ukuran', $kode_ukuran)
+                    ->where('status', 1)
+                    ->first();
+
+        echo json_encode($keranjang);
+    }
+
+    public function update_modal_return(Request $request){
+
+        $detail_produk = DB::table('master_produk_detail')
+                        ->where('initial_produk', $request->produkReturn)
+                        ->where('ukuran', $request->kode_ukuran)
+                        ->where('warna', $request->kode_warna)
+                        ->first();
+
+        //update pemesanan dan keranjang untuk return ulang
+        $update_pemesanan = DB::table('data_pemesanan')
+                ->where('id_detail_produk', $detail_produk->id_detail_produk)
+                ->update(['deleted_at'=>date('Y-m-d H:i:s')]);
+        $update_keranjang = DB::table('keranjang_belanja')
+                ->where('kode_produk', $request->produkReturn)
+                ->where('kode_ukuran', $request->kode_ukuran)
+                ->where('kode_pelanggan', $request->kode_pelanggan)
+                ->where('kode_warna', $request->kode_warna)
+                ->update(['deleted_at'=>date('Y-m-d H:i:s')]);
+
+        $data = [
+            'kode_pelanggan'    => $request->kode_pelanggan,
+            'kode_produk'       => $request->produkReturn,
+            'kode_warna'        => $request->kode_warna,
+            'kode_ukuran'       => $request->kode_ukuran,
+            'alasan_retur'      => $request->alasan,
+            'jumlah'            => $request->jumlah,
+            'status_retur'      => 0,
+        ];
+        DB::table('data_retur')->insert($data);
+
+        return redirect()->back()->with('message', 'success');
+    }
+
+    public function verifikasi_return(Request $request){
+
+        $detail_produk = DB::table('master_produk_detail')
+                        ->where('initial_produk', $request->kode_produk)
+                        ->where('ukuran', $request->kode_ukuran)
+                        ->where('warna', $request->kode_warna)
+                        ->first();
+                        
+        // update stok
+        if($request->status == 1){
+            $stok = DB::table('master_produk_inventori')->where('initial_produk', $detail_produk->id_detail_produk)->first();
+            $kurang_out = (int)$stok->out - (int)$request->jumlah;
+            $update_stok = DB::table('master_produk_inventori')
+                        ->where('initial_produk', $detail_produk->id_detail_produk)
+                        ->update(['out'=>$kurang_out]);
+        }
+
+        // update status retur
+        $update_return = DB::table('data_retur')->where('kode_retur', $request->kode_retur)->update(['status_retur'=>$request->status]);
+
+        return redirect()->back()->with('message', 'success');
     }
 }

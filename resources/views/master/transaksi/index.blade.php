@@ -93,6 +93,10 @@
                         <div class="card card-custom">
                             <div class="card-body">
                                 <div class="row">
+                                    @foreach($detail as $il)
+                                    <input type="hidden" id="jumlah" name="jumlah[]" value="{{$il->jumlah}}">
+                                    <input type="hidden" id="id_detail_produk" name="id_detail_produk[]" value="{{$il->id_detail_produk}}">
+                                    @endforeach
                                     <input type="hidden" id="kode_trx_pemesanan" name="kode_trx_pemesanan">
                                     <input type="hidden" id="kode_pelanggan" name="kode_pelanggan">
                                     <input type="hidden" id="kurir" name="kurir">
@@ -101,18 +105,21 @@
                                         <div class="row">
                                             <label class="col-3 col-form-label">Nama Pelanggan</label>
                                             <div class="col-8">
+                                                <input type="hidden" id="nama_pelanggan_val" name="nama_penerima">
                                                 <label id="nama_pelanggan" class="col-form-label"></label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label class="col-3 col-form-label">No.Handphone</label>
                                             <div class="col-8">
+                                                <input type="hidden" id="telp_val" name="no_penerima">
                                                 <label id="telp" class="col-form-label"></label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label class="col-3 col-form-label">Alamat</label>
                                             <div class="col-8">
+                                                <input type="hidden" id="alamat_val" name="alamat_penerima">
                                                 <label id="alamat" class="col-form-label"></label>
                                             </div>
                                         </div>
@@ -132,24 +139,6 @@
                                             <label class="col-3 col-form-label">Bukti Pembayaran</label>
                                             <div class="col-8">
                                                 <a href="" target="_blank" id="bukti" class="btn btn-sm btn-dark">Lihat</a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-3 col-form-label">Nama Penerima</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="nama_penerima" name="nama_penerima" autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-3 col-form-label">No.Handphone Penerima</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="no_penerima" name="no_penerima" autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-3 col-form-label">Alamat Penerima</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="alamat_penerima" name="alamat_penerima" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -219,6 +208,7 @@
             kode_pelanggan:item.kode_pelanggan,
         },function(data){
             $('#nama_pelanggan').text(data.nama[0].name);
+            $('#nama_pelanggan_val').val(data.nama[0].name);
             $('#tf_an').text(data.pembayaran[0].transfer_atas_nama);
             $('#catatan').text(data.pembayaran[0].notes);
             $('#bukti').attr('href','{{url('')}}'+data.pembayaran[0].pembayaran_foto_folder_path);
@@ -229,7 +219,9 @@
         }
 
         $('#telp').text(item.no_hp);
+        $('#telp_val').val(item.no_hp);
         $('#alamat').text(item.alamat);
+        $('#alamat_val').val(item.alamat);
         $('#kode_trx_pemesanan').val(item.kode_trx_pemesanan);
         $('#kode_pelanggan').val(item.kode_pelanggan);
         $('#kurir').val(item.kurir);
