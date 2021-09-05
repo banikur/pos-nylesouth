@@ -192,7 +192,7 @@ if (!function_exists('get_stok')) {
 	function get_stok($id)
 	{
 		$data = DB::table('master_produk_inventori')->where('initial_produk', $id)->first();
-		$retVal = (!empty($data)) ? $data->stock : 'Tidak Ditemukan';
+		$retVal = (!empty($data)) ? $data->in - $data->out : 'Tidak Ditemukan';
 		return $retVal;
 	}
 }

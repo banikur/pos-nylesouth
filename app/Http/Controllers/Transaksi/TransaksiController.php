@@ -315,16 +315,36 @@ class TransaksiController extends Controller
                 ->where('kode_warna', $request->kode_warna)
                 ->update(['deleted_at'=>date('Y-m-d H:i:s')]);
 
-        $data = [
-            'kode_pelanggan'    => $request->kode_pelanggan,
-            'kode_produk'       => $request->produkReturn,
-            'kode_warna'        => $request->kode_warna,
-            'kode_ukuran'       => $request->kode_ukuran,
-            'alasan_retur'      => $request->alasan,
-            'jumlah'            => $request->jumlah,
-            'status_retur'      => 0,
-        ];
-        DB::table('data_retur')->insert($data);
+        $cekReturnBarang = DB::table('data_retur')
+                        ->where('kode_pelanggan', $request->kode_pelanggan)
+                        ->where('kode_produk', $request->produkReturn)
+                        ->where('kode_warna', $request->kode_warna)
+                        ->where('kode_ukuran', $request->kode_ukuran)
+                        ->where('jumlah', $request->jumlah)
+                        ->where('status_retur', 2);
+        if($cekReturnBarang->count() > 0){
+            $data = [
+                'kode_pelanggan'    => $request->kode_pelanggan,
+                'kode_produk'       => $request->produkReturn,
+                'kode_warna'        => $request->kode_warna,
+                'kode_ukuran'       => $request->kode_ukuran,
+                'alasan_retur'      => $request->alasan,
+                'jumlah'            => $request->jumlah,
+                'status_retur'      => 0,
+            ];
+            $cekReturnBarang->update($data);
+        }else{
+            $data = [
+                'kode_pelanggan'    => $request->kode_pelanggan,
+                'kode_produk'       => $request->produkReturn,
+                'kode_warna'        => $request->kode_warna,
+                'kode_ukuran'       => $request->kode_ukuran,
+                'alasan_retur'      => $request->alasan,
+                'jumlah'            => $request->jumlah,
+                'status_retur'      => 0,
+            ];
+            DB::table('data_retur')->insert($data);
+        }
 
         return redirect()->back()->with('message', 'success');
     }
@@ -344,6 +364,16 @@ class TransaksiController extends Controller
             $update_stok = DB::table('master_produk_inventori')
                         ->where('initial_produk', $detail_produk->id_detail_produk)
                         ->update(['out'=>$kurang_out]);
+        }elseif($request->status == 2){
+            $update_pemesanan = DB::table('data_pemesanan')
+                    ->where('id_detail_produk', $detail_produk->id_detail_produk)
+                    ->update(['deleted_at'=>null]);
+            $update_keranjang = DB::table('keranjang_belanja')
+                    ->where('kode_produk', $request->kode_produk)
+                    ->where('kode_ukuran', $request->kode_ukuran)
+                    ->where('kode_pelanggan', $request->kode_pelanggan)
+                    ->where('kode_warna', $request->kode_warna)
+                    ->update(['deleted_at'=>null]);
         }
 
         // update status retur

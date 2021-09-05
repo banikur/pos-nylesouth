@@ -87,6 +87,7 @@
                                         <input type="hidden" name="kode_produk" id="kode_produk_val">
                                         <input type="hidden" name="kode_ukuran" id="kode_ukuran_val">
                                         <input type="hidden" name="kode_warna" id="kode_warna_val">
+                                        <input type="hidden" name="kode_pelanggan" id="kode_pelanggan_val">
                                         <input type="hidden" name="jumlah" id="jumlah_val">
                                         <div class="row">
                                             <label class="col-3 col-form-label">Nama Pelanggan</label>
@@ -174,15 +175,23 @@
     function verif(obj) {
         
         var item = $(obj).data('item');
-        
+        console.log(item);
         $('#kode_retur').val(item.kode_retur);
         $('#nama').text(item.name);
         $('#telp').text(item.no_hp);
         $('#alamat').text(item.alamat);
         $('#kode_produk').text(item.kode_produk);
+        $('#kode_pelanggan_val').val(item.kode_pelanggan);
         $('#jumlah').text(item.jumlah);
         $('#alasan').text(item.alasan_retur);
         $('#status').val(item.status_retur);
+        if(item.status_retur == 1){
+            $('#status').attr('disabled', true);
+            $('#btnSimpan').hide();
+        }else{
+            $('#status').attr('disabled', false);
+            $('#btnSimpan').show();
+        }
         
         $('#kode_produk_val').val(item.kode_produk);
         $('#kode_warna_val').val(item.kode_warna);

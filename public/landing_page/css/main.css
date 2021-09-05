@@ -2890,6 +2890,11 @@ span.color-red {
     width: 33%;
     float: left;
 }
+.mainmenu .mainmenu-submenu-inner>table {
+    width: 90%;
+    margin: 50px;
+    color: black;
+}
 
 .mainmenu .mainmenu-submenu-inner:before,
 .mainmenu .mainmenu-submenu-inner:after {

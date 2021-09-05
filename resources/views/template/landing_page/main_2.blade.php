@@ -98,6 +98,46 @@
                     @if (Route::has('login'))
 
                     @auth
+                    <li class="has-submenu">
+                        <a href="#">List Retur</a>
+                        <div class="mainmenu-submenu">
+                            <div class="mainmenu-submenu-inner">
+                                <?php $no=1; $dataPemesanan = DB::table('data_retur')->where('kode_pelanggan', Auth::user()->id)->get(); ?>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Produk</th>
+                                        <th>Jumlah</th>
+                                        <th>Warna</th>
+                                        <th>Ukuran</th>
+                                        <th>Alasan Retur</th>
+                                        <th><center>Status</center></th>
+                                    </tr>
+                                    @foreach ($dataPemesanan as $dp)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ get_master_produk_id(base64_encode($dp->kode_produk))->nama_produk }}</td>
+                                        <td>{{ $dp->jumlah }}</td>
+                                        <td>{{ get_warna_id($dp->kode_warna)->nama_warna }}</td>
+                                        <td>{{ $dp->kode_ukuran }}</td>
+                                        <td>{{ $dp->alasan_retur }}</td>
+                                        <td>
+                                            <center>
+                                            @if($dp->status_retur == 0)
+                                                <span class="label label-warning">Pengajuan Return</span>
+                                            @elseif($dp->status_retur == 1)
+                                                <span class="label label-success">Approve</span>
+                                            @elseif($dp->status_retur == 2)
+                                                <span class="label label-danger">Tolak</span>
+                                            @endif
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </table>
+                            </div><!-- /mainmenu-submenu-inner -->
+                        </div><!-- /mainmenu-submenu -->
+                    </li>
                     <li class="pull-right">
                         <a href="{{route('cart')}}">Cart</a>
                     </li>

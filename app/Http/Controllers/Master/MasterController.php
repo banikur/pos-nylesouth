@@ -203,7 +203,6 @@ class MasterController extends Controller
                     [
                         'initial_produk' => $id_detail,
                         'in' => $request->stok_awal_produk,
-                        'stock' => $request->stok_awal_produk,
                         'created_at' => date('Y-m-d H:i:s'),
                     ]
                 );
