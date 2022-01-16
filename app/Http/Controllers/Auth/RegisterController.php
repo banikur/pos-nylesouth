@@ -67,19 +67,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $event = new \stdClass();
-        $datenow = date('Y-m-d');
+        try {
+            $event = new \stdClass();
+            $datenow = date('Y-m-d');
 
-        $event->senderEmail = $data['email'];
-        $event->email = $data['email']; 
-        $event->senderName = 'no-reply';
-        $event->subject = 'REGISTRASI APLIKASI POS-NYLESOUTH';
-        $event->message = '';  
-        $event->name = $data['name'];
-        $event->password = $data['password'];
-        $event->tanggal = $datenow;       
-        Mail::send((new RegisterMail($event))->delay(30));
-
+            $event->senderEmail = $data['email'];
+            $event->email = $data['email'];
+            $event->senderName = 'no-reply';
+            $event->subject = 'REGISTRASI APLIKASI POS-NYLESOUTH';
+            $event->message = '';
+            $event->name = $data['name'];
+            $event->password = $data['password'];
+            $event->tanggal = $datenow;
+            Mail::send((new RegisterMail($event))->delay(30));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -90,5 +93,4 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
         ]);
     }
-
 }
