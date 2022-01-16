@@ -40,7 +40,6 @@ class LoginController extends Controller
 
     public function post_logout(Request $request)
     {
-        dd($request);
         $this->guard()->logout();
 
         $request->session()->invalidate();
