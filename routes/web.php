@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+ 
 Route::get('/', 'VerifiedController@index')->name('/');
 Route::get('/detail-produk', 'VerifiedController@detail_index')->name('detail');
 Route::get('/testapi', 'VerifiedController@testapi')->name('testapi');
