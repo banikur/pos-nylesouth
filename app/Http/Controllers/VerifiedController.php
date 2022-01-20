@@ -261,64 +261,71 @@ class VerifiedController extends Controller
         $service = [];
         $data = [];
         $curl = curl_init();
-        foreach ($courier as $key => $value) {
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "origin=115&destination=" . $destination . "&weight=" . $weight . "&courier=" . $value . "",
-                CURLOPT_HTTPHEADER => array(
-                    "content-type: application/x-www-form-urlencoded",
-                    "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
-                ),
-            ));
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            curl_close($curl);
-            if ($err) {
-                #code...
-            } else {
-                $res = json_decode($response, true);
-                $collection = $res['rajaongkir']['results'];
-                foreach ($collection as $keys) {
-                    array_push($service, $keys['costs']);
+        $temporary = [];
+        try {
+            foreach ($courier as $key => $value) {
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "http://api.rajaongkir.com/starter/cost",
+                    CURLOPT_SSL_VERIFYHOST => 2,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => "origin=115&destination=" . $destination . "&weight=" . $weight . "&courier=" . $value . "",
+                    CURLOPT_HTTPHEADER => array(
+                        "content-type: application/x-www-form-urlencoded",
+                        "key: 201d76bd2640e0b8714aceaf99491249"
+                    ),
+                ));
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                curl_close($curl);
+
+                if ($err) {
+                    #code...
+                } else {
+                    $res = json_decode($response, true);
+                    $collection = $res['rajaongkir']['results'];
+                    foreach ($collection as $keys) {
+                        array_push($service, $keys['costs']);
+                    }
                 }
             }
+            
+            for ($t = 0; $t < count($service[0]); $t++) {
+                array_push($temporary, [
+                    'jenis_pelayanan' => $service[0][$t]['description'] . ' - ' .  '(TIKI)',
+                    'estimasi' => $service[0][$t]['cost'][0]['etd'],
+                    'biaya' => $service[0][$t]['cost'][0]['value']
+                ]);
+            }
+            for ($p = 0; $p < count($service[1]); $p++) {
+                array_push($temporary, [
+                    'jenis_pelayanan' => $service[1][$p]['description'] . ' - ' . '(POS INDONESIA)',
+                    'estimasi' => $service[1][$p]['cost'][0]['etd'],
+                    'biaya' => $service[1][$p]['cost'][0]['value']
+                ]);
+            }
+            
+            for ($j = 0; $j < count($service[2]); $j++) {
+                array_push($temporary, [
+                    'jenis_pelayanan' =>  $service[2][$j]['description'] . ' - ' . '(JNE)',
+                    'estimasi' => $service[2][$j]['cost'][0]['etd'],
+                    'biaya' => $service[2][$j]['cost'][0]['value']
+                ]);
+            }
+            if (empty($temporary)) {
+                echo "cURL Error #:" . $err;
+            } else {
+                return $this->responseData($temporary);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        $temporary = [];
 
-        for ($t = 0; $t < count($service[0]); $t++) {
-            array_push($temporary, [
-                'jenis_pelayanan' => $service[0][$t]['description'] . ' - ' .  '(TIKI)',
-                'estimasi' => $service[0][$t]['cost'][0]['etd'],
-                'biaya' => $service[0][$t]['cost'][0]['value']
-            ]);
-        }
-        for ($p = 0; $p < count($service[1]); $p++) {
-            array_push($temporary, [
-                'jenis_pelayanan' => $service[0][$p]['description'] . ' - ' . '(POS INDONESIA)',
-                'estimasi' => $service[0][$p]['cost'][0]['etd'],
-                'biaya' => $service[0][$p]['cost'][0]['value']
-            ]);
-        }
-        for ($j = 0; $j < count($service[2]); $j++) {
-            array_push($temporary, [
-                'jenis_pelayanan' =>  $service[0][$j]['description'] . ' - ' . '(JNE)',
-                'estimasi' => $service[0][$j]['cost'][0]['etd'],
-                'biaya' => $service[0][$j]['cost'][0]['value']
-            ]);
-        }
-        if (empty($temporary)) {
-            echo "cURL Error #:" . $err;
-        } else {
-            return $this->responseData($temporary);
-        }
-        // dd($temporary);
     }
 
     public function pecah1($service)
