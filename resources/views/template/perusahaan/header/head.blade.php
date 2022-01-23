@@ -38,6 +38,14 @@
 <!-- <script type="text/javascript" src="{{url('fusioncharts/js/fusioncharts.js')}}"></script>
 <script type="text/javascript" src="{{url('fusioncharts/js/themes/fusioncharts.theme.fusion.js')}}"></script> -->
 
+{{--Highchart--}}
+<script src="{{ asset('/highchart/code/highcharts.js') }}"></script>
+<script src="{{ asset('/highchart/code/highcharts-more.js') }}"></script>
+<script src="{{ asset('/highchart/code/modules/data.js') }}"></script>
+<script src="{{ asset('/highchart/code/modules/drilldown.js') }}"></script>
+<script src="{{ asset('/highchart/code/modules/exporting.js') }}"></script>
+<script src="{{ asset('/highchart/code/modules/export-data.js') }}"></script>
+<script src="{{ asset('/highchart/code/modules/variable-pie.js') }}"></script>
 
 <script>
     /* (function(h, o, t, j, a, r) {

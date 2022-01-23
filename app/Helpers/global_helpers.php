@@ -147,6 +147,16 @@ if (!function_exists('get_data_return')) {
 	}
 }
 
+if (!function_exists('get_master_pesanan')) {
+	function get_master_pesanan()
+	{
+		return DB::table('data_pemesanan')->select('users.alamat','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
+		->join('users','users.id','data_pemesanan.kode_pelanggan')
+		->groupBy('users.alamat','kode_trx_pemesanan','kode_pelanggan','name','total_harga','status_pemesanan','biaya_kirim','kurir')
+		->get();
+	}
+}
+
 if (!function_exists('get_master_pesanan_detail')) {
 	function get_master_pesanan_detail($kode_trx_pemesanan, $kode_pelanggan)
 	{

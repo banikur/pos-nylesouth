@@ -18,6 +18,12 @@
                     <span class="menu-text">Beranda</span>
                 </a>
             </li>
+            <li class="menu-item" aria-haspopup="true">
+                <a href="{{ route('dashboard') }}" class="menu-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <span class="menu-icon fa fa-chart-line text-primary"></span>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </li>
             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                 <a href="javascript:;" class="menu-link menu-toggle" data-toggle="tooltip" data-placement="right" title="">
                     <span class="menu-icon fas fa-archive text-primary">

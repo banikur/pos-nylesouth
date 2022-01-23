@@ -65,6 +65,12 @@ Route::namespace('Master')->group(function () {
     });
     /*END MODAL FORM*/
 });
+Route::namespace('Dashboard')->group(function () {
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/grafik-produk-terjual', 'DashboardController@GrafikProdukTerjual')->name('GrafikProdukTerjual');
+    Route::get('/grafik-stok-terjual', 'DashboardController@GrafikStokProduk')->name('GrafikProdukTerjual');
+    Route::get('/grafik-laporan-pemasaran', 'DashboardController@GrafikLaporanPemasaran')->name('GrafikLaporanPemasaran');
+});
 Route::namespace('Transaksi')->group(function () {
     Route::prefix('verifikasi')->name('init.')->group(function () {
         Route::get('/daftar-pesanan', 'TransaksiController@pemesanan_index')->name('pemesanan');

@@ -65,6 +65,8 @@ class TransaksiController extends Controller
 
     function verifikasi_pemesanan(Request $request){
 
+        date_default_timezone_set("Asia/Bangkok");
+
         // update status data_pemesanan
         $verifikasiPemesanan = DB::table('data_pemesanan')
                             ->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)
@@ -72,17 +74,18 @@ class TransaksiController extends Controller
                             ->update(['status_pemesanan'=>$request->status]);
 
         if($request->status == 3 || $request->status == 4){   
-            //Insert ke data_pengiriman     
-            $data = [
-                'kode_trx_pemesanan'    => $request->kode_trx_pemesanan,
-                'kurir'                 => $request->kurir,
-                'nomor_resi'            => $request->no_resi,
-                'biaya_kirim'           => $request->biaya_kirim,
-                'nama_penerima'         => $request->nama_penerima,
-                'no_hp_penerima'        => $request->no_penerima,
-                'alamat_kirim'          => $request->alamat_penerima,
-                'status_pengiriman'     => ($request->status == 3) ? 0 : 1,
-            ];
+            //Insert ke data_pengiriman   
+            $data['kode_trx_pemesanan']    = $request->kode_trx_pemesanan;
+            $data['kurir']                 = $request->kurir;
+            $data['nomor_resi']            = $request->no_resi;
+            $data['biaya_kirim']           = $request->biaya_kirim;
+            $data['nama_penerima']         = $request->nama_penerima;
+            $data['no_hp_penerima']        = $request->no_penerima;
+            $data['alamat_kirim']          = $request->alamat_penerima;
+            $data['status_pengiriman']     = ($request->status == 3) ? 0 : 1;
+            if($request->status == 4){
+                $data['tanggal_kirim'] = date('Y-m-d H:i:s');
+            }
             $pengiriman = DB::table('data_pengiriman')->where('kode_trx_pemesanan', $request->kode_trx_pemesanan)->get();
             $count_pengiriman = !empty($pengiriman) ? count($pengiriman) : 0;
             if($count_pengiriman > 0){
@@ -136,6 +139,8 @@ class TransaksiController extends Controller
 
     public function generate_pemesananan($rest)
     {
+        date_default_timezone_set("Asia/Bangkok");
+
         $tanggalskr = date('Y-m-d H:i:s');
         $code = 'TRX';
         $no = 0;
@@ -178,6 +183,8 @@ class TransaksiController extends Controller
 
     public function update_modal_cart(Request $request)
     {
+        date_default_timezone_set("Asia/Bangkok");
+
         try {
             DB::table('keranjang_belanja')
                 ->where('kode_keranjang', $request->id_cart)
@@ -206,6 +213,7 @@ class TransaksiController extends Controller
     }
 
     public function modal_checkout_cart(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $datenow = date('Y-m-d H:i:s');
 
         $get_last = DB::table('data_pemesanan')->select('kode_trx_pemesanan')->orderBy('created_at', 'DESC')->first();
@@ -256,6 +264,7 @@ class TransaksiController extends Controller
         $data['pemesanan'] = DB::table('data_pemesanan')->select('kode_produk')
                         ->where('kode_pelanggan', $data['kode_pelanggan'])
                         ->where('status_pemesanan', 4)
+                        ->whereNull('status_retur')
                         ->groupBy('kode_produk')
                         ->whereNull('deleted_at')
                         ->get();
@@ -298,6 +307,8 @@ class TransaksiController extends Controller
 
     public function update_modal_return(Request $request){
 
+        date_default_timezone_set("Asia/Bangkok");
+        
         $detail_produk = DB::table('master_produk_detail')
                         ->where('initial_produk', $request->produkReturn)
                         ->where('ukuran', $request->kode_ukuran)
@@ -351,6 +362,8 @@ class TransaksiController extends Controller
 
     public function verifikasi_return(Request $request){
 
+        date_default_timezone_set("Asia/Bangkok");
+
         $detail_produk = DB::table('master_produk_detail')
                         ->where('initial_produk', $request->kode_produk)
                         ->where('ukuran', $request->kode_ukuran)
@@ -364,6 +377,10 @@ class TransaksiController extends Controller
             $update_stok = DB::table('master_produk_inventori')
                         ->where('initial_produk', $detail_produk->id_detail_produk)
                         ->update(['out'=>$kurang_out]);
+            $update_pemesanan = DB::table('data_pemesanan')
+                    ->where('id_detail_produk', $detail_produk->id_detail_produk)
+                    ->update(['status_retur'=>1]);
+            $update_return = DB::table('data_retur')->where('kode_retur', $request->kode_retur)->update(['tanggal_retur'=>date('Y-m-d H:i:s')]);
         }elseif($request->status == 2){
             $update_pemesanan = DB::table('data_pemesanan')
                     ->where('id_detail_produk', $detail_produk->id_detail_produk)

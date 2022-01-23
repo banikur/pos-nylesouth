@@ -32,7 +32,8 @@
                         <tbody>
                             <?php
                             $data = get_master_pesanan();
-                            $no = 1; ?>
+                            $no = 1;
+                            $detail=[] ?>
                             @foreach($data as $d)
                             <?php $detail = get_master_pesanan_detail($d->kode_trx_pemesanan, $d->kode_pelanggan); $kode = explode('/',$d->kode_trx_pemesanan)?>
                             <tr>
