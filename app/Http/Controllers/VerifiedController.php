@@ -153,7 +153,8 @@ class VerifiedController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.rajaongkir.com/starter/province",
+            CURLOPT_URL => "http://api.rajaongkir.com/starter/province",
+            CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -161,7 +162,7 @@ class VerifiedController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
+                "key: 201d76bd2640e0b8714aceaf99491249"
             ),
         ));
 
@@ -175,7 +176,6 @@ class VerifiedController extends Controller
         } else {
 
             $res = json_decode($response, true);
-            // dd($res['rajaongkir']['results']);
             $collection = $res['rajaongkir']['results'];
             foreach ($collection as $key) {
                 $search = DB::table('master_provinsi')->where('nama_prov', $key['province'])->get();
@@ -191,13 +191,15 @@ class VerifiedController extends Controller
         }
     }
 
-    public function testapi2()
+    public function testapi2($id_provinsi)
     {
-        for ($i = 0; $i < 35; $i++) {
+        $n = 0;
+        // for ($i = 1; $i < 35; $i++) {
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=" . $i,
+                CURLOPT_URL => "http://api.rajaongkir.com/starter/city?province=" . $id_provinsi,
+                CURLOPT_SSL_VERIFYHOST => 2,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -205,7 +207,7 @@ class VerifiedController extends Controller
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
-                    "key: 1eb78fdd90b0ca6ee740c48c9c8de45f"
+                    "key: 201d76bd2640e0b8714aceaf99491249"
                 ),
             ));
 
@@ -216,14 +218,18 @@ class VerifiedController extends Controller
 
             $res = json_decode($response, true);
             $collection = $res['rajaongkir']['results'];
-
+          dd($collection);
+        //    print_r($collection);die();
             foreach ($collection as $key) {
                 $type = ($key['type'] == 'Kabupaten') ? 'KAB.' : (($key['type'] == 'Kota') ? 'KOTA' : $key['type']);
 
-                $search = DB::table('master_kab_kota')->where('kab_kota', $type . ' ' . strtoupper($key['city_name']))->get();
-
+                $search = DB::table('master_kab_kota')->where('kab_kota', 'like', '%'.strtoupper($key['city_name']).'%')->get();
+                
                 if ($search) {
-                    DB::table('master_kab_kota')->where('kab_kota', $type . ' ' . strtoupper($key['city_name']))->update(
+                    $n++;
+                    DB::table('master_kab_kota')
+                    ->where('kab_kota', 'ike', '%'.strtoupper($key['city_name']).'%')
+                    ->update(
                         [
                             'id_api' => $key['city_id'],
                             'kode_pos' => $key['postal_code'],
@@ -233,11 +239,12 @@ class VerifiedController extends Controller
                 }
             }
 
-            if ($err) {
-                echo "cURL Error #:" . $err;
-            } else {
-                return $this->responseData($response);
-            }
+            
+        // }
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            return $this->responseData($n);
         }
     }
 
@@ -294,7 +301,7 @@ class VerifiedController extends Controller
                     }
                 }
             }
-            
+
             for ($t = 0; $t < count($service[0]); $t++) {
                 array_push($temporary, [
                     'jenis_pelayanan' => $service[0][$t]['description'] . ' - ' .  '(TIKI)',
@@ -309,7 +316,7 @@ class VerifiedController extends Controller
                     'biaya' => $service[1][$p]['cost'][0]['value']
                 ]);
             }
-            
+
             for ($j = 0; $j < count($service[2]); $j++) {
                 array_push($temporary, [
                     'jenis_pelayanan' =>  $service[2][$j]['description'] . ' - ' . '(JNE)',
@@ -325,7 +332,6 @@ class VerifiedController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-
     }
 
     public function pecah1($service)

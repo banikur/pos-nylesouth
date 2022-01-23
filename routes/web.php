@@ -13,7 +13,8 @@
  
 Route::get('/', 'VerifiedController@index')->name('/');
 Route::get('/detail-produk', 'VerifiedController@detail_index')->name('detail');
-Route::get('/testapi', 'VerifiedController@testapi')->name('testapi');
+// Route::get('/testapi', 'VerifiedController@testapi')->name('testapi');
+// Route::get('/testapi2/{id}', 'VerifiedController@testapi2')->name('testapi2');
 Route::get('/get_service_shipping', 'VerifiedController@get_service_shipping')->name('get_service_shipping');
 Route::get('/master_kab_kota/{kode}', 'VerifiedController@master_kab_kota');
 Route::get('/get_disc/{kode}', 'VerifiedController@get_disc');
