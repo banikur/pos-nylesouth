@@ -27,7 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-
+    'site_key_recaptcha' => env('SITE_KEY_RECAPTCHA', '6LewHLoZAAAAAIxcp1PhHnWr3Byl2Q8M4Cab0IzL'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
