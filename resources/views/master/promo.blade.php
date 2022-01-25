@@ -37,9 +37,9 @@
                             <tr>
                                 <td>{{$no++}}</td>
                                 <td>{{$d->kode_promo}}</td>
-                                <td>Rp {{number_format($d->potongan_harga,2,',','.')}}</td>
+                                <td>{{number_format($d->potongan_harga,2,',','.')}} %</td>
                                 <td>{{($d->tgl_mulai) ? tgl_indo($d->tgl_mulai) : ''}} - {{($d->tgl_berakhir) ? tgl_indo($d->tgl_berakhir) : ''}}</td>
-                                @if($datenow >= $d->tgl_mulai && $datenow <= $d->tgl_berakhir)
+                                @if($datenow <= $d->tgl_berakhir)
                                 <td><center><span class="badge badge-success">Aktif</span></center></td>
                                 @else
                                 <td><center><span class="badge badge-danger">Expired</span></center></td>
@@ -85,8 +85,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Potongan Harga</label>
-                                <input type="text" class="form-control rupiah" id="potongan_harga" name="potongan_harga" placeholder="Potongan Harga" required>
+                                <label for="exampleFormControlInput1">Potongan Harga (%)</label>
+                                <input type="text" class="form-control rupiah" maxlength="3" onchange="checkPotonganHarga('potongan_harga')" id="potongan_harga" name="potongan_harga" placeholder="Potongan Harga" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Tanggal Berakhir</label>
@@ -107,7 +107,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addTitleModal">Tambah Promo</h5>
+                <h5 class="modal-title" id="addTitleModal">Edit Promo</h5>
                 <button type="button" class="close" onclick="reset()" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -192,6 +192,19 @@
             minDate: tgl_mulai,
         })
     });
+
+    function checkPotonganHarga(id)
+    {
+        var potongan = $('#'+id+'').val();
+        if(potongan > 100){
+            Swal.fire({
+                title: "Lebih Dari 100 %",
+                type: "error",
+                allowOutsideClick: false,
+            })
+            $('#'+id+'').val(0);
+        }
+    }
 
 
     function edit(obj) {

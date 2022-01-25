@@ -25,26 +25,19 @@
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
-                                <!-- <th scope="col">Kode Pelanggan</th> -->
                                 <th scope="col">Nama Pelanggan</th>
-                                <th scope="col">Jenis Kelamin</th>
-                                <!-- <th scope="col">Tempat Tanggal Lahir</th> -->
                                 <th scope="col">Alamat</th>
                                 <th scope="col">No Telp.</th>
                                 <th scope="col">E-Mail</th>
                             </tr>
                         </thead>
                         <tbody>
-
                             <?php $data = get_master_pelanggan();
                             $no = 1; ?>
                             @foreach($data as $d)
                             <tr>
                                 <td>{{$no++}}</td>
-                                <!-- <td>{{$d->kode_pelanggan}}</td> -->
-                                <td>{{$d->nama_lengkap_pelanggan}}</td>
-                                <td>{{($d->jenis_kelamin == 1) ? 'Laki-Laki': 'Perempuan'}}</td>
-                                <!-- <td>{{$d->tempat_lahir}}, {{$d->tanggal_lahir}}</td> -->
+                                <td>{{$d->name}}</td>
                                 <td>{{$d->alamat}}</td>
                                 <td>{{$d->no_hp}}</td>
                                 <td><a href="mailto:{{$d->email}}">{{$d->email}}</a></td>

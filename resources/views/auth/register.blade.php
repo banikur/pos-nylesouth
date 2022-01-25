@@ -55,9 +55,9 @@
     <!--===============================================================================================-->
 </head>
 
-<body>
+<body class="bg">
 
-    <div class="bg">
+    <div>
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login200 p-l-55 p-r-55 p-t-45 p-b-30" style="float: right; margin: 5%;">
@@ -164,6 +164,7 @@
 
     <script src="{{asset('front_login/js/main.js')}}"></script>
     <script type="text/javascript">
+    @if(Session::has('success'))
         // swal('Berhasil', '{{Session::get("success")}}', 'success');
         Swal.fire({
             text: "{{Session::get('success')}}",

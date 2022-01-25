@@ -295,9 +295,12 @@
         var id = $('#appendedInputButton').val();
         $.get('{{URL::to("get_disc")}}/' + btoa(id), function(data) {
             json = JSON.parse(data);
-            var rumus_total = parseInt(total) + biaya - data;
+            // var rumus_total = parseInt(total) + biaya - data;
+            var jumlah_biaya = parseInt(total) + biaya;
+            var jumlah_diskon = data/100 * jumlah_biaya;
+            var rumus_total = jumlah_biaya - jumlah_diskon;
             if(json!=0){
-                $('#disc_text').html('Rp. ' + number_format(json, 2, ',', '.'));
+                $('#disc_text').html(number_format(json, 2, ',', '.')+'%');
                 $('#disc_text').attr('style','')
                 $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
             }else{ 
@@ -306,7 +309,7 @@
                     title: 'PROMO SUDAH TIDAK BERLAKU',
                     showConfirmButton: true,
                 })
-                $('#disc_text').html('Rp. ' + number_format(0, 2, ',', '.'));
+                $('#disc_text').html(number_format(0, 2, ',', '.')+'%');
                 $('#disc_text').attr('style','color:red;')
             }
         });

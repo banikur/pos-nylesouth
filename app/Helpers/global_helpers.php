@@ -91,8 +91,7 @@ if (!function_exists('get_master_pelanggan')) {
 	function get_master_pelanggan()
 	{
 		return DB::table('users')
-			->Join('users_pelanggan_detail', 'users_pelanggan_detail.kode_pelanggan', 'users.id')
-			->whereNull('users.tipe_user')
+			->whereNull('tipe_user')
 			->get();
 	}
 }
@@ -287,10 +286,10 @@ if (!function_exists('get_disc_id')) {
 		$datenow = date('Y-m-d');
 		$data = DB::table('master_promo')
 			->where('kode_promo', $id)
-			->where('tgl_mulai', '<', $datenow)
+			// ->where('tgl_mulai', '<', $datenow)
 			->where('tgl_berakhir', '>', $datenow)
 			->get();
-		// dd($data);
+		
 		if (count($data) > 0) {
 			return $data[0]->potongan_harga;
 		} else {
