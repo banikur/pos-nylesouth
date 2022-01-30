@@ -21,12 +21,12 @@
             </div>
             <nav id="mainmenu" class="mainmenu">
                 <ul>
-                    <li class="logo-wrapper"><a href="index.html"><img src="landing_page/img/mPurpose-logo.png" alt="Logo"></a></li>
+                    <li class="logo-wrapper"><a href="{{url('/')}}"><img src="landing_page/img/mPurpose-logo.png" alt="Logo"></a></li>
                     <li class="active">
                         <a href="{{route('/')}}">Home</a>
                     </li>
 
-                    <li class="has-submenu">
+                    <li class="has-submenu" style="display:none;">
                         <a href="#">Pages +</a>
                         <div class="mainmenu-submenu">
                             <div class="mainmenu-submenu-inner">
@@ -129,6 +129,56 @@
                                                 <span class="label label-success">Approve</span>
                                             @elseif($dp->status_retur == 2)
                                                 <span class="label label-danger">Tolak</span>
+                                            @endif
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </table>
+                            </div><!-- /mainmenu-submenu-inner -->
+                        </div><!-- /mainmenu-submenu -->
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#">Pesanan Saya</a>
+                        <div class="mainmenu-submenu">
+                            <div class="mainmenu-submenu-inner">
+                                <?php $no=1; $dataPemesanan = DB::table('data_pemesanan')->where('kode_pelanggan', Auth::user()->id)->get(); ?>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Produk</th>
+                                        <th>Jumlah</th>
+                                        <th>Ukuran</th>
+                                        <th>Warna</th>
+                                        <th>Tanggal Pesan</th>
+                                        <th>Harga</th>
+                                        <th>Kurir</th>
+                                        <th>Total Harga</th>
+                                        <th><center>Status</center></th>
+                                    </tr>
+                                    @foreach ($dataPemesanan as $dp)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ get_master_produk_id(base64_encode($dp->kode_produk))->nama_produk }}</td>
+                                        <td>{{ $dp->jumlah }}</td>
+                                        <td>{{ get_detail_produk_id($dp->id_detail_produk,'ukuran')->ukuran }}</td>
+                                        <td>{{ get_detail_produk_id($dp->id_detail_produk,'warna')->nama_warna }}</td>
+                                        <td>{{ tgl_indo(date(date('Y-m-d',strtotime($dp->tanggal_pesan)))) }}</td>
+                                        <td>{{ number_format($dp->total_harga,2,'.',',') }}</td>
+                                        <td>{{ $dp->kurir }} ({{ $dp->biaya_kirim }})</td>
+                                        <td>{{ number_format($dp->sub_total,2,'.',',') }}</td>
+                                        <td>
+                                            <center>
+                                            @if($dp->status_pemesanan == 0) {{-- Pesanan Baru --}}
+                                                <span class="badge badge-warning">Pembayaran Diterima</span>
+                                            @elseif($dp->status_pemesanan == 1) {{-- Proses Ditolak --}}
+                                                <span class="badge badge-danger">Pesanan Ditolak</span>
+                                            @elseif($dp->status_pemesanan == 2) {{-- Pesanan Terverifikasi --}}
+                                                <span class="badge badge-success">Pesanan Sedang Disiapkan</span>
+                                            @elseif($dp->status_pemesanan == 3) {{-- Proses Pengiriman --}}
+                                                <span class="badge badge-primary">Proses Pengiriman</span>
+                                            @elseif($dp->status_pemesanan == 4) {{-- Terkirim --}}
+                                                <span class="badge badge-secondary">Telah Terkirim</span>
                                             @endif
                                             </center>
                                         </td>

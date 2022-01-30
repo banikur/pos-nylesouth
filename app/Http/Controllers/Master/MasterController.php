@@ -74,6 +74,20 @@ class MasterController extends Controller
 
         return view('master.modal.view_produk', $data);
     }
+
+    public function edit_produk(Request $request)
+    {
+        $initial_code = $request->id;
+        $data['produk'] = get_master_produk_id($initial_code);
+        $data['detail'] = DB::table('master_produk_detail')->where('initial_produk', base64_decode($initial_code))->get();
+        $data['invetori'] = DB::table('master_produk_inventori')->where('initial_produk', base64_decode($initial_code))->get();
+        $data['picture'] = DB::table('master_produk_picture')->where('initial_produk', base64_decode($initial_code))->get();
+
+        $data['warna'] = DB::table('master_kode_warna')->get();
+        $data['ukuran'] = DB::table('master_ukuran')->get();
+
+        return view('master.modal.edit_produk', $data);
+    }
     /*FORM MODAL*/
 
     /*CRUD*/
@@ -230,6 +244,47 @@ class MasterController extends Controller
         //     //throw $th;
         //     return redirect()->back()->with('error', 'Gagal koneksi ke database');
         // }
+    }
+
+    public function post_e_produk(Request $request)
+    {
+        // dd($request);
+        $initial_produk = $request->initial_produk;
+        DB::table('master_produk')->where('initial_produk', $initial_produk)->update(
+            [
+                'nama_produk' => $request->nama_produk,
+                'kode_kategori' => $request->kategori_produk,
+                'berat_produk' => str_replace(',', '.', $request->berat_produk),
+                'harga_produk' =>  str_replace(',', '.', str_replace('.', '', $request->harga_produk)),
+                'deskripsi_produk' => $request->deskripsi_produk,
+                'updated_by' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
+        
+
+        DB::table('master_produk_detail')->where('initial_produk', $initial_produk)->whereIn('id_detail_produk', $request->id_detail_produk_temp)->delete();
+        DB::table('master_produk_inventori')->whereIn('initial_produk', $request->id_detail_produk_temp)->delete();
+        for ($i = 0; $i < Count($request->id_detail_produk); $i++) {
+            $id_detail_produk = $request->id_detail_produk[$i];
+            DB::table('master_produk_detail')->insert(
+                [
+                    'id_detail_produk' => $id_detail_produk,
+                    'initial_produk' => $initial_produk,
+                    'ukuran' => $request->ukuran[$i],
+                    'warna' => $request->warna[$i],
+                ]
+            );
+            DB::table('master_produk_inventori')->insert(
+                [
+                    'initial_produk' => $id_detail_produk,
+                    'in' => $request->stok[$i],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+        }
+        
+        return redirect()->back()->with('message', 'success');
     }
 
     public function post_promo(Request $request)

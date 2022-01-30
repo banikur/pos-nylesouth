@@ -34,8 +34,11 @@
                     <li class="active">
                         <a href="{{route('/')}}">Home</a>
                     </li>
+                    <li>
+                        <a href="{{route('profil')}}">Profil</a>
+                    </li>
 
-                    <li class="has-submenu">
+                    <li class="has-submenu" style="display:none;">
                         <a href="#">Pages +</a>
                         <div class="mainmenu-submenu">
                             <div class="mainmenu-submenu-inner">
@@ -135,8 +138,9 @@
             </nav>
         </div>
     </div>
-
+    @if(Request::segment(1) != 'profil')
     @include('template.landing_page.slide_show')
+    @endif
     <div class="section">
         <div class="container">
             @yield('content')

@@ -51,15 +51,15 @@
                                 <td>{{ $d->alamat }}</td>
                                 <td>
                                     @if($d->status_pemesanan == 0) {{-- Pesanan Baru --}}
-                                        <span class="badge badge-warning">Verifikasi</span>
+                                        <span class="badge badge-warning">Pembayaran Diterima</span>
                                     @elseif($d->status_pemesanan == 1) {{-- Proses Ditolak --}}
-                                        <span class="badge badge-danger">Ditolak</span>
+                                        <span class="badge badge-danger">Pesanan Ditolak</span>
                                     @elseif($d->status_pemesanan == 2) {{-- Pesanan Terverifikasi --}}
-                                        <span class="badge badge-success">Terverifikasi</span>
+                                        <span class="badge badge-success">Pesanan Sedang Disiapkan</span>
                                     @elseif($d->status_pemesanan == 3) {{-- Proses Pengiriman --}}
                                         <span class="badge badge-primary">Proses Pengiriman</span>
                                     @elseif($d->status_pemesanan == 4) {{-- Terkirim --}}
-                                        <span class="badge badge-secondary">Terkirim</span>
+                                        <span class="badge badge-secondary">Telah Terkirim</span>
                                     @endif
                                 </td>
                                 <td>
@@ -146,11 +146,11 @@
                                             <label class="col-3 col-form-label">Status</label>
                                             <div class="col-8">
                                                 <select class="form-control" id="status" name="status" onchange="changeStatus();">
-                                                    <option value="0">Verifikasi</option>
-                                                    <option value="1">Ditolak</option>
-                                                    <option value="2">Terverifikasi</option>
+                                                    <option value="0">Pembayaran Diterima</option>
+                                                    <option value="1">Pesanan Ditolak</option>
+                                                    <option value="2">Pesanan Sedang Disiapkan</option>
                                                     <option value="3">Proses Pengiriman</option>
-                                                    <option value="4">Terkirim</option>
+                                                    <option value="4">Telah Terkirim</option>
                                                 </select>
                                             </div>
                                         </div>

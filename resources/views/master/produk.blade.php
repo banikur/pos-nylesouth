@@ -79,6 +79,7 @@
                                 <td>IDR {{number_format($d->harga_produk,2,',','.')}}</td>
                                 <td>
                                     <button class="btn btn-light btn-icon btn-circle btn-sm" onclick="show('{{base64_encode($d->initial_produk)}}',this)" data-id="{{$d->initial_produk}}" data-toggle="tooltip" title="Detail"><i class="flaticon2-search text-primary"></i></button>
+                                    <button class="btn btn-light btn-icon btn-circle btn-sm" onclick="edit('{{base64_encode($d->initial_produk)}}',this)" data-id="{{$d->initial_produk}}" data-toggle="tooltip" title="Detail"><i class="flaticon2-edit text-primary"></i></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -119,6 +120,22 @@
             </div>
             <div id="show_div">
                 <div id="loader2" class="spinner spinner-danger spinner-lg mr-15 mt-8"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showTitleModal">Modal Title</h5>
+                <button type="button" class="close" onclick="refresh()" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div id="edit_div">
+                <div id="loader3" class="spinner spinner-danger spinner-lg mr-15 mt-8"></div>
             </div>
         </div>
     </div>
@@ -178,6 +195,32 @@
         setTimeout(function() {
             location.reload()
         }, 100);
+    }
+
+    function edit(item, obj) {
+        console.log(obj);
+        var initial = $(obj).data('id');
+        $('#showTitleModal').text('Detail Produk ' + initial);
+        $.ajax({
+            url: "{{route('master.form.modal.edit_produk')}}",
+            data: {
+                id: item,
+                _token: "{{ csrf_token() }}"
+            },
+            beforeSend: function() {
+                $('#loader3').show();
+            },
+            complete: function() {
+                $('#loader3').hide();
+            },
+            success: function(data) {
+                $('#edit_div').html(data);
+            },
+            error: function(data) {
+
+            }
+        });
+        $('#modal-edit').modal('show');
     }
 
     function show(item, obj) {

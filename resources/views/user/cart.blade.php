@@ -26,6 +26,8 @@
                         $images = $pict->path_file . $pict->nama_file;
                         ?>
                         <input class="form-control total_berat" type="hidden" value="{{ceil($d->total_berat * $d->cart)}}">
+                        <input type="hidden" id="total" value="">
+                        <td><input type="checkbox" class="form-control" name="select_cart" id="{{$d->kode_produk}}" onchange="setCheckout('{{$d->kode_produk}}')"></td>
                         <td class="image"><a href="{{route('detail',['id_produk'=>base64_encode($d->kode_produk)])}}"><img src="{{url($images)}}" alt="Item Name"></a></td>
                         <td>
                             <?php
@@ -88,7 +90,7 @@
                 <div class="cart-shippment-options">
                     <h5> Pilihan Kurir</h5>
                     <div class="input-append">
-                        <select class="form-control input-sm select2" id="kurir">
+                        <select class="form-control input-sm select2" id="kurir" onchange="kurir()">
                             <option disabled selected>- PILIH -</option>
                         </select>
                     </div>
@@ -163,20 +165,7 @@
             <form id="formCheckout" method="post" action="{{route('transaksi.modal_checkout_cart')}}" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
-                @if(!empty($data))
-                    @foreach($data as $d)
-                        <?php
-                            $id_detail_product = get_master_detail_produk_id($d->kode_produk,$d->kode_ukuran,$d->kode_warna);
-                            $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
-                            $sub_total = $d->cart * $data_produk->harga_produk;
-                        ?>
-                        <input type="hidden" name="id_keranjang[]" value="{{$d->kode_keranjang}}">
-                        <input type="hidden" name="kode_produk[]" value="{{$d->kode_produk}}">
-                        <input type="hidden" name="jumlah[]" value="{{$d->cart}}">
-                        <input type="hidden" name="sub_total[]" value="{{$sub_total}}">
-                        <input type="hidden" name="id_detail_product[]" value="{{$id_detail_product}}">
-                    @endforeach
-                @endif
+                <div id="data_checkout"></div>
                 <div class="row">
                     <input type="hidden" name="total_harga" id="total_harga">
                     <input type="hidden" name="jasa_kurir" id="jasa_kurir">
@@ -273,11 +262,11 @@
         });
     });
 
-    $('#kurir').on('change', function() {
+    function kurir(){
         var estimasi = $('#kurir').find(':selected').data('estimasi');
         var biaya = $('#kurir').find(':selected').data('biaya');
         var kurir = $('#kurir').find(':selected').text();
-        var total = '{{$total}}';
+        var total = $('#total').val();
         var text = 'Rp. ' + number_format(biaya, 2, '.', ',') + ' - ' + estimasi + ' Hari';
         var rumus_total = parseInt(total) + biaya;
 
@@ -286,33 +275,40 @@
         $('#total_harga').val(rumus_total);
         $('#ongkir').html(text);
         $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
-    });
+    }
 
     $('#dic_btn').on('click', function() {
         var json = null;
         var biaya = $('#kurir').find(':selected').data('biaya');
-        var total = '{{$total}}';
+        var total = $('#total').val();
         var id = $('#appendedInputButton').val();
-        $.get('{{URL::to("get_disc")}}/' + btoa(id), function(data) {
-            json = JSON.parse(data);
-            // var rumus_total = parseInt(total) + biaya - data;
+        if(id){
+            $.get('{{URL::to("get_disc")}}/' + btoa(id), function(data) {
+                json = JSON.parse(data);
+                // var rumus_total = parseInt(total) + biaya - data;
+                var jumlah_biaya = parseInt(total) + biaya;
+                var jumlah_diskon = data/100 * jumlah_biaya;
+                var rumus_total = jumlah_biaya - jumlah_diskon;
+                if(json!=0){
+                    $('#disc_text').html(number_format(json, 2, ',', '.')+'%');
+                    $('#disc_text').attr('style','')
+                    $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
+                }else{ 
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'PROMO SUDAH TIDAK BERLAKU',
+                        showConfirmButton: true,
+                    })
+                    $('#disc_text').html(number_format(0, 2, ',', '.')+'%');
+                    $('#disc_text').attr('style','color:red;')
+                }
+            });
+        }else{
             var jumlah_biaya = parseInt(total) + biaya;
-            var jumlah_diskon = data/100 * jumlah_biaya;
-            var rumus_total = jumlah_biaya - jumlah_diskon;
-            if(json!=0){
-                $('#disc_text').html(number_format(json, 2, ',', '.')+'%');
-                $('#disc_text').attr('style','')
-                $('#total_bayar').html('Rp. ' + number_format(rumus_total, 2, '.', ','));
-            }else{ 
-                Swal.fire({
-                    icon: 'info',
-                    title: 'PROMO SUDAH TIDAK BERLAKU',
-                    showConfirmButton: true,
-                })
-                $('#disc_text').html(number_format(0, 2, ',', '.')+'%');
-                $('#disc_text').attr('style','color:red;')
-            }
-        });
+            $('#disc_text').html('');
+            $('#disc_text').attr('style','');
+            $('#total_bayar').html('Rp. ' + number_format(jumlah_biaya, 2, '.', ','));
+        }
 
 
 
@@ -436,6 +432,32 @@
             error: function(data) {
                 console.log(data);
             }
+        });
+    }
+
+    function setCheckout(kode_produk)
+    {
+        if($('#'+kode_produk+'').is(':checked')){
+            var status = 1;
+        }else{
+            var status = 0;
+        }
+        var param = kode_produk+'@'+status;
+        $.get('{{URL::to("update_barang_checkout")}}/' + param, function(res) {
+            var data = JSON.parse(res);
+            var html = '';
+            console.log(data);
+
+            $.each(data.data, function(i, val){
+                html += '<input type="hidden" name="id_keranjang[]" value="'+val.kode_keranjang+'">';
+                html += '<input type="hidden" name="kode_produk[]" value="'+val.kode_produk+'">';
+                html += '<input type="hidden" name="jumlah[]" value="'+val.jumlah+'">';
+                html += '<input type="hidden" class="sub_total" name="sub_total[]" value="'+val.sub_total+'">';
+                html += '<input type="hidden" name="id_detail_product[]" value="'+val.id_detail_product+'">';
+            })
+            $('#data_checkout').html(html);
+            $('#total').val(data.total);
+            kurir();
         });
     }
 

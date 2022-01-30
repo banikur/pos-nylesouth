@@ -36,6 +36,10 @@ Auth::routes();
 /*PAGE INIT*/
 Route::get('/home', 'HomeController@index')->name('home');
 
+// PROFIL
+Route::get('/profil', 'HomeController@profil')->name('profil');
+Route::post('/profil/update', 'HomeController@post_profil')->name('post_profil');
+
 /*TRANSAKSI*/
 Route::namespace('Master')->group(function () {
     Route::prefix('master')->name('master.')->group(function () {
@@ -53,6 +57,7 @@ Route::namespace('Master')->group(function () {
         Route::get('/master/produk/form', 'MasterController@form_produk')->name('produk');
 
         Route::get('/master/produk/detail', 'MasterController@detail_produk')->name('detail_produk');
+        Route::get('/master/produk/edit', 'MasterController@edit_produk')->name('edit_produk');
     });
     Route::prefix('master')->name('master.form.modal.action.')->group(function () {
     Route::post('/master/produk/s_warna', 'MasterController@post_warna')->name('s_warna');
@@ -61,6 +66,7 @@ Route::namespace('Master')->group(function () {
         Route::post('/master/produk/u_ukuran', 'MasterController@post_ukuran')->name('u_ukuran');
         Route::post('/master/produk/s_kategori', 'MasterController@post_kategori')->name('u_kategori');
         Route::post('/master/produk/s_produk', 'MasterController@post_produk')->name('s_produk');
+        Route::post('/master/produk/e_produk', 'MasterController@post_e_produk')->name('e_produk');
         Route::post('/master/promo/s_promo', 'MasterController@post_promo')->name('s_promo');
         Route::post('/master/promo/e_promo', 'MasterController@edit_promo')->name('e_promo');
     });
@@ -99,4 +105,5 @@ Route::name('transaksi.')->group(function () {
     Route::get('modal_cart/return/get-produk', 'Transaksi\TransaksiController@get_produk_in_keranjang')->name('get_produk_in_keranjang');
     Route::get('modal_cart/return/get-produk-jumlah', 'Transaksi\TransaksiController@get_produk_jumlah_in_keranjang')->name('get_produk_jumlah_in_keranjang');
     Route::post('update_modal_return', 'Transaksi\TransaksiController@update_modal_return')->name('update_modal_return');
+    Route::get('update_barang_checkout/{param}', 'Transaksi\TransaksiController@update_barang_checkout')->name('update_barang_checkout');
 });

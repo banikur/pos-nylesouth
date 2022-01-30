@@ -307,4 +307,19 @@ if (!function_exists('get_initial_cart')) {
 	}
 }
 
+if (!function_exists('get_detail_produk_id')) {
+	function get_detail_produk_id($id, $kepentingan)
+	{
+		$detail = DB::table('master_produk_detail')->where('id_detail_produk', $id)->first();
+		if($kepentingan == 'warna'){
+			$data = DB::table('master_kode_warna')->where('kode_warna',$detail->warna)->first();
+		}else{
+			$data = $detail;
+		}
+
+		return ($data) ? $data : '-';
+
+	}
+}
+
 /*END BANI*/

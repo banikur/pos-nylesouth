@@ -128,11 +128,14 @@ class TransaksiController extends Controller
 
     public function cart_index()
     {
-        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'), 'kode_keranjang')
+        $data['data'] =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'), 'kode_keranjang','status_checkout')
             ->where('kode_pelanggan', Auth::user()->id)
             ->whereNull('status')
-            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna', 'kode_keranjang')
+            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna', 'kode_keranjang','status_checkout')
             ->get();
+
+        DB::table('keranjang_belanja')->where('kode_pelanggan', Auth::user()->id)->update(['status_checkout'=>null]);
+
         // dd($data);
         return view('user.cart', $data);
     }
@@ -397,5 +400,42 @@ class TransaksiController extends Controller
         $update_return = DB::table('data_retur')->where('kode_retur', $request->kode_retur)->update(['status_retur'=>$request->status]);
 
         return redirect()->back()->with('message', 'success');
+    }
+
+    public function update_barang_checkout($param)
+    {
+        $dt = explode('@',$param);
+        $kode_produk = $dt[0];
+        $status = $dt[1];
+        $update = DB::table('keranjang_belanja')->where('kode_produk', $kode_produk)->update(['status_checkout'=>$status]);
+
+        
+        $data_checkout =  DB::table('keranjang_belanja')->select('kode_produk',  DB::raw('sum(jumlah) as cart'), 'kode_ukuran', 'kode_warna', DB::raw('sum(berat_barang) total_berat'), 'kode_keranjang')
+            ->where('kode_pelanggan', Auth::user()->id)
+            ->whereNull('status')
+            ->where('status_checkout',1)
+            ->groupBy('kode_produk', 'jumlah', 'kode_ukuran', 'kode_warna', 'kode_keranjang')
+            ->get();
+            
+        $total = 0;
+        foreach($data_checkout as $key=>$d){
+            $id_detail_product = get_master_detail_produk_id($d->kode_produk,$d->kode_ukuran,$d->kode_warna);
+            $data_produk = get_master_produk_id(base64_encode($d->kode_produk));
+            $sub_total = $d->cart * $data_produk->harga_produk;
+            $total += $sub_total;
+
+            $data[$key]['kode_keranjang'] = $d->kode_keranjang;
+            $data[$key]['kode_produk'] = $d->kode_produk;
+            $data[$key]['jumlah'] = $d->cart;
+            $data[$key]['sub_total'] = $sub_total;
+            $data[$key]['id_detail_product'] = $id_detail_product;
+
+        }
+        
+        echo json_encode([
+            'data' => $data,
+            'total' => $total
+        ]);
+
     }
 }

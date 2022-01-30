@@ -32,4 +32,27 @@ class HomeController extends Controller
         $retVal = (Auth::user()->tipe_user == 1) ? 'home' : 'welcome';
         return view($retVal,$data);
     }
+
+    public function profil()
+    {
+        $id_user = Auth::user()->id;
+        $data['user'] = DB::table('users')->where('id', $id_user)->first();
+
+        return view('profil', $data);
+    }
+
+    public function post_profil(Request $request)
+    {
+        $id = Auth::user()->id;
+        $data = [
+            'name'      => $request->nama,
+            'email'     => $request->email,
+            'no_hp'     => $request->telpon,
+            'alamat'    => $request->alamat,
+        ];
+
+        $update = DB::table('users')->where('id',$id)->update($data);
+
+        return redirect()->back()->with(['message'=>'Berhasil Update']);
+    }
 }
